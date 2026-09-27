@@ -1,0 +1,10 @@
+data/raw/
+data/graphs/
+*.pkl
+*.pt
+__pycache__/
+*.pyc
+venv/
+.env
+data/logs/
+*.npz
