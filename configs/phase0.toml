@@ -40,3 +40,5 @@ lofo_families = { keylogger = "lokibot", injection = "emotet", antidebug = "ursn
 [tools]
 capa = "~/tools/capa/capa"
 capa_rules = "~/tools/capa-rules"
+capa_version = "9.1.0"
+capa_rules_commit = "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5"

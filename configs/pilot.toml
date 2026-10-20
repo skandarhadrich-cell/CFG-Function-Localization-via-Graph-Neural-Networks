@@ -1,0 +1,69 @@
+# Pilot configuration for the label-contract and end-to-end run.
+# This file is intentionally separate from phase0.toml; it does not change the
+# frozen Phase 0 splits.
+
+[paths]
+manifest = "data/manifest.csv"
+splits = "data/splits"
+labels_raw = "data/labels/capa_raw"
+labels_table = "data/labels/function_labels.parquet"
+graphs = "data/graphs"
+processed = "data/processed"
+results = "results"
+
+[tools]
+capa = "~/tools/capa/capa"
+capa_rules = "~/tools/capa-rules"
+capa_version = "9.1.0"
+capa_rules_commit = "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5"
+capa_rules_dirty = false
+
+[labels]
+# Namespaces are prefixes; static function and basic-block scopes only.
+anti_debug_namespaces = ["anti-analysis/anti-debugging"]
+keylogger_namespaces = ["collection/keylog"]
+injection_namespaces = [
+  "host-interaction/process/inject",
+  "load-code/pe/inject-",
+]
+
+[labels.contract]
+# See docs/labeling_contract.md.
+version = 1
+observed_inventory = "meta.analysis.feature_counts.functions"
+use_rule_scopes = "meta.scopes.static"
+weak_negative = "observed function with no target rule match"
+unlabeled = "angr function not mapped to CAPA observed inventory"
+min_positive_functions_full_set = 300
+
+[pilot.sampling]
+clean_target = 200
+known_bad_target = 20
+# Include all clean keylogger rows from main train/val (not test).
+keylogger = "all_main_train_val"
+# Fill the remainder in roughly equal parts from injection and antidebug,
+# preferring samples that already have target matches once a quick CAPA census
+# is available.
+remainder_buckets = ["injection", "antidebug"]
+
+[pilot.mapping_gate]
+min_observed_function_coverage = 0.95
+min_target_match_coverage = 0.95
+max_unresolved_target_matches = 0.02
+manual_audit_functions = 40
+
+[pilot.compute]
+workers = 4
+capa_timeout_seconds = 240
+cfg_timeout_seconds = 300
+rss_limit_gb = 3.0
+
+[evaluation.repeated_lofo]
+min_clean_samples = 20
+min_positive_functions = 30
+# Keylogger has only lokibot large enough to hold out; report it as a case study.
+
+[evaluation.bootstrap]
+main_unit = "imphash_cluster"
+lofo_unit = "binary"
+# Never resample functions independently.
