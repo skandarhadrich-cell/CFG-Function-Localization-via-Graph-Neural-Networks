@@ -1,0 +1,134 @@
+{
+  "v2_clean_samples": 2733,
+  "main": {
+    "train": {
+      "samples": 1913,
+      "clusters": 112,
+      "families": [
+        "agenttesla",
+        "bladabindi",
+        "ceeinject",
+        "cryptinject",
+        "dridex",
+        "emotet",
+        "gandcrab",
+        "injector",
+        "keylogger",
+        "lokibot",
+        "qakbot",
+        "smokeloader",
+        "trickbot",
+        "ursnif",
+        "vbinject",
+        "zbot"
+      ]
+    },
+    "val": {
+      "samples": 410,
+      "clusters": 92,
+      "families": [
+        "agenttesla",
+        "aitinject",
+        "bladabindi",
+        "ceeinject",
+        "cryptinject",
+        "emotet",
+        "gandcrab",
+        "injector",
+        "qakbot",
+        "smokeloader",
+        "trickbot",
+        "ursnif",
+        "vbinject",
+        "zbot"
+      ]
+    },
+    "test": {
+      "samples": 410,
+      "clusters": 99,
+      "families": [
+        "aitinject",
+        "bladabindi",
+        "ceeinject",
+        "cryptinject",
+        "emotet",
+        "gandcrab",
+        "injector",
+        "keylogger",
+        "qakbot",
+        "trickbot",
+        "ursnif",
+        "vbinject",
+        "zbot"
+      ]
+    }
+  },
+  "lofo": {
+    "train": {
+      "samples": 2247,
+      "clusters": 143,
+      "families": [
+        "agenttesla",
+        "aitinject",
+        "ceeinject",
+        "cryptinject",
+        "dridex",
+        "gandcrab",
+        "injector",
+        "keylogger",
+        "lokibot",
+        "qakbot",
+        "trickbot",
+        "vbinject",
+        "zbot"
+      ]
+    },
+    "val": {
+      "samples": 396,
+      "clusters": 109,
+      "families": [
+        "aitinject",
+        "ceeinject",
+        "cryptinject",
+        "gandcrab",
+        "injector",
+        "lokibot",
+        "qakbot",
+        "smokeloader",
+        "trickbot",
+        "vbinject",
+        "zbot"
+      ]
+    },
+    "test": {
+      "samples": 90,
+      "clusters": 51,
+      "families": [
+        "bladabindi",
+        "emotet",
+        "ursnif"
+      ]
+    }
+  },
+  "main_lofo_held_out": {
+    "keylogger": "bladabindi",
+    "injection": "emotet",
+    "antidebug": "ursnif"
+  },
+  "v1_removed_total": 81,
+  "v1_removed_in_v2_train_val": 0,
+  "v1_removed_by_family": {
+    "zbot": 25,
+    "lokibot": 21,
+    "ceeinject": 14,
+    "dridex": 9,
+    "pkeylog": 5,
+    "injector": 5,
+    "gandcrab": 2
+  },
+  "v1_removed_by_bucket": {
+    "antidebug": 36,
+    "keylogger": 26,
+    "injection": 19
+  }
+}
