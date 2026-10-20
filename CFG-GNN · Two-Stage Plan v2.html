@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CFG-GNN · Two-Stage Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --surface: #13161e;
+  --surface2: #1a1e28;
+  --border: #252a38;
+  --accent: #4af0a0;
+  --accent2: #7b6ff0;
+  --accent3: #f0a04a;
+  --warn: #f06060;
+  --blue: #4ab4f0;
+  --text: #d4d8e8;
+  --text-dim: #6b7394;
+  --text-bright: #f0f2fa;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f4f5f9; --surface: #ffffff; --surface2: #eef0f6;
+    --border: #d8dae8; --text: #2a2e42; --text-dim: #8890b0; --text-bright: #0d0f1a;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-family: var(--sans); background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+body { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 36px; }
+.eyebrow { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 12px; }
+h1 { font-size: clamp(24px, 4vw, 38px); font-weight: 600; color: var(--text-bright); line-height: 1.15; }
+h1 span { color: var(--accent2); }
+.subtitle { margin-top: 10px; font-size: 14px; color: var(--text-dim); font-weight: 300; max-width: 620px; line-height: 1.6; }
+
+/* Architecture diagram */
+.arch { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 36px; }
+.arch-title { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 16px; }
+.arch-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+.arch-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 10px 14px; font-size: 12px; font-family: var(--mono); color: var(--text-bright); text-align: center; min-width: 100px; }
+.arch-box.s1 { border-color: var(--accent2); color: var(--accent2); }
+.arch-box.s2 { border-color: var(--warn); color: var(--warn); }
+.arch-arrow { font-size: 16px; color: var(--text-dim); padding: 0 8px; }
+.arch-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; font-family: var(--mono); }
+
+/* Done section */
+.done-section { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 20px 24px; margin-bottom: 36px; }
+.done-title { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; }
+.done-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.done-item { background: var(--surface2); border-radius: 4px; padding: 10px 12px; }
+.done-item .di-label { font-family: var(--mono); font-size: 10px; color: var(--accent); margin-bottom: 4px; }
+.done-item .di-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+/* Legend */
+.legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: var(--mono); color: var(--text-dim); }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Week label */
+.week-label { font-family: var(--mono); font-size: 12px; color: var(--text-dim); letter-spacing: 0.08em; margin-bottom: 16px; margin-top: 40px; border-left: 2px solid var(--border); padding-left: 10px; }
+.week-label strong { color: var(--text-bright); }
+
+/* Day card */
+.day { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; overflow: hidden; transition: border-color 0.15s; }
+.day:hover { border-color: var(--accent2); }
+.day-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; }
+.day-num { font-family: var(--mono); font-size: 11px; color: var(--text-dim); min-width: 36px; }
+.day-title { font-size: 14px; font-weight: 500; color: var(--text-bright); flex: 1; }
+.phase-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; font-weight: 600; letter-spacing: 0.06em; }
+.phase-label  { background: rgba(74,240,160,0.12); color: var(--accent); }
+.phase-extract{ background: rgba(123,111,240,0.12); color: var(--accent2); }
+.phase-feat   { background: rgba(240,160,74,0.12); color: var(--accent3); }
+.phase-s1     { background: rgba(240,96,96,0.12); color: var(--warn); }
+.phase-s2     { background: rgba(74,180,240,0.12); color: var(--blue); }
+.phase-eval   { background: rgba(160,240,74,0.12); color: #a0f04a; }
+.chevron { font-size: 10px; color: var(--text-dim); transition: transform 0.2s; }
+.day.open .chevron { transform: rotate(90deg); }
+.day-body { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
+.day.open .day-body { display: block; }
+.goal { font-size: 12px; font-family: var(--mono); color: var(--text-dim); margin: 14px 0 10px; }
+.goal span { color: var(--text-bright); }
+.tasks { list-style: none; }
+.tasks li { display: flex; gap: 10px; font-size: 13px; line-height: 1.55; padding: 5px 0; border-bottom: 1px solid var(--surface2); color: var(--text); }
+.tasks li:last-child { border-bottom: none; }
+.tasks li::before { content: '›'; font-family: var(--mono); color: var(--accent2); flex-shrink: 0; margin-top: 1px; }
+.subtask { font-size: 11px; color: var(--text-dim); font-family: var(--mono); margin-top: 2px; display: block; }
+code { font-family: var(--mono); font-size: 11px; background: var(--surface2); padding: 1px 5px; border-radius: 3px; color: var(--accent3); }
+.deliverable { margin-top: 12px; background: var(--surface2); border-left: 2px solid var(--accent); padding: 8px 12px; border-radius: 0 4px 4px 0; font-size: 12px; color: var(--text-dim); }
+.deliverable strong { color: var(--accent); font-family: var(--mono); font-size: 11px; display: block; margin-bottom: 2px; }
+.stage-badge { font-family: var(--mono); font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-left: 6px; }
+.s1-badge { background: rgba(240,96,96,0.15); color: var(--warn); }
+.s2-badge { background: rgba(74,180,240,0.15); color: var(--blue); }
+
+/* Timeline */
+.timeline { display: flex; gap: 3px; margin-bottom: 28px; }
+.tl-seg { height: 6px; border-radius: 2px; }
+
+.controls { display: flex; gap: 10px; margin-bottom: 20px; }
+.ctrl-btn { font-family: var(--mono); font-size: 11px; padding: 5px 12px; border: 1px solid var(--border); border-radius: 3px; background: transparent; color: var(--text-dim); cursor: pointer; transition: all 0.15s; }
+.ctrl-btn:hover { border-color: var(--accent2); color: var(--text-bright); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">RESEARCH PROJECT · BODMAS 4470 SAMPLES · TWO-STAGE GNN</div>
+  <h1>Hierarchical CFG-GNN<br><span>Two-Stage Malware Localization</span></h1>
+  <p class="subtitle">Stage 1 classifies entire function CFGs to identify malicious behavior. Stage 2 drills into flagged functions with node-level classification to pinpoint exact basic blocks responsible.</p>
+</div>
+
+<!-- Architecture -->
+<div class="arch">
+  <div class="arch-title">PIPELINE ARCHITECTURE</div>
+  <div class="arch-flow">
+    <div class="arch-box"><div>Binary (.exe)</div><div class="arch-sub">BODMAS 4470</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box"><div>CFG Extraction</div><div class="arch-sub">angr + Ghidra</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box"><div>CAPA Labels</div><div class="arch-sub">function-level</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box s1"><div>Stage 1</div><div class="arch-sub">graph classification</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box"><div>Flagged Functions</div><div class="arch-sub">class 1/2/3</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box s2"><div>Stage 2</div><div class="arch-sub">node classification</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box"><div>Block Report</div><div class="arch-sub">exact locations</div></div>
+  </div>
+</div>
+
+<!-- Done -->
+<div class="done-section">
+  <div class="done-title">✓ COMPLETED — Days 1 & 2</div>
+  <div class="done-grid">
+    <div class="done-item">
+      <div class="di-label">ENVIRONMENT</div>
+      <div class="di-text">VS Code Remote-SSH into Kali VM. Python 3.14 venv with angr 10.0, torch 2.14, PyG 2.8 installed and verified.</div>
+    </div>
+    <div class="done-item">
+      <div class="di-label">TOOLS</div>
+      <div class="di-text">CAPA v9.1.0 + rules repo installed at ~/tools/capa. Ghidra headless available from malware pipeline.</div>
+    </div>
+    <div class="done-item">
+      <div class="di-label">PROJECT STRUCTURE</div>
+      <div class="di-text">~/cfg-gnn/ initialized with full folder skeleton, .gitignore, .env for API keys, pushed to GitHub.</div>
+    </div>
+    <div class="done-item">
+      <div class="di-label">DATASET</div>
+      <div class="di-text">BODMAS access granted. 4470 disarmed x86/x64 PE binaries extracted: 536 keylogger, 1528 injection, 2406 antidebug. Stored via VMware shared folder from D: drive.</div>
+    </div>
+    <div class="done-item">
+      <div class="di-label">ARCHITECTURE DECISION</div>
+      <div class="di-text">Two-stage hierarchical GNN: Stage 1 graph classification per function, Stage 2 node classification inside flagged functions.</div>
+    </div>
+    <div class="done-item">
+      <div class="di-label">SAMPLES PATH</div>
+      <div class="di-text">~/cfg-gnn/data/raw/{keylogger,injection,antidebug}/ — accessible from Kali via /mnt/hgfs/D/ shared folder.</div>
+    </div>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="tl-seg" style="background:var(--accent);flex:3"></div>
+  <div class="tl-seg" style="background:var(--accent2);flex:2"></div>
+  <div class="tl-seg" style="background:var(--accent3);flex:2"></div>
+  <div class="tl-seg" style="background:var(--warn);flex:3"></div>
+  <div class="tl-seg" style="background:var(--blue);flex:2"></div>
+  <div class="tl-seg" style="background:#a0f04a;flex:3"></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot" style="background:var(--accent)"></div>Labeling</div>
+  <div class="legend-item"><div class="dot" style="background:var(--accent2)"></div>CFG Extraction</div>
+  <div class="legend-item"><div class="dot" style="background:var(--accent3)"></div>Feature Engineering</div>
+  <div class="legend-item"><div class="dot" style="background:var(--warn)"></div>Stage 1 GNN</div>
+  <div class="legend-item"><div class="dot" style="background:var(--blue)"></div>Stage 2 GNN</div>
+  <div class="legend-item"><div class="dot" style="background:#a0f04a"></div>Evaluation</div>
+</div>
+
+<div class="controls">
+  <button class="ctrl-btn" onclick="expandAll()">Expand all</button>
+  <button class="ctrl-btn" onclick="collapseAll()">Collapse all</button>
+</div>
+
+<!-- ─── WEEK 1 REMAINING ─── -->
+<div class="week-label"><strong>Week 1</strong> · Labeling · CFG Extraction · Features</div>
+
+<!-- DAY 3 -->
+<div class="day open" id="d3">
+  <div class="day-header" onclick="toggle('d3')">
+    <span class="day-num">Day 03</span>
+    <span class="day-title">CAPA Labeling Pipeline</span>
+    <span class="phase-tag phase-label">LABELING</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Function-level ground truth labels for all 4470 samples — the foundation of both stages</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/label/run_capa.py</code> — batch runs CAPA on every binary in <code>data/raw/</code>, saves JSON per sample to <code>data/labels/capa_raw/</code><span class="subtask">Command: <code>~/tools/capa/capa --rules ~/tools/capa-rules -j sample.exe > out.json</code>. Timeout 120s per sample. Use tqdm progress bar.</span></div></li>
+      <li><div>Write <code>src/label/parse_capa.py</code> — parses CAPA JSON, extracts function VAs + matched rule names from <code>result.rules[rule].matches[addr]</code><span class="subtask">Each match gives a function VA — this is your Stage 1 label source</span></div></li>
+      <li><div>Write <code>src/label/mapping.py</code> — ATT&CK rule name → class ID mapping:<span class="subtask">anti-debug rules → class 1 | keylogger rules → class 2 | process injection rules → class 3 | everything else → class 0</span></div></li>
+      <li><div>Produce <code>data/labels/function_labels.csv</code> — columns: <code>sha256, func_va, class_id, class_name, capa_rule</code><span class="subtask">This CSV drives both Stage 1 (graph label per function) and Stage 2 (block labels inside flagged functions)</span></div></li>
+      <li><div><strong>Stage 2 block labels:</strong> write <code>src/label/block_labels.py</code> — for each CAPA-flagged function, identify which basic blocks contain the specific API calls that triggered the rule<span class="subtask">Strategy: after CFG extraction, check each block's instructions for API calls matching the CAPA rule. Blocks with matching calls → label 1, rest → label 0 (binary within-function labeling)</span></div></li>
+      <li><div>Print class distribution — verify label counts per class. Log CAPA failure rate (packed/obfuscated samples may yield 0 matches)</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>function_labels.csv with function-level labels. block_labels.py logic written (runs after CFG extraction). Class distribution report.</div>
+  </div>
+</div>
+
+<!-- DAY 4 -->
+<div class="day" id="d4">
+  <div class="day-header" onclick="toggle('d4')">
+    <span class="day-num">Day 04</span>
+    <span class="day-title">CFG Extraction — Single Binary Validation</span>
+    <span class="phase-tag phase-extract">EXTRACT</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>angr CFG extraction working and validated on 10 test samples before scaling to 4470</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/extract/angr_cfg.py</code> — loads a PE binary with angr, runs <code>CFGFast()</code>, iterates over all functions, extracts basic blocks and edges per function<span class="subtask">Key objects: <code>cfg.functions</code> → <code>func.blocks</code> → <code>func.graph.edges()</code></span></div></li>
+      <li><div>Handle BODMAS "disarmed" binaries — entry points are patched so <code>CFGFast</code> may miss some functions. Use <code>cfg.functions</code> to get all recovered functions regardless of entry point<span class="subtask">Also try <code>angr.options.IGNORE_UNSUPPORTED_STATEMENTS</code> to handle patched instructions</span></div></li>
+      <li><div>Write Ghidra headless script <code>src/extract/ghidra_analyze.sh</code> — exports import table (API calls) per binary to JSON. Used to enrich angr CFG nodes with API call information<span class="subtask">Ghidra gives better import resolution than angr on stripped binaries</span></div></li>
+      <li><div>Test on 10 samples (2-3 per class + 1 from TheZoo). Visualize 2 CFGs in <code>notebooks/01_cfg_inspection.ipynb</code> using networkx<span class="subtask">Verify: node count, edge count, function boundaries look correct</span></div></li>
+      <li><div>Handle x64 PE32+ samples — angr supports both x86 and x64. Keep both, note architecture in graph metadata<span class="subtask">angr auto-detects arch from PE header — no extra config needed</span></div></li>
+      <li><div>Log all failures to <code>data/logs/extraction_errors.log</code> — packed samples, timeouts, angr crashes</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>angr_cfg.py working on 10 samples. Notebook with 2 visualized CFGs. Error handling in place.</div>
+  </div>
+</div>
+
+<!-- DAY 5 -->
+<div class="day" id="d5">
+  <div class="day-header" onclick="toggle('d5')">
+    <span class="day-num">Day 05</span>
+    <span class="day-title">Batch CFG Extraction (All 4470 Samples)</span>
+    <span class="phase-tag phase-extract">EXTRACT</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>All samples processed, per-function graphs serialized to disk, labels merged</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/extract/batch_extract.py</code> — reads manifest, processes each binary, saves per-function NetworkX graphs as <code>data/graphs/{sha256}/{func_va}.gpickle</code><span class="subtask">Resume logic: skip sha256 if folder already exists. tqdm progress bar. Timeout per binary: 180s.</span></div></li>
+      <li><div>Each graph stores per-node: <code>block_addr</code>, <code>block_size</code>, <code>raw_bytes</code>, <code>api_calls</code> (list from Ghidra enrichment)<span class="subtask">Store as NetworkX node attributes before serializing</span></div></li>
+      <li><div>Run batch extraction — expected time: 4-8 hours on i7 for 4470 samples. Run overnight if needed<span class="subtask">Monitor RAM — kill and skip if process RSS > 3GB</span></div></li>
+      <li><div>Merge extracted graphs with <code>function_labels.csv</code> — annotate each function graph with Stage 1 class label<span class="subtask">Key join: sha256 + func_va</span></div></li>
+      <li><div>Run <code>block_labels.py</code> on all CAPA-flagged functions — annotate each node with Stage 2 binary label (0/1)<span class="subtask">Output: per-function <code>block_labels.json</code> alongside each <code>.gpickle</code></span></div></li>
+      <li><div>Print extraction stats: total functions extracted, labeled vs unlabeled, class distribution</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>All graphs in data/graphs/. Both Stage 1 and Stage 2 labels attached. Extraction stats report.</div>
+  </div>
+</div>
+
+<!-- DAY 6 -->
+<div class="day" id="d6">
+  <div class="day-header" onclick="toggle('d6')">
+    <span class="day-num">Day 06</span>
+    <span class="day-title">Node Feature Vector Engineering</span>
+    <span class="phase-tag phase-feat">FEATURES</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Each basic block has a 135-dim numeric feature vector usable by both Stage 1 and Stage 2</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/features/opcode_features.py</code> — capstone disassembles each block's raw bytes, produces 50-dim opcode frequency vector<span class="subtask">First pass: collect all opcodes across corpus → build top-50 vocab → save to <code>data/opcode_vocab.json</code>. Both x86 and x64 opcodes included.</span></div></li>
+      <li><div>Write <code>src/features/api_features.py</code> — 80-dim binary indicator over Windows API list relevant to malware: <code>VirtualAllocEx</code>, <code>WriteProcessMemory</code>, <code>CreateRemoteThread</code>, <code>SetWindowsHookEx</code>, <code>GetAsyncKeyState</code>, <code>IsDebuggerPresent</code>, <code>NtQueryInformationProcess</code>, etc.<span class="subtask">Build API list from CAPA rules + common malware API references. Save to <code>data/api_vocab.json</code>.</span></div></li>
+      <li><div>Write <code>src/features/structural_features.py</code> — 5 scalar features: block_size, instruction_count, has_call, has_ret, has_loop_back_edge</div></li>
+      <li><div>Write <code>src/features/compose.py</code> — concatenates all vectors → 135-dim per node. Validates no NaN/Inf.</div></li>
+      <li><div>Validate on 5 graphs: print feature matrix shape, check non-zero entries for known malicious blocks</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>135-dim feature pipeline working. Vocab files saved. Validated on sample graphs.</div>
+  </div>
+</div>
+
+<!-- DAY 7 -->
+<div class="day" id="d7">
+  <div class="day-header" onclick="toggle('d7')">
+    <span class="day-num">Day 07</span>
+    <span class="day-title">PyG Dataset Classes (Stage 1 + Stage 2)</span>
+    <span class="phase-tag phase-feat">FEATURES</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Two separate PyG Dataset classes — one per stage — both verified with DataLoader</span></div>
+    <ul class="tasks">
+      <li><div><span class="stage-badge s1-badge">S1</span> Write <code>src/data/stage1_dataset.py</code> — each item is a function CFG graph. <code>y</code> is a single integer (0/1/2/3). Includes global pooling in model later.<span class="subtask">One graph per labeled function. Filter: only include functions with a CAPA label (class > 0) and a random sample of class 0 to balance.</span></div></li>
+      <li><div><span class="stage-badge s2-badge">S2</span> Write <code>src/data/stage2_dataset.py</code> — each item is a flagged function CFG. <code>y</code> is a per-node binary vector (0=benign block, 1=malicious block).<span class="subtask">Only includes functions with class > 0 from Stage 1. Node labels from block_labels.json.</span></div></li>
+      <li><div>Implement stratified train/val/test split (70/15/15) at binary level for both datasets — no data leakage<span class="subtask">Split on sha256, not on function. Same binary must not appear in both train and test.</span></div></li>
+      <li><div>Compute class weights for Stage 1 weighted CrossEntropyLoss. Compute pos_weight for Stage 2 BCEWithLogitsLoss (binary node labels)<span class="subtask">Save both to <code>data/class_weights.json</code></span></div></li>
+      <li><div>Run DataLoader test for both datasets — verify shapes, batch collation, no errors. Commit as <code>v0.2-datasets</code></div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>Two working PyG Dataset classes. DataLoaders verified. v0.2 Git tag pushed.</div>
+  </div>
+</div>
+
+<!-- ─── WEEK 2 ─── -->
+<div class="week-label"><strong>Week 2</strong> · Stage 1 GNN · Stage 2 GNN · Evaluation</div>
+
+<!-- DAY 8 -->
+<div class="day" id="d8">
+  <div class="day-header" onclick="toggle('d8')">
+    <span class="day-num">Day 08</span>
+    <span class="day-title">Stage 1 — GCN + GAT Graph Classifier</span>
+    <span class="phase-tag phase-s1">STAGE 1</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Stage 1 trained to convergence — function-level classification working for all 4 classes</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/models/stage1_gcn.py</code> — 3-layer GCNConv (135→256→128) + global mean pooling + linear (128→4)<span class="subtask">BatchNorm + ReLU + Dropout(0.3) after each conv. Global pooling collapses node embeddings to graph embedding.</span></div></li>
+      <li><div>Write <code>src/models/stage1_gat.py</code> — 3-layer GATConv with 4 attention heads + global mean pooling + linear<span class="subtask">Same dimensions as GCN for fair comparison</span></div></li>
+      <li><div>Write <code>src/train/trainer_s1.py</code> — training loop: weighted CrossEntropyLoss, Adam lr=1e-3, 100 epochs, early stopping patience=15, save best checkpoint<span class="subtask">Log: Epoch | Train Loss | Val Loss | Val Acc per epoch</span></div></li>
+      <li><div>Train both GCN and GAT. Compare val accuracy and per-class F1<span class="subtask">Save training logs to results/stage1_gcn_log.csv and results/stage1_gat_log.csv</span></div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>Both Stage 1 models trained. Best checkpoints saved. Val metrics compared.</div>
+  </div>
+</div>
+
+<!-- DAY 9 -->
+<div class="day" id="d9">
+  <div class="day-header" onclick="toggle('d9')">
+    <span class="day-num">Day 09</span>
+    <span class="day-title">Stage 2 — Node Classifier Inside Flagged Functions</span>
+    <span class="phase-tag phase-s2">STAGE 2</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Stage 2 trained — given a flagged function, identify which basic blocks are responsible</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/models/stage2_gcn.py</code> — 3-layer GCNConv (135→256→128→1). No global pooling — output is per-node logit<span class="subtask">Binary classification per node: is this block part of the malicious behavior?</span></div></li>
+      <li><div>Write <code>src/models/stage2_gat.py</code> — same with GATConv + return attention weights for visualization<span class="subtask">set return_attention_weights=True in first layer</span></div></li>
+      <li><div>Write <code>src/train/trainer_s2.py</code> — BCEWithLogitsLoss with pos_weight (malicious blocks are minority), Adam lr=1e-3, 100 epochs, early stopping<span class="subtask">Metric: per-node F1 score, precision, recall for malicious block detection</span></div></li>
+      <li><div>Train both Stage 2 models. Key question: does the model learn to focus on API-call blocks?<span class="subtask">Sanity check: manually inspect 3 flagged functions and verify predicted malicious blocks contain the expected API calls</span></div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>Both Stage 2 models trained. Manual sanity check on 3 functions passed.</div>
+  </div>
+</div>
+
+<!-- DAY 10 -->
+<div class="day" id="d10">
+  <div class="day-header" onclick="toggle('d10')">
+    <span class="day-num">Day 10</span>
+    <span class="day-title">End-to-End Pipeline Integration</span>
+    <span class="phase-tag phase-s2">STAGE 2</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Stages 1 and 2 chained together — binary in, block-level report out</span></div>
+    <ul class="tasks">
+      <li><div>Write <code>src/run_pipeline.py</code> — takes a PE binary path, runs CFG extraction → feature engineering → Stage 1 inference → for each flagged function runs Stage 2 inference → outputs JSON report<span class="subtask">Report format: {binary, flagged_functions: [{func_va, class, malicious_blocks: [block_addr, ...]}]}</span></div></li>
+      <li><div>Test on 5 held-out samples not in training set — verify Stage 1 flags the right functions, Stage 2 highlights the right blocks<span class="subtask">Cross-reference with CAPA output on same samples to validate</span></div></li>
+      <li><div>Measure end-to-end latency per binary — target under 60 seconds on CPU<span class="subtask">CFG extraction dominates — log time per stage</span></div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>Working end-to-end pipeline script. JSON report output. Latency measurement.</div>
+  </div>
+</div>
+
+<!-- DAY 11 -->
+<div class="day" id="d11">
+  <div class="day-header" onclick="toggle('d11')">
+    <span class="day-num">Day 11</span>
+    <span class="day-title">Full Test Set Evaluation (Both Stages)</span>
+    <span class="phase-tag phase-eval">EVAL</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Complete quantitative evaluation with confusion matrices and per-class metrics for both stages</span></div>
+    <ul class="tasks">
+      <li><div>Stage 1 test evaluation: precision/recall/F1 per class, confusion matrix (4×4). Save to <code>results/stage1_test_report.txt</code></div></li>
+      <li><div>Stage 2 test evaluation: precision/recall/F1 for malicious block detection, per-class breakdown (does it work better for injection vs keylogger?). Save to <code>results/stage2_test_report.txt</code></div></li>
+      <li><div>Plot confusion matrices and loss curves for both stages and both model variants (GCN vs GAT). Save to <code>results/figures/</code></div></li>
+      <li><div>GCN vs GAT comparison table for both stages — which architecture wins at each stage?</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>4 test reports (S1-GCN, S1-GAT, S2-GCN, S2-GAT). Figures saved.</div>
+  </div>
+</div>
+
+<!-- DAY 12 -->
+<div class="day" id="d12">
+  <div class="day-header" onclick="toggle('d12')">
+    <span class="day-num">Day 12</span>
+    <span class="day-title">GAT Attention Visualization</span>
+    <span class="phase-tag phase-eval">EVAL</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Visual proof that Stage 2 GAT attention focuses on semantically meaningful blocks</span></div>
+    <ul class="tasks">
+      <li><div>For 3 confirmed malicious functions (one per class), draw CFG with edge widths proportional to GAT attention coefficients<span class="subtask">Use matplotlib + networkx. Color nodes: red=predicted malicious, grey=benign.</span></div></li>
+      <li><div>Verify: do high-attention edges connect blocks containing the key API calls?<span class="subtask">Process injection: VirtualAllocEx→WriteProcessMemory→CreateRemoteThread sequence. Keylogger: SetWindowsHookEx block. Anti-debug: IsDebuggerPresent block.</span></div></li>
+      <li><div>Write <code>results/attention_analysis.md</code> — qualitative interpretation of what attention patterns reveal about each malware class</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>3 attention visualization figures. Markdown analysis note.</div>
+  </div>
+</div>
+
+<!-- DAY 13 -->
+<div class="day" id="d13">
+  <div class="day-header" onclick="toggle('d13')">
+    <span class="day-num">Day 13</span>
+    <span class="day-title">Ablation Study</span>
+    <span class="phase-tag phase-eval">EVAL</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Quantify contribution of each feature group and validate the two-stage design</span></div>
+    <ul class="tasks">
+      <li><div>Feature ablation on Stage 1: train with opcode-only, API-only, structural-only, full 135-dim. Record macro F1 for each.<span class="subtask">4 runs × 50 epochs each. Log to results/ablation_features.csv</span></div></li>
+      <li><div>Architecture ablation: compare single-stage (classify blocks directly without Stage 1 filtering) vs two-stage pipeline<span class="subtask">This validates the hierarchical design — key result for the CV/paper narrative</span></div></li>
+      <li><div>Write results summary table and <code>results/README.md</code> — dataset stats, architecture, key results, ablation findings, limitations</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>Ablation tables. README.md completed with full results summary.</div>
+  </div>
+</div>
+
+<!-- DAY 14 -->
+<div class="day" id="d14">
+  <div class="day-header" onclick="toggle('d14')">
+    <span class="day-num">Day 14</span>
+    <span class="day-title">Cleanup, Documentation & Final Commit</span>
+    <span class="phase-tag phase-eval">EVAL</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="day-body">
+    <div class="goal">Goal: <span>Production-clean repo, reproducible from scratch, CV-ready</span></div>
+    <ul class="tasks">
+      <li><div>Clean all notebooks — re-run all cells, add markdown explanations. Target: 3 clean notebooks (CFG inspection, feature validation, results visualization)</div></li>
+      <li><div>Pin all dependencies in <code>requirements.txt</code>. Test fresh venv install. Verify <code>run_pipeline.py</code> works end-to-end on one sample.</div></li>
+      <li><div>Update GitHub repo: description, topics (<code>malware-analysis</code>, <code>graph-neural-networks</code>, <code>cybersecurity</code>, <code>pytorch-geometric</code>, <code>bodmas</code>), results figures committed</div></li>
+      <li><div>Update CV line to reflect two-stage hierarchical architecture and BODMAS dataset scale (4470 samples)</div></li>
+      <li><div>Tag final commit <code>v1.0</code> and push</div></li>
+    </ul>
+    <div class="deliverable"><strong>DELIVERABLE</strong>Clean repo. v1.0 tag. Updated CV line. Project complete.</div>
+  </div>
+</div>
+
+<script>
+function toggle(id) { document.getElementById(id).classList.toggle('open'); }
+function expandAll() { document.querySelectorAll('.day').forEach(d => d.classList.add('open')); }
+function collapseAll() { document.querySelectorAll('.day').forEach(d => d.classList.remove('open')); }
+</script>
+</body>
+</html>

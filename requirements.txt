@@ -1,0 +1,23 @@
+# CFG-GNN runtime dependencies.
+# Python 3.14, CPU-only PyTorch (no CUDA in the Kali guest).
+# Install: pip install -r requirements.txt
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+angr==10.0.0
+capstone==5.0.9
+joblib==1.6.0
+matplotlib==3.11.2
+networkx==3.7
+numpy==2.5.3
+pandas==3.0.6
+pefile==2024.8.26
+psutil==7.2.2
+python-dotenv==1.2.3
+pyvex==10.0.0
+requests==2.34.2
+scikit-learn==1.9.1
+scipy==1.18.1
+torch==2.14.0+cpu
+torch-geometric==2.8.0.post1
+tqdm==4.70.1

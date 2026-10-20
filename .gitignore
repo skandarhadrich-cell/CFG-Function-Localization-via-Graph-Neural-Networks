@@ -1,10 +1,45 @@
-data/raw/
-data/graphs/
-*.pkl
-*.pt
-__pycache__/
-*.pyc
+# ── Environment ───────────────────────────────────────────────
 venv/
 .env
+.env.*
+!.env.example
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# ── Data: malware, licensed corpora, generated artifacts ─────
+data/raw/
+data/bodmas/
+data/processed/
+data/graphs/
 data/logs/
+data/labels/capa_raw/
+scratch/
+
+# ── Serialized models, arrays, and graphs ────────────────────
+*.pkl
+*.pickle
+*.gpickle
+*.pt
+*.pth
+*.ckpt
+*.safetensors
 *.npz
+*.npy
+results/checkpoints/
+
+# ── Logs and local noise ──────────────────────────────────────
+*.log
+.DS_Store
+.idea/
+.vscode/
