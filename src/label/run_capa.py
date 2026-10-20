@@ -17,6 +17,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 import tomllib
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -36,6 +37,7 @@ class Sample:
     filepath: str
     source_bucket: str
     family: str
+    cluster_key: str = ""
 
 
 def _resolve(path: str | Path) -> Path:
@@ -95,6 +97,104 @@ def select_pilot(
     fill = max(0, target - len(selected))
     if fill:
         selected.extend(rng.sample(leftovers, min(fill, len(leftovers))))
+
+    return sorted(selected, key=lambda row: (row.source_bucket, row.sample_id))
+
+
+def select_stage1_pilot(
+    rows: list[Sample],
+    main_assignments: dict[str, str],
+    target: int,
+    seed: int,
+    max_per_cluster: int = 4,
+) -> list[Sample]:
+    """Select a Stage 1 pilot from v2 main train/val only.
+
+    Test samples are never eligible.  Selection is stratified by imphash
+    cluster first (capped per cluster) and then filled family-balanced, so one
+    large cluster or family cannot dominate the pilot.
+    """
+    eligible = [
+        row
+        for row in rows
+        if main_assignments.get(row.sample_id) in {"train", "val"}
+    ]
+    if not eligible:
+        raise SystemExit("no train/val samples available for Stage 1 selection")
+
+    rng = random.Random(seed)
+    by_cluster: dict[str, list[Sample]] = {}
+    for row in eligible:
+        key = row.cluster_key or row.sample_id
+        by_cluster.setdefault(key, []).append(row)
+
+    cluster_keys = sorted(by_cluster)
+    rng.shuffle(cluster_keys)
+    selected: list[Sample] = []
+    used: set[str] = set()
+    cluster_used: Counter[str] = Counter()
+
+    # First pass: cluster-balanced with a hard per-cluster cap.
+    for key in cluster_keys:
+        if len(selected) >= target:
+            break
+        members = sorted(by_cluster[key], key=lambda row: row.sample_id)
+        take = min(max_per_cluster, len(members))
+        if take <= 0:
+            continue
+        chosen = rng.sample(members, take)
+        for row in chosen:
+            selected.append(row)
+            used.add(row.sample_id)
+            cluster_used[key] += 1
+
+    # Second pass: family-balanced fill, still respecting the cluster cap.
+    unused = [row for row in eligible if row.sample_id not in used]
+    by_family: dict[str, list[Sample]] = {}
+    for row in unused:
+        key = row.cluster_key or row.sample_id
+        if cluster_used[key] >= max_per_cluster:
+            continue
+        by_family.setdefault(row.family, []).append(row)
+
+    families = sorted(by_family)
+    rng.shuffle(families)
+    while len(selected) < target and families:
+        progressed = False
+        next_families: list[str] = []
+        for family in families:
+            if len(selected) >= target:
+                break
+            pool = by_family.get(family) or []
+            pool = [row for row in pool if row.sample_id not in used]
+            if not pool:
+                continue
+            key_pool = [row for row in pool if cluster_used[row.cluster_key or row.sample_id] < max_per_cluster]
+            if not key_pool:
+                continue
+            row = rng.choice(key_pool)
+            selected.append(row)
+            used.add(row.sample_id)
+            cluster_used[row.cluster_key or row.sample_id] += 1
+            progressed = True
+            next_families.append(family)
+        families = next_families
+        if not progressed:
+            break
+
+    # Final pass: cluster-capped remainder in deterministic random order.
+    if len(selected) < target:
+        remainder = [
+            row
+            for row in eligible
+            if row.sample_id not in used
+            and cluster_used[row.cluster_key or row.sample_id] < max_per_cluster
+        ]
+        rng.shuffle(remainder)
+        for row in remainder[: target - len(selected)]:
+            selected.append(row)
+            used.add(row.sample_id)
+            cluster_used[row.cluster_key or row.sample_id] += 1
 
     return sorted(selected, key=lambda row: (row.source_bucket, row.sample_id))
 
@@ -168,7 +268,10 @@ def run_one(
     out_dir.mkdir(parents=True, exist_ok=True)
     scratch_dir.mkdir(parents=True, exist_ok=True)
     started = time.time()
-    tmp_out = out_dir / f".{sample.sample_id}.json.tmp"
+    # Unique temporary names allow two processes to audit or retry the same
+    # sample without one deleting the other's output.  The final replace is
+    # atomic; the last writer wins with a valid JSON document.
+    tmp_out = out_dir / f".{sample.sample_id}.{os.getpid()}.{uuid.uuid4().hex}.json.tmp"
 
     try:
         with tempfile.TemporaryDirectory(
@@ -230,8 +333,14 @@ def run_one(
         }
 
     result["sample_sha256"] = sample_sha256
-    meta_path.write_text(json.dumps(result, indent=2) + "\n")
+    _atomic_write_text(meta_path, json.dumps(result, indent=2) + "\n")
     return result
+
+
+def _atomic_write_text(path: Path, text: str) -> None:
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.{uuid.uuid4().hex}.tmp")
+    tmp.write_text(text)
+    os.replace(tmp, path)
 
 
 def write_samples(path: Path, samples: list[Sample]) -> None:
@@ -248,7 +357,7 @@ def write_samples(path: Path, samples: list[Sample]) -> None:
             for sample in samples
         ],
     }
-    path.write_text(json.dumps(payload, indent=2) + "\n")
+    _atomic_write_text(path, json.dumps(payload, indent=2) + "\n")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -264,6 +373,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--sample-id", action="append", default=[])
     parser.add_argument("--all-clean", action="store_true")
     parser.add_argument("--force", action="store_true")
+    parser.add_argument(
+        "--selection",
+        choices=["pilot", "stage1"],
+        default=None,
+        help="sample-selection mode; stage1 uses v2 train/val only with cluster caps",
+    )
+    parser.add_argument("--max-per-cluster", type=int, default=None)
+    parser.add_argument(
+        "--select-only",
+        action="store_true",
+        help="write the selection JSON and exit without running CAPA",
+    )
+    parser.add_argument("--samples-out", type=Path)
+    parser.add_argument("--summary-out", type=Path)
     args = parser.parse_args(argv)
 
     config = load_config(args.config)
@@ -271,6 +394,12 @@ def main(argv: list[str] | None = None) -> int:
     tools = config.get("tools", {})
     sampling = config.get("pilot", {}).get("sampling", {})
     compute = config.get("pilot", {}).get("compute", {})
+    selection = args.selection or str(sampling.get("selection", "pilot"))
+    max_per_cluster = (
+        args.max_per_cluster
+        if args.max_per_cluster is not None
+        else int(sampling.get("max_per_cluster", 4))
+    )
 
     manifest = _resolve(args.manifest or paths.get("manifest", "data/manifest.csv"))
     splits = _resolve(args.splits or paths.get("splits", "data/splits"))
@@ -289,25 +418,67 @@ def main(argv: list[str] | None = None) -> int:
 
     all_rows = read_manifest(manifest)
     manifest_clean = {row.sample_id for row in all_rows}
+    main_path = splits / "main.json"
+    main_assignments = (
+        json.loads(main_path.read_text()).get("assignments", {})
+        if main_path.exists()
+        else {}
+    )
+    if selection == "stage1" and not main_assignments:
+        raise SystemExit("Stage 1 selection requires v2 splits/main.json")
+
     if args.sample_id:
         wanted = set(args.sample_id)
         missing = wanted - manifest_clean
         if missing:
             raise SystemExit(f"sample IDs not in manifest: {sorted(missing)[:5]}")
+        if selection == "stage1":
+            test_samples = sorted(
+                sample_id
+                for sample_id in wanted
+                if main_assignments.get(sample_id) == "test"
+            )
+            if test_samples:
+                raise SystemExit(
+                    "Stage 1 selection cannot include test samples: "
+                    + ", ".join(test_samples[:5])
+                )
         samples = [row for row in all_rows if row.sample_id in wanted]
     elif args.all_clean:
         samples = all_rows
+    elif selection == "stage1":
+        samples = select_stage1_pilot(
+            all_rows, main_assignments, target, 42, max_per_cluster
+        )
     else:
-        main_path = splits / "main.json"
-        main_assignments = {}
-        if main_path.exists():
-            main_assignments = json.loads(main_path.read_text()).get("assignments", {})
         samples = select_pilot(all_rows, main_assignments, target, 42)
 
     if not samples:
         raise SystemExit("no samples selected")
 
+    stage1_dir = results / "stage1"
+    pilot_dir = results / "pilot"
+    base_dir = stage1_dir if selection == "stage1" else pilot_dir
+    samples_path = (
+        _resolve(args.samples_out)
+        if args.samples_out
+        else base_dir / "samples.json"
+    )
+    summary_path = (
+        _resolve(args.summary_out)
+        if args.summary_out
+        else base_dir / "capa_summary.json"
+    )
+
     run_meta = {
+        "selection": selection,
+        "max_per_cluster": max_per_cluster if selection == "stage1" else None,
+        "split_scope": (
+            "train_val_only"
+            if selection == "stage1" and not args.sample_id and not args.all_clean
+            else "explicit_or_all"
+        ),
+
         "timestamp_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "manifest": str(manifest),
         "splits": str(splits),
@@ -328,9 +499,26 @@ def main(argv: list[str] | None = None) -> int:
     }
     out_dir.mkdir(parents=True, exist_ok=True)
     results.mkdir(parents=True, exist_ok=True)
-    if not args.sample_id and not args.all_clean:
-        write_samples(results / "pilot" / "samples.json", samples)
+    write_samples(samples_path, samples)
     (out_dir / "_run_metadata.json").write_text(json.dumps(run_meta, indent=2) + "\n")
+
+    if args.select_only:
+        print(
+            json.dumps(
+                {
+                    **run_meta,
+                    "samples": str(samples_path),
+                    "selected": len(samples),
+                    "by_bucket": dict(Counter(sample.source_bucket for sample in samples)),
+                    "by_family": dict(Counter(sample.family for sample in samples).most_common()),
+                    "clusters": len(
+                        {sample.cluster_key or sample.sample_id for sample in samples}
+                    ),
+                },
+                indent=2,
+            )
+        )
+        return 0
 
     print(json.dumps(run_meta, indent=2))
     started = time.time()
@@ -382,8 +570,7 @@ def main(argv: list[str] | None = None) -> int:
         "failures": [row for row in results_rows if row["status"] not in {"ok", "skipped"}][:20],
         "runs": results_rows,
     }
-    (results / "pilot").mkdir(parents=True, exist_ok=True)
-    summary_path = results / "pilot" / "capa_summary.json"
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(
         {

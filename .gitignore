@@ -27,6 +27,10 @@ data/labels/capa_raw/
 data/labels/capa_parsed.jsonl
 data/labels/function_labels.csv
 data/labels/function_labels.parquet
+data/labels/stage1_function_labels.csv
+data/labels/stage1_function_labels.parquet
+data/processed_v2/
+data/graphs_v2/
 scratch/
 
 # ── Serialized models, arrays, and graphs ────────────────────
@@ -42,6 +46,7 @@ scratch/
 results/checkpoints/
 results/pilot/mapping.jsonl
 results/pilot/keylogger_probe/
+results/stage1/mapping.jsonl
 
 # ── Logs and local noise ──────────────────────────────────────
 *.log

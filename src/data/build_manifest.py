@@ -77,6 +77,8 @@ class QualityConfig:
     exclude_packed: bool = True
     exclude_non_bodmas: bool = True
     high_entropy_threshold: float = 7.5
+    packed_entropy_threshold: float | None = None
+    packed_max_imports: int = 20
     entropy_sample_bytes: int = 2_000_000
     packer_strings: tuple[str, ...] = (
         "UPX!",
@@ -289,7 +291,17 @@ def analyze_file(
         if high_entropy_no_imports:
             packer_reasons.append("high_entropy_no_imports")
 
-        is_packed = bool(upx_names or hits or high_entropy_no_imports)
+        high_entropy_low_imports = (
+            quality.packed_entropy_threshold is not None
+            and num_imports <= quality.packed_max_imports
+            and row["text_entropy"] >= quality.packed_entropy_threshold
+        )
+        if high_entropy_low_imports:
+            packer_reasons.append("high_entropy_low_imports")
+
+        is_packed = bool(
+            upx_names or hits or high_entropy_no_imports or high_entropy_low_imports
+        )
         row["is_packed"] = int(is_packed)
         if is_packed:
             flags.append("packed")
@@ -828,6 +840,12 @@ def main(argv: list[str] | None = None) -> int:
         exclude_packed=_bool(quality_cfg.get("exclude_packed"), True),
         exclude_non_bodmas=_bool(quality_cfg.get("exclude_non_bodmas"), True),
         high_entropy_threshold=float(quality_cfg.get("high_entropy_threshold", 7.5)),
+        packed_entropy_threshold=(
+            float(quality_cfg["packed_entropy_threshold"])
+            if quality_cfg.get("packed_entropy_threshold") is not None
+            else None
+        ),
+        packed_max_imports=int(quality_cfg.get("packed_max_imports", 20)),
         entropy_sample_bytes=int(quality_cfg.get("entropy_sample_bytes", 2_000_000)),
         packer_strings=tuple(quality_cfg.get("packer_strings", QualityConfig.packer_strings)),
     )

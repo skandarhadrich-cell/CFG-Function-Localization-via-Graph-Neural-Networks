@@ -1,0 +1,164 @@
+{
+  "generated_utc": "2026-10-20T15:16:35+00:00",
+  "total_files": 4474,
+  "clean_files": 2733,
+  "excluded_files": 1741,
+  "arch": {
+    "x86": 3619,
+    "x64": 855
+  },
+  "clean_arch": {
+    "x86": 2733
+  },
+  "repair_needed": 4470,
+  "flags": {
+    "packed": 1485,
+    "dotnet": 265,
+    "no_imports": 8,
+    "non_bodmas": 4
+  },
+  "buckets": {
+    "antidebug": {
+      "total": 2408,
+      "clean": 1381
+    },
+    "injection": {
+      "total": 1529,
+      "clean": 1340
+    },
+    "keylogger": {
+      "total": 537,
+      "clean": 12
+    }
+  },
+  "families": {
+    "ceeinject": {
+      "total": 1169,
+      "clean": 1113
+    },
+    "gandcrab": {
+      "total": 957,
+      "clean": 935
+    },
+    "zbot": {
+      "total": 473,
+      "clean": 354
+    },
+    "cryptinject": {
+      "total": 192,
+      "clean": 104
+    },
+    "emotet": {
+      "total": 56,
+      "clean": 50
+    },
+    "qakbot": {
+      "total": 42,
+      "clean": 42
+    },
+    "injector": {
+      "total": 58,
+      "clean": 36
+    },
+    "ursnif": {
+      "total": 43,
+      "clean": 34
+    },
+    "aitinject": {
+      "total": 27,
+      "clean": 26
+    },
+    "trickbot": {
+      "total": 13,
+      "clean": 12
+    },
+    "vbinject": {
+      "total": 12,
+      "clean": 11
+    },
+    "bladabindi": {
+      "total": 491,
+      "clean": 6
+    },
+    "smokeloader": {
+      "total": 868,
+      "clean": 3
+    },
+    "agenttesla": {
+      "total": 14,
+      "clean": 2
+    },
+    "keylogger": {
+      "total": 2,
+      "clean": 2
+    },
+    "lokibot": {
+      "total": 24,
+      "clean": 2
+    },
+    "dridex": {
+      "total": 10,
+      "clean": 1
+    },
+    "carberp": {
+      "total": 14,
+      "clean": 0
+    },
+    "pkeylog": {
+      "total": 5,
+      "clean": 0
+    },
+    "unknown": {
+      "total": 4,
+      "clean": 0
+    }
+  },
+  "clean_clusters": 303,
+  "clean_singleton_clusters": 118,
+  "largest_clean_clusters": [
+    [
+      "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+      890
+    ],
+    [
+      "imphash:b2c87e30ac29fd4e3024b6df9473add6",
+      274
+    ],
+    [
+      "imphash:f54bab47f74e370cf85ce98d899e8149",
+      126
+    ],
+    [
+      "imphash:022e75c8089eb1300c6b4ca118f5ca63",
+      64
+    ],
+    [
+      "imphash:33b412eb0ccf59517cb6c9b4302ed662",
+      53
+    ],
+    [
+      "imphash:649f6ed9a4d576c154bbc0357156a4a4",
+      50
+    ],
+    [
+      "imphash:9e85bc8cd0863f7512a06d6eb4c79827",
+      47
+    ],
+    [
+      "imphash:d1dd6793e073e1336544ec23582ec2cb",
+      44
+    ],
+    [
+      "imphash:9e151e170df0a1329c9f41d17c80156c",
+      34
+    ],
+    [
+      "imphash:9e93f1ba280c384f98cb85e46366f941",
+      33
+    ]
+  ],
+  "content_sha_duplicates": 0,
+  "text_entropy_median": 7.0288,
+  "manifest_sha256": "09a6e1d8210914b920d6884d3d2bd085e1c55df583955336039d1bc91a1490c8",
+  "manifest_path": "data/versions/v2/manifest.csv"
+}

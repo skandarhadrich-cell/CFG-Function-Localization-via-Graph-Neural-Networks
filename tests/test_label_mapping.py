@@ -159,3 +159,37 @@ class MappingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Stage1ContractTests(unittest.TestCase):
+    def test_active_labels_are_two(self) -> None:
+        from src.label.contract import ACTIVE_LABELS, ALL_LABELS
+
+        self.assertEqual(ACTIVE_LABELS, ("anti_debug", "injection"))
+        self.assertIn("keylogger", ALL_LABELS)
+        self.assertNotIn("keylogger", ACTIVE_LABELS)
+
+    def test_diversity_thresholds_are_preregistered(self) -> None:
+        from src.label import contract
+
+        self.assertEqual(contract.MIN_POSITIVE_BINARIES, 20)
+        self.assertEqual(contract.MIN_POSITIVE_CLUSTERS, 10)
+        self.assertEqual(contract.MIN_POSITIVE_FAMILIES, 3)
+        self.assertEqual(contract.MAX_SINGLE_BINARY_SHARE, 0.50)
+        self.assertEqual(contract.MAX_SINGLE_CLUSTER_SHARE, 0.50)
+
+
+class AtomicWriteTests(unittest.TestCase):
+    def test_atomic_write_uses_unique_temp(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        from src.label.run_capa import _atomic_write_text
+
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "x.json"
+            _atomic_write_text(target, "hello")
+            self.assertEqual(target.read_text(), "hello")
+            self.assertEqual(
+                [p.name for p in Path(tmp).iterdir()], ["x.json"]
+            )

@@ -1,0 +1,46 @@
+# Phase 0 version 2 configuration.
+# v1 is preserved under data/versions/v1/. This config never overwrites it.
+# All paths are relative to the repository root unless absolute.
+
+[paths]
+raw = "data/raw"
+bodmas = "data/bodmas"
+manifest = "data/versions/v2/manifest.csv"
+splits = "data/versions/v2/splits"
+results = "results/phase0_v2"
+
+[quality]
+# Only data-quality filters. No compute caps.
+exclude_dotnet = true
+exclude_packed = true
+exclude_non_bodmas = true
+high_entropy_threshold = 7.5
+# v2 PE-based packed filter. CAPA packer rules are an audit signal only and
+# are not consumed by the manifest builder.
+packed_entropy_threshold = 7.8
+packed_max_imports = 20
+entropy_sample_bytes = 2000000
+packer_strings = [
+  "UPX!",
+  "MPRESS",
+  "Themida",
+  "VMProtect",
+  "ASPack",
+  "PECompact",
+  "Armadillo",
+  "Enigma",
+  "Obsidium",
+]
+
+[splits]
+seed = 42
+train = 0.70
+val = 0.15
+test = 0.15
+lofo_families = { keylogger = "lokibot", injection = "emotet", antidebug = "ursnif" }
+
+[tools]
+capa = "~/tools/capa/capa"
+capa_rules = "~/tools/capa-rules"
+capa_version = "9.1.0"
+capa_rules_commit = "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5"

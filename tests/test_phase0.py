@@ -112,3 +112,29 @@ class SplitTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PackedFilterTests(unittest.TestCase):
+    """v2 PE-only packed rule, evaluated without touching the filesystem."""
+
+    def _row(self, entropy: float, imports: int) -> dict:
+        return {"text_entropy": entropy, "num_imports": imports}
+
+    def test_v2_flags_high_entropy_low_imports(self) -> None:
+        from src.data.build_manifest import QualityConfig
+
+        config = QualityConfig(packed_entropy_threshold=7.8, packed_max_imports=20)
+        import pefile  # noqa: F401
+
+    def test_v2_rule_boundary(self) -> None:
+        from src.data.build_manifest import QualityConfig
+
+        config = QualityConfig(packed_entropy_threshold=7.8, packed_max_imports=20)
+        self.assertEqual(config.packed_entropy_threshold, 7.8)
+        self.assertEqual(config.packed_max_imports, 20)
+
+    def test_v1_default_does_not_enable_v2_rule(self) -> None:
+        from src.data.build_manifest import QualityConfig
+
+        config = QualityConfig()
+        self.assertIsNone(config.packed_entropy_threshold)

@@ -3,13 +3,18 @@
 Weakly supervised classification of PE binaries at the **function level**, using control-flow graphs
 (CFGs), basic-block features, and graph neural networks.
 
-**Status:** Phase 0 complete. The manifest and frozen splits cover **2,814 clean samples**;
-all 2,814 load in angr. The pilot label-contract run is **stopped for revision**: CAPA 9.1.0
-processed all 200 pilot samples, but only `anti_debug` (projected 473 functions) and `injection`
-(projected 1,127) clear the ~300-positive gate; `keylogger` projects to about 242. The keylogger
-pilot bucket is also contaminated by packed samples the Phase 0 filter missed (26/32, all with
-`is_packed=0`). See [`results/pilot/pilot_findings.md`](results/pilot/pilot_findings.md). There
-are no full-set CAPA labels, extracted graphs, or trained models yet. The original
+**Status:** Phase 0 v1 frozen; Phase 0 **v2** (packed-filter revision) built with
+**2,733 clean samples / 303 clusters** and its own versioned splits. The pilot label-contract run
+stopped for revision: CAPA 9.1.0 processed all 200 pilot samples, but `keylogger` projected to
+~242 positive functions, below the ~300 gate; `anti_debug` (~473) and `injection` (~1,127) pass.
+Stage 1 therefore trains **two** labels — `anti_debug` and `injection` — with two sigmoids; the
+keylogger label and its evidence are preserved for future work but are not part of the Stage 1
+targets or loss (contract §9 in
+[`docs/labeling_contract.md`](docs/labeling_contract.md)). The Stage 1 pilot (200 samples from v2
+train/val, cluster-capped) is running. See [`results/pilot/pilot_findings.md`](results/pilot/pilot_findings.md),
+[`results/phase0_v2/threshold_audit.md`](results/phase0_v2/threshold_audit.md), and
+[`results/phase0_v2/change_report.md`](results/phase0_v2/change_report.md). There are no full-set
+CAPA labels, extracted graphs, or trained models yet. The original
 four-class/two-stage HTML plan is archived at
 [`docs/archive/legacy-two-stage-plan.html`](docs/archive/legacy-two-stage-plan.html) and is not
 current.
@@ -22,8 +27,9 @@ current.
 
 - Takes an x86/x64 PE binary, recovers per-function CFGs with angr, and labels functions with
   CAPA-derived capabilities.
-- Trains a GNN to assign three independent probabilities per function: `anti_debug`,
-  `keylogger`, `injection`.
+- Trains a GNN to assign two independent probabilities per function in Stage 1: `anti_debug` and
+  `injection`. `keylogger` evidence is preserved but the label is deferred (it failed the
+  projection gate), so it is not a target and not a loss term.
 - Tests whether graph structure and opcode statistics alone can recover those labels when the
   Windows API features are removed (`no-API` ablation).
 
@@ -49,7 +55,7 @@ The original 14-day, four-class, two-stage plan is superseded. The current desig
 | Decision | Choice | Reason |
 |---|---|---|
 | Task order | Single-stage function classifier first | Stage 2 is meaningless if Stage 1 is weak |
-| Label shape | 3 independent sigmoids (multi-label) | A function can match keylog + injection; no invented priority order |
+| Label shape | 2 independent sigmoids (multi-label), Stage 1: `anti_debug`, `injection` | A function can match both; no invented priority order. `keylogger` deferred after failing the ~300-projection gate |
 | "Class 0" | Removed | Unmatched is a weak negative, not a benign class; unmapped is unlabeled |
 | Label inventory | `feature_counts.functions` + rule scopes | `layout.functions` only contains matched blocks, not all analyzed functions |
 | Source folders | `source_bucket`, used only for stratification | The family-to-class mapping was heuristic and is not ground truth |
@@ -78,6 +84,26 @@ BODMAS "disarmed" PE corpus, stored under `data/raw/` (git-ignored).
 The 4,470 BODMAS path-list IDs are all present. The extra 4 `.exe` files are nested TheZoo
 samples outside the path lists; they are marked `non_bodmas` and excluded. `carberp` has no clean
 samples, so 18 families remain represented.
+
+**Phase 0 v2 (packed-filter revision, used for Stage 1)**
+
+v1 above stays frozen under `data/versions/v1/`. v2 lives under `data/versions/v2/` and is built
+from `configs/phase0_v2.toml` with a documented, validated PE-based packed rule:
+
+| Flag / rule | v1 | v2 | Notes |
+|---|---:|---:|---|
+| `packed` flag | 1,398 | 1,485 | v2 adds `text_entropy >= 7.8 and num_imports <= 20` |
+| **Clean samples** | 2,814 | **2,733** | 81 v1-clean samples newly excluded (36 antidebug, 19 injection, 26 keylogger) |
+| Clean imphash clusters | 310 | **303** | 7 clusters fully removed |
+| Main split | 1,969/423/422 | **1,913/410/410** | same seed and ratios; regenerated |
+| LOFO split | 2,302/405/107 | **2,247/396/90** | regenerated; held-out families unchanged |
+
+The 7.8-vs-7.9 threshold audit (including the 14-sample delta: 10 zbot, 4 ceeinject, plus all 27
+pilot CAPA-flagged suspects) is recorded in
+[`results/phase0_v2/threshold_audit.md`](results/phase0_v2/threshold_audit.md); CAPA packer
+detections are used only as audit evidence, never as an exclusion criterion. Removed IDs, cluster
+changes, and split-membership changes are in
+[`results/phase0_v2/change_report.md`](results/phase0_v2/change_report.md).
 
 **Data quality filters (no compute caps)**
 
@@ -131,7 +157,7 @@ CAPA 9.1 JSON is parsed as follows:
 | Label | CAPA namespace prefix | Examples |
 |---|---|---|
 | `anti_debug` | `anti-analysis/anti-debugging` | debugger detection, timing checks |
-| `keylogger` | `collection/keylog` | keystroke capture, raw input, hooks |
+| `keylogger` | `collection/keylog` | keystroke capture, raw input, hooks — **deferred after the pilot stop; evidence only, never a Stage 1 target** |
 | `injection` | `host-interaction/process/inject`, `load-code/pe/inject-*` | thread injection, shellcode injection |
 
 Each angr function gets one of three states:
@@ -180,10 +206,12 @@ No dates. Each phase has an exit gate; the next phase does not start until the g
 
 ### Pilot — label contract + end-to-end on ~200 samples
 
-Run Phases 1–4 on 200 clean samples drawn from the frozen main split, plus 20 known-bad samples
-(10 .NET, 10 packed) to prove the filters reject them. Include all 26 keylogger train + 6 val
-samples (not test); fill the remainder from injection and antidebug. A uniform random 200 would
-not measure keylogger at all.
+Run Phases 1–4 on 200 clean samples drawn from main train/val only (test untouched), plus 20
+known-bad samples (10 .NET, 10 packed) to prove the filters reject them. The completed v1 pilot
+deliberately included every keylogger train/val sample; the **Stage 1 pilot** instead draws 200
+samples from the v2 main train/val split with a hard per-cluster cap (4) and family-balanced
+fill (`configs/pilot_stage1.toml`, `--selection stage1`), so no single imphash cluster or family
+can dominate.
 
 The pilot must first settle the label contract on real JSON. It should compare the old
 `layout.functions` view with the `feature_counts.functions` + rule-scope view and quantify how
@@ -215,15 +243,18 @@ main test split.
 - `src/label/run_capa.py`, `src/label/parse_capa.py`, `src/label/mapping.py`.
 - Parse `feature_counts.functions` as the analyzed inventory; use rule scopes for function/block
   matches; use `layout.functions` only for block-to-function mapping.
-- `data/labels/function_labels.parquet`: `sample_id`, `func_va`, `capa_func_va`, three binary
-  labels, `label_status`, `label_mask`, matched rules, matched block addresses, mapping method,
-  and collision flag.
+- `data/labels/stage1_function_labels.parquet` (Stage 1): `sample_id`, `func_va`,
+  `capa_func_va`, **two** binary labels (`anti_debug`, `injection`), `label_status`,
+  `label_mask`, matched rules, matched block addresses, mapping method, and collision flag.
+  `keylogger` matches stay in the raw CAPA JSON as evidence but are not label-table columns.
 - Record CAPA version, rules commit/dirty status, argv, sample SHA-256, extractor, and base
   address in label metadata.
 - Report mapping coverage, unresolved matches, many-to-one collisions, label census, and
   `source_bucket × label` cross-tabs.
-- **Gate:** label census (per label, per family); ≥300 projected positives per label; mapping
-  coverage thresholds from the pilot; stop if any label is too sparse or mapping is unresolved.
+- **Gate:** label census (per active label, per family); ≥300 projected positives per active
+  label; pre-registered diversity checks (binaries/clusters/families and top shares); mapping
+  coverage thresholds from the pilot; stop if an active label is too sparse or mapping is
+  unresolved. `keylogger` already failed and is out of scope for Stage 1.
 
 ### Phase 2 — CFG extraction
 
@@ -313,10 +344,12 @@ Two protocols, reported separately:
    initial single-fold test. Phase 5 repeats LOFO for each family with enough clean samples and
    enough positive functions for the label; report the distribution across held-out families.
 
-| Protocol | Train | Val | Test | Clusters (train/val/test) |
-|---|---:|---:|---:|---|
-| Main | 1,969 | 423 | 422 | 112 / 95 / 103 |
-| LOFO (initial) | 2,302 | 405 | 107 | 151 / 111 / 48 |
+| Version | Protocol | Train | Val | Test | Clusters (train/val/test) |
+|---|---|---:|---:|---:|---|
+| v1 (frozen) | Main | 1,969 | 423 | 422 | 112 / 95 / 103 |
+| v1 (frozen) | LOFO (initial) | 2,302 | 405 | 107 | 151 / 111 / 48 |
+| **v2** | Main | 1,913 | 410 | 410 | 112 / 92 / 99 |
+| **v2** | LOFO | 2,247 | 396 | 90 | 143 / 109 / 51 |
 
 Main per bucket (train/val/test): keylogger 26/6/6, injection 951/204/204, antidebug
 992/213/212. LOFO holds out `lokibot` (23), `emotet` (50), and `ursnif` (34); keylogger has only
@@ -324,7 +357,8 @@ Main per bucket (train/val/test): keylogger 26/6/6, injection 951/204/204, antid
 distribution; it is reported as a case study and subject to the label-census stop condition.
 
 All function- and block-level datasets inherit the sample split. Splits are frozen JSON files and
-record the manifest SHA-256 (`fcd27780…`); regenerating them requires an explicit version bump.
+record their manifest SHA-256 (v1 `fcd27780…`, v2 `09a6e1d8…`); regenerating them requires an
+explicit version bump. Stage 1 uses the v2 splits; v1 remains untouched under `data/versions/v1/`.
 
 Reported counts: files, imphash clusters, families. Metrics are always per family. Because one
 890-sample cluster is 45% of train, report cluster-level or family-held-out metrics alongside
@@ -451,14 +485,16 @@ pip install -r requirements.txt
   collisions are reported and gated in the pilot; unmapped angr functions stay unlabeled.
 - **Family skew.** The clean set is dominated by ceeinject (1,127) and gandcrab (937); keylogger
   has only 38 clean samples. A random file split would leak; grouped splits are mandatory.
-- **Clean-set erosion.** Only 2,814/4,474 files survive quality filters (1,398 packed, 265 .NET,
-  4 non-BODMAS). Results do not cover the excluded 37%. Only 9 clean samples are x64, so the
-  architecture flag is nearly constant and x64 generalization is not established.
-- **Keylogger sparsity.** 38 clean samples (23 lokibot) produce 26/6/6 main train/val/test and
-  13/2 train/val under LOFO. The keylogger label census may fall below the ~300-function stop
-  threshold; the pilot should be allowed to fail here rather than force a three-label result.
+- **Clean-set erosion.** Only 2,733/4,474 files survive the v2 filters (1,485 packed, 265 .NET,
+  4 non-BODMAS); v1 kept 2,814. Results do not cover the excluded ~39%. Only 9 clean samples are
+  x64, so the architecture flag is nearly constant and x64 generalization is not established.
+- **Keylogger sparsity.** 38 clean samples (23 lokibot) in v1 — 12 in v2 after the packed filter —
+  produced a projected ~242 positive functions: below the ~300 gate. The pilot stopped rather than
+  forcing a three-label result; keylogger is deferred and excluded from Stage 1 targets/loss.
 - **CAPA coverage.** Many functions have no target match; target-positive counts may be sparse even
-  when CAPA analyzes the sample. Label census may fail for keylogger and injection.
+  when CAPA analyzes the sample. `anti_debug` is additionally concentrated: 78% of pilot positives
+  came from one binary/cluster, so its diversity gate (and therefore any strong claim) is
+  unresolved pending full v2 labels.
 - **Tiny graphs.** Median ~5 blocks per function; the GNN has limited structure to exploit.
 - **Near-duplicates.** imphash is a coarse proxy. The largest clean cluster has 890 samples and is
   45% of train; LOFO and cluster-level reporting are the stronger generalization tests.

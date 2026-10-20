@@ -1,6 +1,8 @@
 # CAPA Labeling Contract
 
-**Status:** frozen for the pilot. Version 1.
+**Status:** frozen for the pilot. Version 1 (v1, three labels).
+**Stage 1** trains only on the v2 two-label revision in §9; the v1 sections
+remain the frozen record for the completed pilot.
 **Tool identity:** CAPA **9.1.0**; rules commit
 `805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5` (clean working tree at the time of
 pinning). The pilot must record the actual executable version, rules commit,
@@ -178,3 +180,50 @@ Every CAPA run must record:
 
 The rules revision is part of the experiment. Re-running with a different rules
 commit is a new label version.
+
+## 9. Stage 1 revision — v2 (two active labels)
+
+**Status:** frozen for the Stage 1 pilot before any model training.
+**Contract id:** `stage1-v2` (see `src/label/contract.py` and
+`configs/pilot_stage1.toml`).
+
+The pilot stopped with `STOP / REVISE`: the keylogger projection (~242
+positive functions) was below the ~300 gate. Stage 1 therefore changes the
+label set rather than inflating the positive count:
+
+- **Active labels:** `anti_debug`, `injection`.
+- **Model head:** two independent logits with two independent sigmoids and
+  `BCEWithLogitsLoss`. No softmax, no argmax, no class 0, no third output.
+- **`keylogger` is removed from the target tensor and the loss entirely.** Its
+  targets are not zero-filled into a third output; there is no third output.
+- **Evidence preserved:** the parser still recognizes
+  `collection/keylog` namespaces so keylogger CAPA JSON, raw match evidence,
+  and the pilot audit reports remain available for future work. Those fields
+  never enter the Stage 1 label table (`label_keylogger` is not a column),
+  targets, masks, or loss.
+- **Observed function with no active-label match** is a weak negative for
+  Stage 1 — including functions whose only match is a keylogger rule. The
+  `unlabeled` definition is unchanged (angr function with no CAPA inventory
+  mapping).
+- `source_bucket` stays stratification metadata, never ground truth.
+
+Pre-registered diversity criteria (frozen before model performance is seen):
+
+| Criterion | Minimum / maximum |
+|---|---|
+| Projected positive functions per active label | ≥300 |
+| Positive binaries | ≥20 |
+| Positive imphash clusters | ≥10 |
+| Positive families | ≥3 |
+| Largest binary share of a label's positives | ≤50% |
+| Largest imphash-cluster share | ≤50% |
+| Held-out (test) positive binaries / clusters | ≥10 / ≥5 |
+
+A label that fails a diversity criterion may still be trained and reported,
+but its claims stay exploratory — no "demonstrated generalization" wording.
+Thresholds are never retuned after inspecting model performance.
+
+Pipeline gates for the Stage 1 pilot are unchanged (≥95% mapping coverage,
+<2% unresolved target matches, 30–50-function Ghidra spot check). Full-set
+training runs only after the v2 packed filter is frozen and the Stage 1 pilot
+passes its gates.

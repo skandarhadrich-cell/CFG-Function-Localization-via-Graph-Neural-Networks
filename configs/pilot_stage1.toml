@@ -1,0 +1,81 @@
+# Stage 1 pilot configuration (two-label contract, Phase 0 v2 data).
+# v1 manifest/splits remain frozen under data/versions/v1/; Stage 1 uses v2.
+
+[paths]
+manifest = "data/versions/v2/manifest.csv"
+splits = "data/versions/v2/splits"
+labels_raw = "data/labels/capa_raw"
+labels_table = "data/labels/stage1_function_labels.parquet"
+graphs = "data/graphs_v2"
+processed = "data/processed_v2"
+results = "results"
+
+[tools]
+capa = "~/tools/capa/capa"
+capa_rules = "~/tools/capa-rules"
+capa_version = "9.1.0"
+capa_rules_commit = "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5"
+capa_rules_dirty = false
+
+[labels]
+# Namespaces are prefixes; static function and basic-block scopes only.
+# keylogger namespaces are kept only to preserve evidence for future work;
+# keylogger is not an active Stage 1 label and never enters targets or loss.
+anti_debug_namespaces = ["anti-analysis/anti-debugging"]
+keylogger_namespaces = ["collection/keylog"]
+injection_namespaces = [
+  "host-interaction/process/inject",
+  "load-code/pe/inject-",
+]
+
+[labels.contract]
+# Revises docs/labeling_contract.md v1 for Stage 1.
+version = "stage1-v2"
+active_labels = ["anti_debug", "injection"]
+outputs = 2
+loss = "BCEWithLogitsLoss"
+observed_inventory = "meta.analysis.feature_counts.functions"
+use_rule_scopes = "meta.scopes.static"
+weak_negative = "observed function with no active-label target rule match"
+unlabeled = "angr function not mapped to CAPA observed inventory"
+min_positive_functions_full_set = 300
+
+[pilot.sampling]
+selection = "stage1"
+clean_target = 200
+max_per_cluster = 4
+# Stage 1 selection reads v2 main train/val only; test is never eligible.
+
+[pilot.mapping_gate]
+min_observed_function_coverage = 0.95
+min_target_match_coverage = 0.95
+max_unresolved_target_matches = 0.02
+manual_audit_functions = 40
+
+[pilot.compute]
+# The pathological bladabindi sample needed ~600 s CAPA and ~1000 s angr.
+# Timeouts are recorded and retryable; they never become silent drops.
+workers = 4
+capa_timeout_seconds = 900
+cfg_timeout_seconds = 1800
+rss_limit_gb = 3.0
+
+[evaluation.diversity]
+# Pre-registered claim diagnostics; frozen before model performance is seen.
+min_positive_functions = 300
+min_positive_binaries = 20
+min_positive_clusters = 10
+min_positive_families = 3
+max_single_binary_share = 0.50
+max_single_cluster_share = 0.50
+min_holdout_positive_binaries = 10
+min_holdout_positive_clusters = 5
+
+[evaluation.repeated_lofo]
+min_clean_samples = 20
+min_positive_functions = 30
+
+[evaluation.bootstrap]
+main_unit = "imphash_cluster"
+lofo_unit = "binary"
+# Never resample functions independently.

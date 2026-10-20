@@ -10,6 +10,9 @@ flags a packer, and those 26 contribute no labels. Do not start the full run
 until the label contract and packed filter are revised. See
 [`results/pilot/pilot_findings.md`](../results/pilot/pilot_findings.md).
 
+**Revision applied:** sections 8–11 below are the current Stage 1 path
+(Phase 0 v2 + two-label contract). Sections 1–7 remain the v1 pilot record.
+
 ## 1. CAPA census
 
 ```bash
@@ -111,3 +114,80 @@ flags high entropy when there are zero imports.
 ./venv/bin/python -m unittest discover -s tests -v
 ./venv/bin/python -m compileall -q src tests
 ```
+
+## 8. Phase 0 v2 packed-filter audit (do this first)
+
+```bash
+# 7.8 vs 7.9 audit on the v1 clean set + the 27 pilot packer suspects.
+./venv/bin/python -m src.data.phase0_v2_audit
+
+# Build v2 manifest/splits into data/versions/v2/ (v1 untouched).
+./venv/bin/python -m src.data.build_manifest --config configs/phase0_v2.toml
+
+# Record removed IDs, cluster changes, and split-membership changes.
+./venv/bin/python -m src.data.compare_phase0_versions
+```
+
+- v1 stays at `data/manifest.csv` + `data/splits/` (mirrored, checksummed, under
+  `data/versions/v1/`). v2 is written only to `data/versions/v2/`.
+- Chosen rule: `text_entropy >= 7.8 and num_imports <= 20` (PE features only).
+  CAPA packer detections are audit evidence, never an exclusion criterion.
+- Audit: `results/phase0_v2/threshold_audit.{json,md}`.
+- Change record: `results/phase0_v2/change_report.{json,md}`.
+
+## 9. Stage 1 pilot selection (v2 train/val only)
+
+```bash
+./venv/bin/python -m src.label.run_capa \
+  --config configs/pilot_stage1.toml \
+  --selection stage1 --target 200
+```
+
+- Selects 200 samples from v2 main train/val with a hard per-cluster cap
+  (`max_per_cluster = 4`) and family-balanced fill. Test is never eligible;
+  `--sample-id` in Stage 1 mode rejects test IDs.
+- Writes `results/stage1/samples.json` and `results/stage1/capa_summary.json`.
+- Re-run is safe: existing valid JSON is skipped. Temporary CAPA outputs use
+  unique per-process names, so concurrent runs on the same `sample_id` no
+  longer collide (`FileNotFoundError: ...json.tmp` is fixed).
+
+## 10. Stage 1 mapping and label table
+
+```bash
+./venv/bin/python -m src.label.build_labels \
+  --samples-file results/stage1/samples.json \
+  --workers 4 --sample-timeout 1800 --resume \
+  --out results/stage1/mapping.jsonl \
+  --summary results/stage1/mapping_summary.json
+
+./venv/bin/python -m src.label.merge_labels \
+  --mapping results/stage1/mapping.jsonl \
+  --manifest data/versions/v2/manifest.csv \
+  --splits data/versions/v2/splits/main.json \
+  --out-prefix data/labels/stage1_function_labels \
+  --format both
+```
+
+- Run mapping on the **full** pilot (not a subset) before the gate report.
+- The Stage 1 label table has exactly two label columns (`anti_debug`,
+  `injection`); `keylogger` evidence stays in raw CAPA JSON only.
+- Recompute `label_status`/`label_mask` from the active labels: a
+  keylogger-only function is a Stage 1 weak negative, never a positive.
+
+## 11. Stage 1 gate report
+
+```bash
+./venv/bin/python -m src.label.pilot_report \
+  --samples results/stage1/samples.json \
+  --manifest data/versions/v2/manifest.csv \
+  --mapping results/stage1/mapping_summary.json \
+  --capa-dir data/labels/capa_raw \
+  --json-out results/stage1/stage1_label_census.json \
+  --md-out results/stage1/stage1_label_contract_report.md
+```
+
+Evaluates active labels only, plus the pre-registered diversity diagnostics
+(positive binaries/clusters/families, top binary/cluster share). A label that
+fails diversity may be trained but its claims stay exploratory. Then run the
+30–50-function Ghidra spot check and inspect representative many-to-one
+collisions before full-set labeling.

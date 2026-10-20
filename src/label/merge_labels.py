@@ -16,6 +16,8 @@ from typing import Any
 
 import pandas as pd
 
+from src.label.contract import ACTIVE_LABELS, LABEL_CONTRACT_VERSION
+
 ROOT = Path(__file__).resolve().parents[2]
 LIST_FIELDS = ("capa_func_vas", "matched_rules", "matched_block_vas")
 
@@ -51,6 +53,8 @@ def build_table(
     mapping_path: Path,
     manifest_path: Path,
     splits_path: Path,
+    *,
+    active_labels: tuple[str, ...] = ACTIVE_LABELS,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     rows = load_rows(mapping_path)
     manifest = _manifest(manifest_path)
@@ -60,6 +64,7 @@ def build_table(
         row["sample_sha256"] = meta.get("content_sha256")
         row["source_bucket"] = meta.get("source_bucket")
         row["family"] = meta.get("family")
+        row["cluster_key"] = meta.get("cluster_key")
         row["split"] = assignments.get(row["sample_id"])
         for field in LIST_FIELDS:
             value = row.get(field)
@@ -68,14 +73,27 @@ def build_table(
             elif not isinstance(value, list):
                 row[field] = [value]
 
+    raw_frame = pd.DataFrame(rows)
+    for label in active_labels:
+        column = f"label_{label}"
+        raw_frame[column] = pd.to_numeric(
+            raw_frame[column] if column in raw_frame else 0, errors="coerce"
+        ).fillna(0).astype(int)
+    mapped = raw_frame.get("mapping_method", "").astype(str) != "unmapped"
+    any_active = raw_frame[[f"label_{label}" for label in active_labels]].sum(axis=1) > 0
+    raw_frame["label_status"] = "weak_negative"
+    raw_frame.loc[~mapped, "label_status"] = "unlabeled"
+    raw_frame.loc[mapped & any_active, "label_status"] = "positive"
+    raw_frame["label_mask"] = 0
+    for bit, label in enumerate(active_labels):
+        raw_frame.loc[raw_frame[f"label_{label}"] > 0, "label_mask"] |= 1 << bit
+
     columns = [
         "sample_id",
         "func_va",
         "capa_func_va",
         "capa_func_vas",
-        "label_anti_debug",
-        "label_keylogger",
-        "label_injection",
+        *[f"label_{label}" for label in active_labels],
         "label_status",
         "label_mask",
         "matched_rules",
@@ -84,25 +102,53 @@ def build_table(
         "mapping_collision",
         "source_bucket",
         "family",
+        "cluster_key",
         "split",
     ]
-    frame = pd.DataFrame(rows)
+    frame = raw_frame.copy()
     for column in columns:
         if column not in frame:
             frame[column] = None
     frame = frame[columns].sort_values(["sample_id", "func_va"]).reset_index(drop=True)
 
+    label_summary: dict[str, dict[str, Any]] = {}
+    for label in active_labels:
+        positive = frame[frame[f"label_{label}"] > 0]
+        total = int(positive[f"label_{label}"].sum())
+        by_binary = positive.groupby("sample_id")[f"label_{label}"].sum()
+        by_cluster = positive.groupby("cluster_key")[f"label_{label}"].sum()
+        by_family = positive.groupby("family")[f"label_{label}"].sum()
+        label_summary[label] = {
+            "positive_functions": total,
+            "positive_binaries": int(by_binary.shape[0]),
+            "positive_clusters": int(by_cluster.shape[0]),
+            "positive_families": int(by_family.shape[0]),
+            "top_binary_share": (
+                float(by_binary.max() / total) if total and len(by_binary) else 0.0
+            ),
+            "top_cluster_share": (
+                float(by_cluster.max() / total) if total and len(by_cluster) else 0.0
+            ),
+        }
+
     summary = {
         "samples": int(frame["sample_id"].nunique()),
         "functions": int(len(frame)),
+        "active_labels": list(active_labels),
         "status_counts": {
             str(key): int(value)
             for key, value in frame["label_status"].value_counts().items()
         },
         "label_counts": {
             label: int(frame[f"label_{label}"].sum())
-            for label in ("anti_debug", "keylogger", "injection")
+            for label in active_labels
         },
+        "label_diversity": label_summary,
+        "keylogger_evidence_functions": (
+            int(pd.to_numeric(raw_frame.get("label_keylogger", 0), errors="coerce").fillna(0).sum())
+            if "label_keylogger" in raw_frame
+            else 0
+        ),
         "mapping_method_counts": {
             str(key): int(value)
             for key, value in frame["mapping_method"].value_counts().items()
@@ -124,8 +170,8 @@ def build_table(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Flatten mapping JSONL into the label table.")
     parser.add_argument("--mapping", type=Path, default=ROOT / "results/pilot/mapping.jsonl")
-    parser.add_argument("--manifest", type=Path, default=ROOT / "data/manifest.csv")
-    parser.add_argument("--splits", type=Path, default=ROOT / "data/splits/main.json")
+    parser.add_argument("--manifest", type=Path, default=ROOT / "data/versions/v2/manifest.csv")
+    parser.add_argument("--splits", type=Path, default=ROOT / "data/versions/v2/splits/main.json")
     parser.add_argument("--out-prefix", type=Path, default=ROOT / "data/labels/function_labels")
     parser.add_argument("--format", choices=("csv", "parquet", "both"), default="both")
     args = parser.parse_args(argv)
@@ -158,7 +204,9 @@ def main(argv: list[str] | None = None) -> int:
 
     meta_path = out_prefix.with_suffix(".meta.json")
     meta = {
-        "label_contract_version": 1,
+        "label_contract_version": LABEL_CONTRACT_VERSION,
+        "active_labels": list(ACTIVE_LABELS),
+        "keylogger_in_stage1": False,
         "label_normalization": "capa addresses normalized to RVA; angr func_va/mapped_block_vas absolute",
         "source_mapping": str(mapping_path),
         **summary,
