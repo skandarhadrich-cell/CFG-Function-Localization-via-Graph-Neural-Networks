@@ -195,6 +195,9 @@ def main(argv: list[str] | None = None) -> int:
                     done.add(json.loads(line)["sample_id"])
                 except (json.JSONDecodeError, KeyError):
                     continue
+    # Deduplicate the requested IDs as well, so a repeated --sample-id or a
+    # samples.json with duplicate rows cannot append the same sample twice.
+    sample_ids = list(dict.fromkeys(sample_ids))
     sample_ids = [sample_id for sample_id in sample_ids if sample_id not in done]
 
     if not sample_ids:
@@ -203,6 +206,14 @@ def main(argv: list[str] | None = None) -> int:
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = out_path.with_suffix(out_path.suffix + ".lock")
+    lock_fh = lock_path.open("w")
+    try:
+        import fcntl
+
+        fcntl.flock(lock_fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except (ImportError, OSError):
+        pass
     results: list[MappingResult] = []
     per_sample: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -252,6 +263,32 @@ def main(argv: list[str] | None = None) -> int:
             )
             if index % 5 == 0 or index == len(futures):
                 print(f"mapped {index}/{len(futures)}", flush=True)
+
+    # Close and release the resume lock before compacting.
+    try:
+        lock_fh.close()
+    except OSError:
+        pass
+
+    # Compact the JSONL: keep the last entry per sample_id so a partial write
+    # or an overlapping run cannot leave duplicate rows.
+    if args.resume and out_path.exists():
+        unique: dict[str, str] = {}
+        order: list[str] = []
+        for line in out_path.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                sid = json.loads(line)["sample_id"]
+            except (json.JSONDecodeError, KeyError):
+                continue
+            if sid not in unique:
+                order.append(sid)
+            unique[sid] = line
+        compacted = "\n".join(unique[sid] for sid in order)
+        tmp = out_path.with_name(f".{out_path.name}.{os.getpid()}.tmp")
+        tmp.write_text(compacted + ("\n" if compacted else ""))
+        os.replace(tmp, out_path)
 
     aggregate = aggregate_mapping_summaries(results)
     aggregate["requested"] = len(sample_ids) + len(missing_capa)

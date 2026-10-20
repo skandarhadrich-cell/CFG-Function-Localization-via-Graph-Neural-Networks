@@ -11,11 +11,13 @@ Stage 1 therefore trains **two** labels — `anti_debug` and `injection` — wit
 keylogger label and its evidence are preserved for future work but are not part of the Stage 1
 targets or loss (contract §9 in
 [`docs/labeling_contract.md`](docs/labeling_contract.md)). The Stage 1 pilot (200 samples from v2
-train/val, cluster-capped) is running. See [`results/pilot/pilot_findings.md`](results/pilot/pilot_findings.md),
+train/val, cluster-capped) **passed its pipeline gate** (99.6% mapping coverage, 100% target
+coverage, 0 unresolved); full-set v2 CAPA and CFG extraction are in progress. See
+[`results/stage1/pilot_findings.md`](results/stage1/pilot_findings.md),
 [`results/phase0_v2/threshold_audit.md`](results/phase0_v2/threshold_audit.md), and
-[`results/phase0_v2/change_report.md`](results/phase0_v2/change_report.md). There are no full-set
-CAPA labels, extracted graphs, or trained models yet. The original
-four-class/two-stage HTML plan is archived at
+[`results/phase0_v2/change_report.md`](results/phase0_v2/change_report.md). Model training has not
+started and will not until the Ghidra audit and full-set diversity review are complete. The
+original four-class/two-stage HTML plan is archived at
 [`docs/archive/legacy-two-stage-plan.html`](docs/archive/legacy-two-stage-plan.html) and is not
 current.
 
@@ -284,7 +286,7 @@ main test split.
 ### Phase 4 — Stage 1 classifier
 
 - GCN: 2 layers, 64 hidden, BatchNorm + ReLU + dropout 0.3, per-function mean+max pooling,
-  3 output logits. GAT comparison: 4 heads × 16.
+  **2 output logits** (Stage 1: `anti_debug`, `injection`). GAT comparison: 4 heads × 16.
 - Loss: masked `BCEWithLogitsLoss` with per-label `pos_weight`; Adam 1e-3; early stopping
   patience 15. Unlabeled functions are excluded by `label_mask`.
 - Runs: full-API, no-API, API-dropout p=0.5; 3 seeds once the epoch cost is measured.

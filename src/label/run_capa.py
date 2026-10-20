@@ -38,6 +38,8 @@ class Sample:
     source_bucket: str
     family: str
     cluster_key: str = ""
+    content_sha256: str = ""
+    is_clean: bool = True
 
 
 def _resolve(path: str | Path) -> Path:
@@ -60,6 +62,9 @@ def read_manifest(manifest: Path) -> list[Sample]:
                     filepath=row["filepath"],
                     source_bucket=row["source_bucket"],
                     family=row["family"] or "unknown",
+                    cluster_key=row.get("cluster_key") or "",
+                    content_sha256=row.get("content_sha256") or "",
+                    is_clean=row.get("is_clean", "1") == "1",
                 )
             )
     return rows
@@ -249,21 +254,26 @@ def run_one(
     meta_path = out_dir / f"{sample.sample_id}.meta.json"
     sample_sha256 = _sha256_file(ROOT / sample.filepath)
     if out_path.exists() and not force:
-        try:
-            json.loads(out_path.read_text())
-            return {
-                "sample_id": sample.sample_id,
-                "sample_sha256": sample_sha256,
-                "source_bucket": sample.source_bucket,
-                "family": sample.family,
-                "status": "skipped",
-                "returncode": 0,
-                "seconds": 0.0,
-                "json_bytes": out_path.stat().st_size,
-                "error": "",
-            }
-        except (OSError, json.JSONDecodeError):
+        # Only reuse JSON produced for this exact file content.  A stale file
+        # from a different binary must be regenerated, not silently accepted.
+        if sample.content_sha256 and sample.content_sha256 != sample_sha256:
             pass
+        else:
+            try:
+                json.loads(out_path.read_text())
+                return {
+                    "sample_id": sample.sample_id,
+                    "sample_sha256": sample_sha256,
+                    "source_bucket": sample.source_bucket,
+                    "family": sample.family,
+                    "status": "skipped",
+                    "returncode": 0,
+                    "seconds": 0.0,
+                    "json_bytes": out_path.stat().st_size,
+                    "error": "",
+                }
+            except (OSError, json.JSONDecodeError):
+                pass
 
     out_dir.mkdir(parents=True, exist_ok=True)
     scratch_dir.mkdir(parents=True, exist_ok=True)
@@ -375,9 +385,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--force", action="store_true")
     parser.add_argument(
         "--selection",
-        choices=["pilot", "stage1"],
+        choices=["pilot", "stage1", "full"],
         default=None,
-        help="sample-selection mode; stage1 uses v2 train/val only with cluster caps",
+        help="sample-selection mode; stage1 uses v2 train/val only, full uses all clean v2 rows",
     )
     parser.add_argument("--max-per-cluster", type=int, default=None)
     parser.add_argument(
@@ -418,6 +428,7 @@ def main(argv: list[str] | None = None) -> int:
 
     all_rows = read_manifest(manifest)
     manifest_clean = {row.sample_id for row in all_rows}
+    clean_rows = [row for row in all_rows if row.is_clean]
     main_path = splits / "main.json"
     main_assignments = (
         json.loads(main_path.read_text()).get("assignments", {})
@@ -444,21 +455,25 @@ def main(argv: list[str] | None = None) -> int:
                     + ", ".join(test_samples[:5])
                 )
         samples = [row for row in all_rows if row.sample_id in wanted]
-    elif args.all_clean:
-        samples = all_rows
+    elif args.all_clean or selection == "full":
+        # Full run: only clean manifest rows.  Never process excluded samples.
+        samples = list(clean_rows)
     elif selection == "stage1":
         samples = select_stage1_pilot(
-            all_rows, main_assignments, target, 42, max_per_cluster
+            clean_rows, main_assignments, target, 42, max_per_cluster
         )
     else:
-        samples = select_pilot(all_rows, main_assignments, target, 42)
+        samples = select_pilot(clean_rows, main_assignments, target, 42)
 
     if not samples:
         raise SystemExit("no samples selected")
 
-    stage1_dir = results / "stage1"
-    pilot_dir = results / "pilot"
-    base_dir = stage1_dir if selection == "stage1" else pilot_dir
+    if selection == "full":
+        base_dir = results / "full"
+    elif selection == "stage1":
+        base_dir = results / "stage1"
+    else:
+        base_dir = results / "pilot"
     samples_path = (
         _resolve(args.samples_out)
         if args.samples_out
@@ -474,10 +489,15 @@ def main(argv: list[str] | None = None) -> int:
         "selection": selection,
         "max_per_cluster": max_per_cluster if selection == "stage1" else None,
         "split_scope": (
-            "train_val_only"
-            if selection == "stage1" and not args.sample_id and not args.all_clean
-            else "explicit_or_all"
+            "all_clean"
+            if selection == "full" or args.all_clean
+            else (
+                "train_val_only"
+                if selection == "stage1" and not args.sample_id
+                else "explicit_or_all"
+            )
         ),
+        "manifest_clean_rows": len(clean_rows),
 
         "timestamp_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "manifest": str(manifest),

@@ -3,15 +3,18 @@
 This is the operational sequence for the frozen v1 label contract. All commands
 run from the repository root with the pinned virtual environment.
 
-**Pilot result (2026-10-20):** the three-label gate fails on `keylogger`
-(projected ~242 vs the ~300 threshold). The keylogger pilot bucket is dominated
-by packed samples that Phase 0 missed: 26 of 32 have `is_packed=0` but CAPA
-flags a packer, and those 26 contribute no labels. Do not start the full run
-until the label contract and packed filter are revised. See
-[`results/pilot/pilot_findings.md`](../results/pilot/pilot_findings.md).
+**Historical v1 pilot result (2026-10-20):** the three-label gate failed on
+`keylogger` (projected ~242 vs the ~300 threshold). The keylogger pilot bucket
+was dominated by packed samples that Phase 0 missed: 26 of 32 had
+`is_packed=0` but CAPA flags a packer, and those 26 contributed no labels. That
+finding produced the v2 packed filter and the two-label Stage 1 contract.
 
-**Revision applied:** sections 8–11 below are the current Stage 1 path
-(Phase 0 v2 + two-label contract). Sections 1–7 remain the v1 pilot record.
+**Current status:** the Stage 1 revision is complete — Phase 0 v2 frozen
+(2,733 clean samples / 303 clusters, two-label contract, pilot gate PASS). The
+full-set Stage 1 run **is authorized**; sections 8–13 below are the current
+path. Sections 1–7 remain the v1 pilot record and describe the retired
+three-label table. The full-set run must not start model training until the
+Ghidra audit and full-set diversity review are complete.
 
 ## 1. CAPA census
 
@@ -73,9 +76,10 @@ rather than silently dropping samples.
 ```
 
 Writes `function_labels.csv`, `function_labels.parquet`, and
-`function_labels.meta.json`. The table has three independent binary labels,
-`label_status` (`positive`, `weak_negative`, `unlabeled`), `label_mask`,
-mapping method, and collision flag.
+`function_labels.meta.json`. In the retired v1 pilot the table had three
+independent binary labels. The **Stage 1** table (section 10) has exactly two
+active labels, `label_status` (`positive`, `weak_negative`, `unlabeled`),
+`label_mask`, mapping method, and collision flag.
 
 ## 5. Gate report
 
@@ -191,3 +195,47 @@ Evaluates active labels only, plus the pre-registered diversity diagnostics
 fails diversity may be trained but its claims stay exploratory. Then run the
 30–50-function Ghidra spot check and inspect representative many-to-one
 collisions before full-set labeling.
+
+## 12. Full-set Stage 1 run (v2, authorized)
+
+Run only after section 8–11 gates pass. Freeze the inputs first:
+
+```bash
+./venv/bin/python -m src.data.freeze_run
+# later, to detect drift before any downstream stage:
+./venv/bin/python -m src.data.freeze_run --check results/full/frozen_run.json
+```
+
+Full-set CAPA processes **clean v2 rows only** (2,733), never the 4,474-row
+manifest. The selection is `--selection full`; it writes `results/full/`.
+
+```bash
+./venv/bin/python -m src.label.run_capa \
+  --config configs/pilot_stage1.toml \
+  --selection full --workers 4
+```
+
+- Reuses existing valid CAPA JSON only when its recorded `sample_sha256`
+  matches the manifest `content_sha256`; stale JSON is regenerated.
+- Resumable by `sample_id`; failures and timeouts are recorded in
+  `results/full/capa_summary.json`, never silently dropped.
+
+Full-set CFG extraction (Phase 2) and mapping follow the same freeze and use
+the per-sample subprocess isolation, timeouts, RSS watchdog, and resume rules
+as the pilot. Mapping reuses CFG ranges rather than re-running angr.
+
+**Stop condition:** full-set labels are generated for review, but **model
+training does not start** until the Ghidra audit (section 11) and the full-set
+diversity review (section 13) are signed off.
+
+## 13. Full-set diversity review
+
+Recompute actual (not projected) per-label counts from the full label table:
+positive functions, distinct binaries, imphash clusters, families, top
+binary/cluster/family shares, train/val/test coverage, held-out positive
+binaries/clusters, and LOFO coverage. Apply the pre-registered criteria in
+`configs/pilot_stage1.toml`:
+
+- `injection` is the primary candidate if it passes the diversity checks.
+- `anti_debug` stays exploratory while its cluster concentration is high.
+- Three represented families do not establish unseen-family generalization.
