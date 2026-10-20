@@ -3,9 +3,10 @@
 Weakly supervised classification of PE binaries at the **function level**, using control-flow graphs
 (CFGs), basic-block features, and graph neural networks.
 
-**Status:** pre-Phase 0. The plan below is frozen; Phase 0 (data foundation) is the next
-implementation step. There are no CAPA labels, extracted graphs, or trained models in the
-repository yet.
+**Status:** Phase 0 complete. The manifest and frozen splits cover **2,814 clean samples**;
+all 2,814 load in angr and a 12-sample stratified CAPA smoke test returns exit 0. There are no
+CAPA labels, extracted graphs, or trained models in the repository yet. The next step is the
+pilot, not the full run.
 
 ---
 
@@ -58,33 +59,36 @@ The original 14-day, four-class, two-stage plan is superseded. The current desig
 
 BODMAS "disarmed" PE corpus, stored under `data/raw/` (git-ignored).
 
-| Source bucket | Files in path lists | Families | Dominant family |
-|---|---:|---:|---|
-| `keylogger` | 536 | 5 | bladabindi (491) |
-| `injection` | 1,528 | 7 | ceeinject (1,169) |
-| `antidebug` | 2,406 | 7 | gandcrab (957), smokeloader (868) |
-| **Total** | **4,470** | **19** | — |
+| Source bucket | Files on disk | Clean after Phase 0 | Families (clean) | Dominant clean family |
+|---|---:|---:|---:|---|
+| `keylogger` | 537 | 38 | 5 | lokibot (23) |
+| `injection` | 1,529 | 1,359 | 6 | ceeinject (1,127) |
+| `antidebug` | 2,408 | 1,417 | 7 | gandcrab (937) |
+| **Total** | **4,474** | **2,814** | **18** | — |
 
-There are 4,474 `.exe` files on disk: the extra 4 are nested TheZoo samples outside the BODMAS
-path lists.
+The 4,470 BODMAS path-list IDs are all present. The extra 4 `.exe` files are nested TheZoo
+samples outside the path lists; they are marked `non_bodmas` and excluded. `carberp` has no clean
+samples, so 18 families remain represented.
 
 **Data quality filters (no compute caps)**
 
-| Filter | Approx. count |
-|---|---:|
-| .NET assemblies (`mscoree` import) | 263 |
-| Packed / UPX-section samples | 502 |
-| Corrupt (no PE header) | 1 |
-| Non-BODMAS / legacy extras | 2 |
-| Non-`.exe` archives and metadata | 44 |
+| Flag | Files | Notes |
+|---|---:|---|
+| `packed` | 1,398 | UPX section names/signature, known packer strings, or high-entropy text with no imports |
+| `dotnet` | 265 | COM descriptor or `mscoree`/`mscorlib` import |
+| `non_bodmas` | 4 | nested TheZoo extras |
+| `no_imports` | 8 | informational; not used to exclude unless also packed/high-entropy |
+| **Clean** | **2,814** | flags overlap, so the excluded total is 1,660 |
 
-The exact clean count is produced by Phase 0; expected range is **3,600–3,800**. .NET and packed
-samples are excluded rather than unpacked; unpacking is a separate project.
+The earlier 502 packed estimate was based on `file(1)` output and undercounted samples whose UPX
+section names remain but whose UPX signature was stripped. No unpacking is attempted. The clean
+set is therefore smaller than the pre-Phase 0 estimate of 3,600–3,800.
 
-**Header disarmament.** 4,469 of 4,472 inspected binaries have `machine = 0` and
-`subsystem = 0`. angr fails with `ArchNotFound` and CAPA exits 21 until the `machine` field is
-repaired (0x14c for PE32, 0x8664 for PE32+). Repair is deterministic and done into an ephemeral
-per-job copy; `data/raw/` is never modified.
+**Header disarmament.** 4,470 of 4,474 files need repair (`machine = 0`, `subsystem = 0`); the
+4 nested extras are already valid. angr fails with `ArchNotFound` and CAPA exits 21 until the
+fields are repaired (0x14c for PE32, 0x8664 for PE32+; subsystem 3 when zero). Repair is
+deterministic and done into an ephemeral per-job copy; `data/raw/` is never modified. Sixteen
+`injector` samples use a compact DOS header with `e_lfanew = 0x10`; the parser accepts them.
 
 **Hashing caveat.** Filenames are the BODMAS altered-sample IDs. Their content SHA-256 is
 **different** from the filename. Join labels on `sample_id` (filename stem), and store
@@ -124,27 +128,34 @@ full-set is a stop-and-revisit condition.
 
 No dates. Each phase has an exit gate; the next phase does not start until the gate passes.
 
-### Phase 0 — Data foundation
+### Phase 0 — Data foundation — complete
 
 - `src/data/repair_pe.py`: deterministic PE header repair (machine, subsystem) into a scratch copy.
-- `src/data/build_manifest.py`: manifest with `sample_id`, `content_sha256`, `imphash`, `family`,
-  `source_bucket`, `arch`, `is_dotnet`, `is_packed`, `size`, `quality_flags`.
-- `data/manifest.csv`: one row per sample; small enough to track.
+- `src/data/build_manifest.py`: manifest and frozen splits; quality flags, family metadata, and
+  imphash/sha cluster keys.
+- `src/data/validate_manifest.py`: angr load gate and stratified CAPA smoke test.
+- `configs/phase0.toml`, `tests/test_phase0.py`: pinned filter/split settings and unit tests.
+- `data/manifest.csv`: 4,474 rows; 2,814 marked clean.
 - `data/splits/main.json`, `data/splits/lofo.json`: frozen assignments.
-- **Gate:** all clean rows load in angr and return CAPA exit 0; zero imphash-cluster overlap
-  between splits; counts documented.
+- `results/phase0_report.md`, `phase0_summary.json`, `phase0_validation.csv`,
+  `phase0_capa_smoke.csv`: counts, integrity check, and gate evidence.
+- **Gate:** met. All **2,814/2,814** clean rows load in angr; **12/12** stratified CAPA smoke samples
+  return exit 0; zero imphash/sha clusters cross splits; counts documented. A full-set CAPA
+  exit-code pass is the Phase 1 labeling run, not a Phase 0 step.
 
 ### Pilot — end-to-end on ~200 samples
 
 Run Phases 1–4 on 200 clean samples drawn from the frozen main split, plus 20 known-bad samples
-(10 .NET, 10 packed) to prove the filters reject them.
+(10 .NET, 10 packed) to prove the filters reject them. Because only 38 keylogger samples are
+clean, oversample keylogger (all 26 train + 6 val, not test) and fill the rest with injection and
+antidebug; otherwise the keylogger hit rate is not measurable.
 
 - **Gate:** 100% repair success; CAPA/angr load all clean pilot samples; per-label hit rate and
   projected full-set positive counts; measured angr seconds/sample and RSS; block-count
   distribution; one measured training epoch (wall time, loader share, RSS); full-API vs no-API
   sanity signal.
 - Abort or revise if any label projects below ~300 functions, or if clean-sample failure exceeds
-  20%.
+  20%. Keylogger is the most likely label to trigger this stop condition.
 
 The full run is committed only after the pilot numbers replace the rough estimates.
 
@@ -215,16 +226,28 @@ Only if Phase 4 produces a usable Stage 1.
 
 Two protocols, reported separately:
 
-1. **Main:** group key = `imphash`, stratified by `source_bucket`, 70/15/15, greedy bin-packing so
-   no cluster crosses splits and no split is dominated by one huge cluster. The largest cluster is
-   placed in train.
-2. **Leave-one-family-out (LOFO):** hold out one mid-size family per label; train on the rest.
+1. **Main:** group key = `imphash` (or `sha:<content>` when there are no imports), stratified by
+   `source_bucket`, 70/15/15, greedy bin-packing per bucket. No cluster crosses splits. The largest
+   cluster is placed in train; train is consequently dominated by near-duplicates, while val/test
+   are cluster-diverse.
+2. **Leave-one-family-out (LOFO):** hold out one mid-size family per bucket; train on the rest.
    This is the generalization test: unseen family, not just unseen binary.
 
-All function- and block-level datasets inherit the sample split. Splits are frozen JSON files;
-regenerating them requires an explicit version bump.
+| Protocol | Train | Val | Test | Clusters (train/val/test) |
+|---|---:|---:|---:|---|
+| Main | 1,969 | 423 | 422 | 112 / 95 / 103 |
+| LOFO | 2,302 | 405 | 107 | 151 / 111 / 48 |
 
-Reported counts: files, imphash clusters, families. Metrics are always per family.
+Main per bucket (train/val/test): keylogger 26/6/6, injection 951/204/204, antidebug
+992/213/212. LOFO holds out `lokibot` (23), `emotet` (50), and `ursnif` (34); keylogger has only
+13 train / 2 val after `lokibot` is removed.
+
+All function- and block-level datasets inherit the sample split. Splits are frozen JSON files and
+record the manifest SHA-256 (`fcd27780…`); regenerating them requires an explicit version bump.
+
+Reported counts: files, imphash clusters, families. Metrics are always per family. Because one
+890-sample cluster is 45% of train, report cluster-level or family-held-out metrics alongside
+sample-level metrics; sample accuracy alone will overstate generalization.
 
 ---
 
@@ -232,17 +255,20 @@ Reported counts: files, imphash clusters, families. Metrics are always per famil
 
 Kali VM: 16 GB RAM, 4 physical cores / 8 threads (i7-1165G7), CPU-only PyTorch.
 
-| Work | Workers | Rough wall clock |
+| Work | Workers | Measured / rough wall clock |
 |---|---:|---|
-| Phase 0 manifest/repair/splits | 8 (I/O) | 20–40 min |
+| Phase 0 manifest + splits | 1 | ~1–2 min |
+| Phase 0 angr load gate (2,814) | 4 | 184 CPU-s → ~46 s wall |
+| Phase 0 CAPA smoke (12) | 1 | 193 s |
 | Pilot (200 + 20) | 4 | 2–4 h |
-| CAPA full set | 4 | 7–11 h |
-| angr full set | 4 (3 if RSS >3 GB) | 12–18 h |
+| CAPA full set (2,814) | 4 | 7–11 h |
+| angr full set (2,814) | 4 (3 if RSS >3 GB) | 12–18 h |
 | Features + dataset | 4 | 1–2 h |
 | Stage 1 | 4 torch threads | measured by pilot |
 
-These are rough figures from 20–45 sample measurements; the pilot replaces them. CAPA and angr are
-single-threaded, so 4 physical cores cap real parallelism. Keep the phases sequential.
+Phase 0 numbers are measured on this VM. The remaining figures are rough extrapolations; the pilot
+replaces them. CAPA and angr are single-threaded, so 4 physical cores cap real parallelism. Keep
+the phases sequential.
 
 **GPU:** the installed wheel is `torch 2.14.0+cpu`; `torch.cuda.is_available()` is `False`,
 `get_arch_list()` is empty, and there is no `nvidia-smi`. The MX350 lives on the Windows host and
@@ -259,12 +285,23 @@ changing extraction.
 Current:
 
 ```
-src/collect/mb_fetch.py    legacy sample-collection script; not used by the pipeline
-data/raw/                  BODMAS binaries (ignored)
-data/bodmas/               BODMAS metadata and npz (ignored)
-data/labels/               empty until Phase 1
-data/graphs/               reserved (ignored)
-results/                   empty until Phase 4
+configs/phase0.toml         Phase 0 filters and split configuration
+src/collect/mb_fetch.py     legacy sample-collection script; not used by the pipeline
+src/data/repair_pe.py       deterministic machine/subsystem repair
+src/data/build_manifest.py  manifest + frozen splits
+src/data/validate_manifest.py  angr load gate + CAPA smoke test
+tests/test_phase0.py        repair and split-integrity tests
+data/raw/                   BODMAS binaries (ignored)
+data/bodmas/                BODMAS metadata and npz (ignored)
+data/manifest.csv           4,474 rows; 2,814 clean
+data/splits/main.json       frozen main split
+data/splits/lofo.json       frozen leave-one-family-out split
+data/labels/                empty until Phase 1
+data/graphs/                reserved (ignored)
+results/phase0_report.md    counts, split integrity, gate status
+results/phase0_summary.json
+results/phase0_validation.csv
+results/phase0_capa_smoke.csv
 ```
 
 Planned:
@@ -312,13 +349,19 @@ pip install -r requirements.txt
 - **Weak labels.** CAPA rules are the target. The no-API ablation is the only defense against
   simply learning CAPA's API logic; it may still fail.
 - **No benign class.** All-zero means "unmatched", not "safe".
-- **Family skew.** 19 families, dominated by bladabindi, ceeinject, gandcrab, and smokeloader.
-  A random file split would leak; grouped splits are mandatory.
-- **Exclusion bias.** .NET and packed samples are dropped, so results do not cover them.
+- **Family skew.** The clean set is dominated by ceeinject (1,127) and gandcrab (937); keylogger
+  has only 38 clean samples. A random file split would leak; grouped splits are mandatory.
+- **Clean-set erosion.** Only 2,814/4,474 files survive quality filters (1,398 packed, 265 .NET,
+  4 non-BODMAS). Results do not cover the excluded 37%. Only 9 clean samples are x64, so the
+  architecture flag is nearly constant and x64 generalization is not established.
+- **Keylogger sparsity.** 38 clean samples (23 lokibot) produce 26/6/6 main train/val/test and
+  13/2 train/val under LOFO. The keylogger label census may fall below the ~300-function stop
+  threshold; the pilot should be allowed to fail here rather than force a three-label result.
 - **CAPA coverage.** Some samples yield 0–2 functions; label census may be sparse for keylogger and
   injection.
 - **Tiny graphs.** Median ~5 blocks per function; the GNN has limited structure to exploit.
-- **Near-duplicates.** imphash is a coarse proxy; LOFO is the stronger generalization test.
+- **Near-duplicates.** imphash is a coarse proxy. The largest clean cluster has 890 samples and is
+  45% of train; LOFO and cluster-level reporting are the stronger generalization tests.
 - **Disarmed headers.** Any tool that trusts the PE machine field needs the repair step.
 - **No GPU in the VM.** Training is CPU-bound; measure before committing epochs.
 

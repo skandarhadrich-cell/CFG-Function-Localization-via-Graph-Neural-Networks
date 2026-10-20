@@ -1,0 +1,42 @@
+# Phase 0 configuration.
+# Paths are relative to the repository root unless absolute.
+
+[paths]
+raw = "data/raw"
+bodmas = "data/bodmas"
+manifest = "data/manifest.csv"
+splits = "data/splits"
+results = "results"
+
+[quality]
+# Only data-quality filters.  No compute caps.
+exclude_dotnet = true
+exclude_packed = true
+exclude_non_bodmas = true
+high_entropy_threshold = 7.5
+entropy_sample_bytes = 2000000
+packer_strings = [
+  "UPX!",
+  "MPRESS",
+  "Themida",
+  "VMProtect",
+  "ASPack",
+  "PECompact",
+  "Armadillo",
+  "Enigma",
+  "Obsidium",
+]
+
+[splits]
+seed = 42
+train = 0.70
+val = 0.15
+test = 0.15
+# One family per source bucket for the leave-one-family-out protocol.
+# `ursnif` is used instead of the much larger zbot; keylogger families are small,
+# so the selector falls back to the closest available family if needed.
+lofo_families = { keylogger = "lokibot", injection = "emotet", antidebug = "ursnif" }
+
+[tools]
+capa = "~/tools/capa/capa"
+capa_rules = "~/tools/capa-rules"

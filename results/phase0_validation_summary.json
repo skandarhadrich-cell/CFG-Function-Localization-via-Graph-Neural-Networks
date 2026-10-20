@@ -1,0 +1,22 @@
+{
+  "clean_samples": 2814,
+  "selected": 2814,
+  "angr": {
+    "total": 2814,
+    "ok": 2814,
+    "failed": 0,
+    "per_bucket": {
+      "antidebug": 1417,
+      "injection": 1359,
+      "keylogger": 38
+    },
+    "failures": [],
+    "output": "results/phase0_validation.csv"
+  },
+  "capa": {
+    "ran": 12,
+    "ok": 12,
+    "failures": [],
+    "output": "results/phase0_capa_smoke.csv"
+  }
+}
