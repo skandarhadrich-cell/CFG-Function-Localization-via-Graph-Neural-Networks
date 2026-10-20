@@ -1,0 +1,35 @@
+{
+  "samples": 5,
+  "angr_functions": 41472,
+  "capa_observed": 5645,
+  "mapped_capa_functions": 5634,
+  "unresolved_capa_functions": 11,
+  "target_matches": 156,
+  "mapped_target_matches": 156,
+  "unresolved_target_matches": 0,
+  "exact_function_mappings": 5111,
+  "containment_function_mappings": 523,
+  "exact_block_mappings": 29,
+  "containment_block_mappings": 0,
+  "many_to_one_collisions": 41,
+  "block_parent_mismatches": 0,
+  "labeled_functions": 5473,
+  "label_counts": {
+    "anti_debug": 99,
+    "injection": 24,
+    "keylogger": 25
+  },
+  "status_counts": {
+    "positive": 148,
+    "unlabeled": 35999,
+    "weak_negative": 5325
+  },
+  "capa_mapping_coverage": 0.9980513728963685,
+  "target_match_coverage": 1.0,
+  "requested": 5,
+  "completed": 5,
+  "failed": 0,
+  "timeouts": 0,
+  "missing_capa_json": [],
+  "failures": []
+}

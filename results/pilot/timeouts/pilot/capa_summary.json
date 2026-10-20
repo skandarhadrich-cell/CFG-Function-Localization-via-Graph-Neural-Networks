@@ -1,0 +1,137 @@
+{
+  "timestamp_utc": "2026-10-20T14:21:19+00:00",
+  "manifest": "/home/lali/cfg-gnn/data/manifest.csv",
+  "splits": "/home/lali/cfg-gnn/data/splits",
+  "out_dir": "/home/lali/cfg-gnn/data/labels/capa_raw",
+  "workers": 2,
+  "timeout_seconds": 900,
+  "selected": 6,
+  "by_bucket": {
+    "keylogger": 1,
+    "injection": 2,
+    "antidebug": 3
+  },
+  "argv": [
+    "/home/lali/cfg-gnn/src/label/run_capa.py",
+    "--sample-id",
+    "42b0444170c5e3aef2a56583eb863b54fd85d390e86c7cb8127f6f6a5e0808b5",
+    "--sample-id",
+    "cce4653ac945ff41ff8d61e28609324944b63edad7cf78f3cb4753d76afdc825",
+    "--sample-id",
+    "6a172931416bcfa647a4288f7952aefc8c2bbaca709db34b33bb86817cda0954",
+    "--sample-id",
+    "35550f4295bbf19844dd86250b03767d7287d6ba63e484ce6f4c6f0485fc34f6",
+    "--sample-id",
+    "2d458022d9035eb7b0796e814d4893330ed2f122f00e5e1b6647f033f104cf71",
+    "--sample-id",
+    "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+    "--workers",
+    "2",
+    "--timeout",
+    "900",
+    "--results",
+    "results/pilot/timeouts"
+  ],
+  "capa_argv_template": [
+    "/home/lali/tools/capa/capa",
+    "--rules",
+    "/home/lali/tools/capa-rules",
+    "-j",
+    "<repaired-temporary-copy>"
+  ],
+  "capa_path": "/home/lali/tools/capa/capa",
+  "rules_path": "/home/lali/tools/capa-rules",
+  "capa_version": "capa 9.1.0",
+  "rules_commit": "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5",
+  "rules_dirty": false,
+  "elapsed_seconds": 727.59,
+  "status_counts": {
+    "failed": 1,
+    "ok": 5
+  },
+  "ok": 5,
+  "skipped": 0,
+  "failed": 1,
+  "timeouts": 0,
+  "failures": [
+    {
+      "sample_id": "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+      "sample_sha256": "e8d8a8a23ef4bce084fd9e1a6f42e2a9c492ebc8f1796e4aba262404e13965cb",
+      "source_bucket": "keylogger",
+      "family": "lokibot",
+      "status": "failed",
+      "returncode": "error",
+      "seconds": 309.393,
+      "json_bytes": 0,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/home/lali/cfg-gnn/data/labels/capa_raw/.245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431.json.tmp'"
+    }
+  ],
+  "runs": [
+    {
+      "sample_id": "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+      "sample_sha256": "e8d8a8a23ef4bce084fd9e1a6f42e2a9c492ebc8f1796e4aba262404e13965cb",
+      "source_bucket": "keylogger",
+      "family": "lokibot",
+      "status": "failed",
+      "returncode": "error",
+      "seconds": 309.393,
+      "json_bytes": 0,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/home/lali/cfg-gnn/data/labels/capa_raw/.245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431.json.tmp'"
+    },
+    {
+      "sample_id": "2d458022d9035eb7b0796e814d4893330ed2f122f00e5e1b6647f033f104cf71",
+      "sample_sha256": "7d76dc7db2a913f331023849050a00aaa54a1a5adf307a71de6e76d98989836d",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 264.349,
+      "json_bytes": 77965,
+      "error": ""
+    },
+    {
+      "sample_id": "35550f4295bbf19844dd86250b03767d7287d6ba63e484ce6f4c6f0485fc34f6",
+      "sample_sha256": "2ded801cbafcc0a895909a2d525fcada580fdbb81026166aa5d5a966d25c8fb7",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 168.627,
+      "json_bytes": 77965,
+      "error": ""
+    },
+    {
+      "sample_id": "42b0444170c5e3aef2a56583eb863b54fd85d390e86c7cb8127f6f6a5e0808b5",
+      "sample_sha256": "ec9399ad76add263327ecaf0de30795ebed3b580481784fa22f367eff1d35ebe",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 217.73,
+      "json_bytes": 142583,
+      "error": ""
+    },
+    {
+      "sample_id": "6a172931416bcfa647a4288f7952aefc8c2bbaca709db34b33bb86817cda0954",
+      "sample_sha256": "f77ad1325aa1287eefbf4b9a9651596f94c2998d309c9c6d857ef828e2b3e72d",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 253.057,
+      "json_bytes": 182402,
+      "error": ""
+    },
+    {
+      "sample_id": "cce4653ac945ff41ff8d61e28609324944b63edad7cf78f3cb4753d76afdc825",
+      "sample_sha256": "5e975f1b92f532850aefbfb65b582f59fa2b218323c407fcf1a1062e0eb1bdda",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 200.322,
+      "json_bytes": 142583,
+      "error": ""
+    }
+  ]
+}

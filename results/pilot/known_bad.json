@@ -1,0 +1,213 @@
+{
+  "count": 20,
+  "by_flag": {
+    "dotnet": 10,
+    "packed": 10
+  },
+  "by_bucket": {
+    "injection": 10,
+    "antidebug": 10
+  },
+  "samples": [
+    {
+      "sample_id": "038eab8340d9b9bae718d4639871a1dfc2dc5ffcf8c573232a181711d7e9bf8c",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/038eab8340d9b9bae718d4639871a1dfc2dc5ffcf8c573232a181711d7e9bf8c.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "0510de2b046d1af242a0dc2d62eeece25f3a52917d59f124b559728c85f2dcfd",
+      "source_bucket": "injection",
+      "family": "injector",
+      "filepath": "data/raw/injection/0510de2b046d1af242a0dc2d62eeece25f3a52917d59f124b559728c85f2dcfd.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "06d88b16f6c86c2fb7fc8640bd4c028b1109b2fff3c98b4391deaddab23ab39c",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/06d88b16f6c86c2fb7fc8640bd4c028b1109b2fff3c98b4391deaddab23ab39c.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "07864e2c3aa05ba2873cd21c65bee899a7c806909e131516c29260981c6771cb",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/07864e2c3aa05ba2873cd21c65bee899a7c806909e131516c29260981c6771cb.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "0c770c1b5350f768e8f8e64b3a45e2c21010f93377738a0471373669a1cf15cd",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/0c770c1b5350f768e8f8e64b3a45e2c21010f93377738a0471373669a1cf15cd.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "13b47cac0af11e1a4f31248ebfc02cdc3d1970e1d380cbf43c1d2bc366b92387",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/13b47cac0af11e1a4f31248ebfc02cdc3d1970e1d380cbf43c1d2bc366b92387.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "14fad6eed2daed71ce27a0f5e5abbbfb39f7f4978fe6f6288e435c64b403cc36",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/14fad6eed2daed71ce27a0f5e5abbbfb39f7f4978fe6f6288e435c64b403cc36.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "17ab5a8c69ca17bbd2af1e915a176a7241c55c7fed9d00a3d59bcda03cd67e48",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/17ab5a8c69ca17bbd2af1e915a176a7241c55c7fed9d00a3d59bcda03cd67e48.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "1b9d1ec8923b800252a17f53a94a91c1035049294a5d1ba24f0d36c7dc8bb566",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/1b9d1ec8923b800252a17f53a94a91c1035049294a5d1ba24f0d36c7dc8bb566.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "30c0945d9ff4299394572e02cd78a0e320a26eb70cd43929ee925f62b532584b",
+      "source_bucket": "injection",
+      "family": "cryptinject",
+      "filepath": "data/raw/injection/30c0945d9ff4299394572e02cd78a0e320a26eb70cd43929ee925f62b532584b.exe",
+      "quality_flags": "dotnet",
+      "is_dotnet": "1",
+      "is_packed": "0",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "002d602482aef2e2c1499de96ba25b318fd9012cf9212230f440315a8ce09ce1",
+      "source_bucket": "antidebug",
+      "family": "zbot",
+      "filepath": "data/raw/antidebug/002d602482aef2e2c1499de96ba25b318fd9012cf9212230f440315a8ce09ce1.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "00346b34cf8d32c8ac77ff3ab3aa4c55fd4ad972e4e720c0450d13fc97e5e28f",
+      "source_bucket": "antidebug",
+      "family": "zbot",
+      "filepath": "data/raw/antidebug/00346b34cf8d32c8ac77ff3ab3aa4c55fd4ad972e4e720c0450d13fc97e5e28f.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "006be5a58a1d85b2248b061092d3a4da14ecebf4cef9025648672f231261f907",
+      "source_bucket": "antidebug",
+      "family": "smokeloader",
+      "filepath": "data/raw/antidebug/006be5a58a1d85b2248b061092d3a4da14ecebf4cef9025648672f231261f907.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "007f97aaae56affbaa858822b89b22e3d9d259e4f146c6fb0f39187c872901a3",
+      "source_bucket": "antidebug",
+      "family": "ursnif",
+      "filepath": "data/raw/antidebug/007f97aaae56affbaa858822b89b22e3d9d259e4f146c6fb0f39187c872901a3.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "0170153a955cc0c3f94f569cd3a69ce2b7e39faeac9a2fde38441ba6a1cf5fd6",
+      "source_bucket": "antidebug",
+      "family": "zbot",
+      "filepath": "data/raw/antidebug/0170153a955cc0c3f94f569cd3a69ce2b7e39faeac9a2fde38441ba6a1cf5fd6.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "01a31be37ec536abb544baf140bf7c2ff66f5146ed54f6f856e6ab7dc8ac0504",
+      "source_bucket": "antidebug",
+      "family": "smokeloader",
+      "filepath": "data/raw/antidebug/01a31be37ec536abb544baf140bf7c2ff66f5146ed54f6f856e6ab7dc8ac0504.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "021a9e0267e53c44215e2a03446ead0630473783a36fcfbfa53d30d138d8041d",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "filepath": "data/raw/antidebug/021a9e0267e53c44215e2a03446ead0630473783a36fcfbfa53d30d138d8041d.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "027b60e55d44558cbdc97b72cd7409abd2e761820dddeacd0d2692e0055b9f12",
+      "source_bucket": "antidebug",
+      "family": "smokeloader",
+      "filepath": "data/raw/antidebug/027b60e55d44558cbdc97b72cd7409abd2e761820dddeacd0d2692e0055b9f12.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "02fd3b4d20f1c87f16a01ab002778f263ce23e6f8eeab9f9de8c22770e3b591a",
+      "source_bucket": "antidebug",
+      "family": "smokeloader",
+      "filepath": "data/raw/antidebug/02fd3b4d20f1c87f16a01ab002778f263ce23e6f8eeab9f9de8c22770e3b591a.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    },
+    {
+      "sample_id": "034c0c751c86af359350a999beeae27d2bfecf93166338df782512f63f46942c",
+      "source_bucket": "antidebug",
+      "family": "smokeloader",
+      "filepath": "data/raw/antidebug/034c0c751c86af359350a999beeae27d2bfecf93166338df782512f63f46942c.exe",
+      "quality_flags": "packed",
+      "is_dotnet": "0",
+      "is_packed": "1",
+      "is_clean": "0"
+    }
+  ]
+}

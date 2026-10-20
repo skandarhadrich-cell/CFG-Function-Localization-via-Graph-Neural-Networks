@@ -4,9 +4,13 @@ Weakly supervised classification of PE binaries at the **function level**, using
 (CFGs), basic-block features, and graph neural networks.
 
 **Status:** Phase 0 complete. The manifest and frozen splits cover **2,814 clean samples**;
-all 2,814 load in angr and a 12-sample stratified CAPA smoke test returns exit 0. There are no
-CAPA labels, extracted graphs, or trained models in the repository yet. The next step is the
-pilot, not the full run. The original four-class/two-stage HTML plan is archived at
+all 2,814 load in angr. The pilot label-contract run is **stopped for revision**: CAPA 9.1.0
+processed all 200 pilot samples, but only `anti_debug` (projected 473 functions) and `injection`
+(projected 1,127) clear the ~300-positive gate; `keylogger` projects to about 242. The keylogger
+pilot bucket is also contaminated by packed samples the Phase 0 filter missed (26/32, all with
+`is_packed=0`). See [`results/pilot/pilot_findings.md`](results/pilot/pilot_findings.md). There
+are no full-set CAPA labels, extracted graphs, or trained models yet. The original
+four-class/two-stage HTML plan is archived at
 [`docs/archive/legacy-two-stage-plan.html`](docs/archive/legacy-two-stage-plan.html) and is not
 current.
 

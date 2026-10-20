@@ -1,0 +1,135 @@
+{
+  "timestamp_utc": "2026-10-20T14:11:19+00:00",
+  "manifest": "/home/lali/cfg-gnn/data/manifest.csv",
+  "splits": "/home/lali/cfg-gnn/data/splits",
+  "out_dir": "/home/lali/cfg-gnn/data/labels/capa_raw",
+  "workers": 2,
+  "timeout_seconds": 300,
+  "selected": 6,
+  "by_bucket": {
+    "keylogger": 6
+  },
+  "argv": [
+    "/home/lali/cfg-gnn/src/label/run_capa.py",
+    "--sample-id",
+    "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+    "--sample-id",
+    "9039ad9b9279abe63122015bfb46d2c233293c3b12888965ff51b3543218fc1f",
+    "--sample-id",
+    "814eadd06f562241bc6613882204e74f7def661ca481b41c6089ec28d4c0f2d5",
+    "--sample-id",
+    "b9ebe03fdf0dc72692c25ba89b6b68100166e35717f20b5700e1f1a843a41aca",
+    "--sample-id",
+    "c46ce20ce9c186f98bfed19105d0b836a0884eb7e0641194170e2c3ad30603ae",
+    "--sample-id",
+    "dcae60413f6662b08edf8b2255555b8422eeb831ff0308560657f7ca0aad2db0",
+    "--workers",
+    "2",
+    "--timeout",
+    "300",
+    "--results",
+    "results/pilot/keylogger_nonpacked"
+  ],
+  "capa_argv_template": [
+    "/home/lali/tools/capa/capa",
+    "--rules",
+    "/home/lali/tools/capa-rules",
+    "-j",
+    "<repaired-temporary-copy>"
+  ],
+  "capa_path": "/home/lali/tools/capa/capa",
+  "rules_path": "/home/lali/tools/capa-rules",
+  "capa_version": "capa 9.1.0",
+  "rules_commit": "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5",
+  "rules_dirty": false,
+  "elapsed_seconds": 539.31,
+  "status_counts": {
+    "timeout": 1,
+    "ok": 5
+  },
+  "ok": 5,
+  "skipped": 0,
+  "failed": 0,
+  "timeouts": 1,
+  "failures": [
+    {
+      "sample_id": "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+      "sample_sha256": "e8d8a8a23ef4bce084fd9e1a6f42e2a9c492ebc8f1796e4aba262404e13965cb",
+      "source_bucket": "keylogger",
+      "family": "lokibot",
+      "status": "timeout",
+      "returncode": "timeout",
+      "seconds": 300.104,
+      "json_bytes": 0,
+      "error": "timeout after 300s"
+    }
+  ],
+  "runs": [
+    {
+      "sample_id": "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+      "sample_sha256": "e8d8a8a23ef4bce084fd9e1a6f42e2a9c492ebc8f1796e4aba262404e13965cb",
+      "source_bucket": "keylogger",
+      "family": "lokibot",
+      "status": "timeout",
+      "returncode": "timeout",
+      "seconds": 300.104,
+      "json_bytes": 0,
+      "error": "timeout after 300s"
+    },
+    {
+      "sample_id": "814eadd06f562241bc6613882204e74f7def661ca481b41c6089ec28d4c0f2d5",
+      "sample_sha256": "640831cd154c13d6e8bef5bc2a41a8b571eb9fa5695f56a1ee217fc917dbce5e",
+      "source_bucket": "keylogger",
+      "family": "bladabindi",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 221.613,
+      "json_bytes": 618378,
+      "error": ""
+    },
+    {
+      "sample_id": "9039ad9b9279abe63122015bfb46d2c233293c3b12888965ff51b3543218fc1f",
+      "sample_sha256": "b437bfa2fa8d234214ae3a320b1ceb4e82221be12a2cc2b386c9b09f888fd449",
+      "source_bucket": "keylogger",
+      "family": "lokibot",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 162.239,
+      "json_bytes": 1256700,
+      "error": ""
+    },
+    {
+      "sample_id": "b9ebe03fdf0dc72692c25ba89b6b68100166e35717f20b5700e1f1a843a41aca",
+      "sample_sha256": "6e1dccdaca3417e9d8edbdb074f955b431b93919c1fa042c61a3b0827d56075e",
+      "source_bucket": "keylogger",
+      "family": "bladabindi",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 12.474,
+      "json_bytes": 7331,
+      "error": ""
+    },
+    {
+      "sample_id": "c46ce20ce9c186f98bfed19105d0b836a0884eb7e0641194170e2c3ad30603ae",
+      "sample_sha256": "c2b989b36aa816d1013610e56dd4215cdc321e5f1bf63dcd4b1962cee57497ff",
+      "source_bucket": "keylogger",
+      "family": "agenttesla",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 226.473,
+      "json_bytes": 2150782,
+      "error": ""
+    },
+    {
+      "sample_id": "dcae60413f6662b08edf8b2255555b8422eeb831ff0308560657f7ca0aad2db0",
+      "sample_sha256": "6664607e277771b87e0b226c2773fdab8247491e797d33b832669efc533b6a1d",
+      "source_bucket": "keylogger",
+      "family": "agenttesla",
+      "status": "ok",
+      "returncode": 0,
+      "seconds": 33.309,
+      "json_bytes": 11725,
+      "error": ""
+    }
+  ]
+}

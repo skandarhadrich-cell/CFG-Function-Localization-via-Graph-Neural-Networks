@@ -24,6 +24,9 @@ data/processed/
 data/graphs/
 data/logs/
 data/labels/capa_raw/
+data/labels/capa_parsed.jsonl
+data/labels/function_labels.csv
+data/labels/function_labels.parquet
 scratch/
 
 # ── Serialized models, arrays, and graphs ────────────────────
@@ -37,6 +40,8 @@ scratch/
 *.npz
 *.npy
 results/checkpoints/
+results/pilot/mapping.jsonl
+results/pilot/keylogger_probe/
 
 # ── Logs and local noise ──────────────────────────────────────
 *.log

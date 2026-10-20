@@ -1,0 +1,1010 @@
+{
+  "count": 200,
+  "by_bucket": {
+    "antidebug": 84,
+    "injection": 84,
+    "keylogger": 32
+  },
+  "samples": [
+    {
+      "sample_id": "0021ac4cb0b28053edce577aed8791d94f52a039fc78853ff60137e9f1cf8baa",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "006cd0966d08d3df1e49863f1fe2a8829ea76c5e8c0cfba819ceb7cc744a85f9",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "03bd3dc9bf06449abe84fe1254777d0197d8cbb98130792333530ac984814aae",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "066231352366aca533e889682b40c0949e5420695c32ee01e908b84a4e9a54a7",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "075ec6d1e650468051e9fcee7e67120117461d16fd3a76b141e1bf786fc9083e",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "1131adda71c942cc44a284f426d8da46b66d402735fcc763556a1fe854681bfd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "15c6b7792687e4db511f85c42e9b680cbb39fc7bac961150259f5babbb57e5a1",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "179e7cc46f61ddc7bf6d3dadb26225107d32fb95f8d046425ab898072b8c3e6f",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "17d8367c73efb2f665c32344274acab4655e90b296f67dec71849ef2e1b82632",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "191224801816e4f4a5d4afb848d2155eb857f6105e0ca931dd2fb2983a1c0afd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "1de5b3b20112274f9adb360146cdd7964d7f17a0c83f18f07b7f6a4997d33eab",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "1ff38a5123cdf292a1705bcb827b9fcdc05cae35de324172db95cc90d29929bf",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "233197dd307595409eecc7d0037248e8b37aa90e0b2624e3e98571c3c4621e57",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "2c8dd08941cd268d9f05d72c34819dd63c307cb41f2dc339bd6c313770fa4a32",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "2e0646c8baf228e21c724fa2b5c13204cf8d80a38d60fa189dc6a8d5d9b8a847",
+      "source_bucket": "antidebug",
+      "family": "qakbot"
+    },
+    {
+      "sample_id": "2e7676363a00f5d9268fb4bb06d2a677abfe3d9dc9710747048515a6e496ca6b",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "2eae2fb8e77f83a77dc966e7d9be17d0f0f6e789a95d7214524a92379938ca20",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "2fa5f7a2acce53b090e67e6f961143c637a77a674b38a2c22547048abf7248c7",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "32e9d35d83fb14ccb78fbe15758bf6e778cc4cae8901bf57e486889e78998fb1",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "3441a03618e93ffedc3bab02bf9f68d53094a7dc51273d2825679e27688e829c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "3525299b2724c47f12e1c8af211a90dd9368924e7711ce3a90f86eb029fbba25",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "38e3bdb875f6a89bb251d61a62e3c58ff297111bf54aa8be807d3496c6166636",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "40805129cf13aeffc62722b4d974ab74289d850a86c889fe833e4d7f3d84975b",
+      "source_bucket": "antidebug",
+      "family": "qakbot"
+    },
+    {
+      "sample_id": "4190b24dbc97889a5f8f3e6dff017e463a61d329f0a73d154309a2121cd8f841",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "42b0444170c5e3aef2a56583eb863b54fd85d390e86c7cb8127f6f6a5e0808b5",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "4466de2611b0ccb72eb8f7cf6ddbc0b1ba3c307705affcc302150de59746ae81",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "45ba75489d4d4a4f069d2c3b3e95335f19141cfc36f8140c178e9f7708b1c5f8",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "4c57e294f3f6472300bb0ca19f8553b9f478701f37bf46ca6611bed749fe78d9",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "55a472f81e9456c9ef4d6c0d7625b1e280d0df9c86d400cfa8afc420696b7120",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "5765e0d686d5e0485f6e4107a3dca96c1c00f29e7ea846a2197a5982afefd726",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "5c3634688a32cfa6fdf2dd2b63a5bd6b82de14a32f2d1a083bc93e3ba3b87f93",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "60751b3a1ad3c21df073487ba0e6e266b8377a5240d83865b7dcccefdb3283e7",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "6364a0730a92ef90f2a792fe0309f76dd49f8bcdd2ae94a1b28a9ff114dc6479",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "699658558231f90810ee63c161990337795a48619d4f071beef2de0c9065a74f",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "6a172931416bcfa647a4288f7952aefc8c2bbaca709db34b33bb86817cda0954",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "6d236542161ce612ac621038276d3eaa0ce7f12e7c221c68be83671a953ee85c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "6e2c94d3736d2fb382c41df84e64aada01906052a94218e92c055f912f88deee",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "72f534b91537c89aef1a35f83c86c889b185eb80adf655254ea60a08e00aa8d5",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "7352b61f28de2c94fc4e96b0901e48448923a710c735b0af3d6b28af53db331f",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "73da0b7d63df2d96d56535c7dd8682a77f9c59b04179401ebf5a8749b61693bb",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "744f45909518ca0b6c16b42414fbd20c1e21d91d8ea10c6929f825747dc1182e",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "7fe1843bd2fcb47483997c8fc49759af42bdc4f5c413a2614af48b5abd815237",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "808fde005f1f69ee100eec569718867480c93af7e87da347c9f357a084df547f",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "842c280cad7476b1db08a8168c522b1a9251dd13a52567f58188d3ed0098232d",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "85e297c35f4163fa60bb75182e11fa4cda56476c740e05d1d68ba6384c9e5809",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "8cc2fad73a52459f2452f7f89f8c14260c8d6bc21aa8ce03d09ff9388ae35f17",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "92d1cd6549d591fb21bb24f4095c45204c431d7dcbf6682aab00aee4b12acf32",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "93005af8b0021945b660873e545a82860789668a5be3bdb934847616a762f466",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "9bf3a1516b829ade1ec69b62d5f2ca25651ade5b0d314e8ca4d93a9f795a15f0",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "9c9d987fead890cdfbeeef18f5ab0b645dd373730025c5d5257755ebf15d3133",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "a17241d5ee402a91bbbf09042ab4e09f9daa16f7109d755eb15d310789088351",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "a19db602fcb975e230dd59eacb8e6bc19516669a49128c2c8a1b13c3a141fb34",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "a6a51f31ce4e9bb0133fc09cbf70823ed583c45bbc22199dc4d7463ab5ea4128",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "a7400693a1ee5f681a53d6b87a8cc33c48af3df6e360438a43d665cb102f66dd",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "ad047a7430b8ad13c248bca26416aaf854f230d4c9e8b1e5db9c9307b6500618",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "b90b77f5b35424149d0add3cccc4f9795aa0bd2768259d879e747b58e55a8643",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "b943458a6d6d9e0e33a43a5b550f8703cff16842913650164d9e76e11f06aa9c",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "bb344a3bdbfcd250798655d98e6aa64b7bd3c11ed1154a4a1c9d3452e555daa7",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "bd6f53828a55720c1a1cc2b12230ec4d8b7cf1b6c0f257e623afbf7968dc7d5f",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "be89eade303a841930449eced08c10b3ac49d57cc7da77d8e037d4a3ce00309f",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "c25185cd0e89296e655453c8b057a27f24ae86f2a689081e14165f5b50fb84ff",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "c2d5e59585da46798bb609b6cf9695d0d34b87ad812e536071931cc92d7caec1",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "c90fb9a1a06855acc1975b514f7802f772d99718c3797c63dba07525be8ca9ad",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "cce4653ac945ff41ff8d61e28609324944b63edad7cf78f3cb4753d76afdc825",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "d236c7fb32b056fbe6b24e73f1c33a9ff7429a0e50ca3453237fd2134f4ed654",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "d3161dab17110072f69d06ec576f573a96df6765c8655df563323eb7c217be2d",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "d4dda7cc90951cdc65cd360fcdc030e602a3ebd23423baf84be21d9cc6347721",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "d8e4bcb3ffb114b980b1bbc63d64dfb67d38f23e4bf5e6103d99926b33d314e2",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "da988486625a18792f3498c96312dbb605bd73195815852166b34d0ee966fb59",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "dbce91f7d1a82052b2524acc8f9d729d3409753b68f42c10d344198ca73a8f18",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "df4cc33d8774c5ccc1b07b5796fa6b0a9db181ac12ac9edcc489a1f3e5775bcd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "e350148851182d4950590a46834289b45af5f91bba56f6adece0c08851db568a",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "e3ec57918e0b8fc72f11c1488ecd3653ae6de9ecb8b4a37d92f7e6e0e18e431d",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "e4c55ab7308854b586ad4ef91f5642f26b359c383e300012cfc9f5239b945953",
+      "source_bucket": "antidebug",
+      "family": "zbot"
+    },
+    {
+      "sample_id": "e6001f4b0e435a65a8710047239d92db8046bb3b047a44b82aafc60b7ed02a02",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "e7e9bce45e8ea7c04c03ebd97bf9d7c571b2f7c319fe2342aeb74f63e567b431",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "e96f02d9a7c3ff09045a88632dd343c4b977640a836f20264f208507f7128874",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "e9a50ef7cf49c463f0f834eb9d44ab7d94c80f1e26dc31441fc856a438b8dd0a",
+      "source_bucket": "antidebug",
+      "family": "qakbot"
+    },
+    {
+      "sample_id": "edfe661369db6b2ab1e726a806ae6c6f94d1c2f738cf4807cefecfc864b678c1",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "efec6d98fb8c59dc3f951caae2bdea13e13c2d87b7551331fd9e212236597e48",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "f3b2a00500c4447e10705dbb92bf5dbb91aab163c9f47d47b4db74df58c8ed73",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "f58a223b371c81b21a6806c1116b729f6763498ce6e556380afa2a36c7cdecd8",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "fd99ef3ed9259d4715bfc70527ae09cffae28f4b2eaba912717d4c42f033c46b",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "fdee7f951b2605a19dac2866b85ade8eaea9d712cf922d8a7f8c369ddd96941b",
+      "source_bucket": "antidebug",
+      "family": "gandcrab"
+    },
+    {
+      "sample_id": "055f5f7d9a6d32d96b52aa0f4b1b0c96435c8a9be36cc0a80293f098895236de",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "107c581cd9d75c3554aeaba8b7fbed45f070277978587aef78e5a416aa541dd4",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "10cc2729ecc9e1621bee7c546e0babf25587721147a470a8d05afea1f427d45c",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "124a3ab43373d3d6981429989a40ad82aaacd433926506d0099d21de2be92471",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "12f6c185c440688367ea65b04e23199ae7fb2f7c06065565a6e82052698f9eda",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "17d49244f61d905eda704d3d67bb7553631e11543636a173cdf039b43169a349",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "18de8f6caaebaaac9e938e0e60ac2e0ef4607a2777a19678d822601e78de09aa",
+      "source_bucket": "injection",
+      "family": "emotet"
+    },
+    {
+      "sample_id": "200937c288fbc97e5ad02ab914b04b69b9469446359382186876933fb67ff1b9",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "262069c31d524f16254b42c71e3631196754e61308fe5ba5e1a1c64dc9a7fe8b",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "28bf834d94cda756c766f22a2294d48fbdb2998d9614c4bb357cd29e8882d09b",
+      "source_bucket": "injection",
+      "family": "cryptinject"
+    },
+    {
+      "sample_id": "2ad4a9878820b33cbf4575a1661a03cfa6a72b807e6fb719953f283df8ea3bd0",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "2d458022d9035eb7b0796e814d4893330ed2f122f00e5e1b6647f033f104cf71",
+      "source_bucket": "injection",
+      "family": "cryptinject"
+    },
+    {
+      "sample_id": "2dfae4504ddcd9dac4ec8b4bc86c96687fa26e4f09d8321b3290dff1d446594d",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "30d2ebc8362227020f41863fb44f8d4fd60bd60c6852addca2ad1e23acef69a9",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "322b9ff4a47c879a252b224ba32ff9afb3255551437378d326fda9335463b893",
+      "source_bucket": "injection",
+      "family": "injector"
+    },
+    {
+      "sample_id": "326a7c5c4ff2986b9703049a49ecc7739e601fdc43925167e91d8c8ac77ab8cf",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "3325189a57270094408198e113daf8bb82d63c682f0394bfc7adba55bcf27dfe",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "34d685a510ae951d0e429818f58b6af19279e835f97d799a29d587f5bde8381f",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "35550f4295bbf19844dd86250b03767d7287d6ba63e484ce6f4c6f0485fc34f6",
+      "source_bucket": "injection",
+      "family": "cryptinject"
+    },
+    {
+      "sample_id": "3a4a68deeaa2e2290d656f3cb746bc6729476637bcbc6be364dc5b7445c4d0fe",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "3f0bb0f731dab7a3e8d8a5bc0b21e87142ab8aa92b18990471fd8b4cfda598b4",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "459ec80dafdba4169a0b188859cd2463b768dbf0a7bab4a864d97f663ad2ab70",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "478b9ed9a5ca05d1973b36a751c31ebe6c0f8281b3102f5182d8139c20b19ee8",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "4d456687183553aa2e4eb88196303cfe9654823c0d3b2762930c7d0079894d93",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "4e7f7419c2500a0b9473984939dd4feb9c11cddb05dc36c74c6ff06a5e22e067",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "4f456262a8f73127744ef8acd2864d6a347821015fa3c56000623268aa6e6c5d",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "4f57f788eb9cb73977c5aea605a0e29497dd3ef2c92dac8e25142aa698e7a4e3",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "51e515c14d530fd592053e80debd840bc2b786ebd5e6ce2a9a797b99d117fbd7",
+      "source_bucket": "injection",
+      "family": "emotet"
+    },
+    {
+      "sample_id": "5d9cbaaa911466e0e67c9e271960eed08d9dc9b9bc0491467a180c0f216da459",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "60de2b4db1abc6f9817e9294e239e4e4afdcbcf730d6b83749babfb420f6ad5b",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "654e6e82d8ad80924fb8858ba93c0d585e27c808e66a5ce81db8f6fb2b14cf20",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "66274eeed2bb48c70e9ad524777aa02f3a8811ac20a416760479851842b07f8c",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "667903eb47e2581ec71c2e0a76f307507dfb247ab5598480b4c25859de613cac",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "67bf113c2e04c0927e2b6eda783d1007f475f8689c2bc264031e182071a75a38",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "69e3c50fcd5f7ef6f9c353d1a86621bf0fda127bf5efb579b007c3b0eb991a0c",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "6ad8da4f58930195ff3935796e98c72099927beb240ff972c4d26766271cc44f",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "6b0459622c37bacb8cc305e45217d5f5595e8a14c05b9142b4ed329bd90d32db",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "6da776132b65ad20bd43da9e35e2e4ffd8f6ebbb687f85cfcff84379aa42734b",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "707d1213b2df3da9aaa4a22ade37e2700f3bf0945cd798858827044ac1573ad0",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "70fc299cdb3db6e9b737302c7ee246cc37c4367631026fe85b117b9e7fb8f9b6",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "730b268b19beddc4e3188e4e4b72339174e787b67dcdefe12f2749922c6eaa31",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "7811549b5b18b4e541f5bf6ab304a3ff807e4e6fe56c24bfbcdbf2d983881b3b",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "78f8c5452334b394a99cc9080fc35dbb4edb48c9c734c0570c530d06b41a14e2",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "816d72334fb029f06b3fef6296896d78a9d10f5858ac51267db2990313921528",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "8199b6749e720325813f23648c2d298671753291cb098ec6ff60e2b23ac143e5",
+      "source_bucket": "injection",
+      "family": "injector"
+    },
+    {
+      "sample_id": "827423819f5775ed7af8015bc708b6826503ac94185763cb36fa1320e821ad49",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "82edbb4225cbf5e07b2dae1a1aae48243ad6728efc5e641e7d305c7ba0a6a0cf",
+      "source_bucket": "injection",
+      "family": "vbinject"
+    },
+    {
+      "sample_id": "8389bf01422476f8a424870851a90397a2fddd783899bb4106563cde3d814e5d",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "8573610ed5e16bfe3051d973bc0841986041b6854b92172f69535d7fc5844f6e",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "86a982d10ccef6fc632b167254c80cf76a9ed022104ffdf53799c97a7a0453da",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "88c4923cbdcf8ee3f91e138d977bc3d0731fa1ff7bd266291def71f149f5e833",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "8ae065ec6c11f3da3686cefefff57ce0847fa3b489710ffcfa55f19f6b4ae3eb",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "93e7a8cdf8f8bd40a8c61e092494dd81397fbe9052dc82b74df3c60a2232db1d",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "941fcd02ec6640f17fa5c6eaee018e5182b52c6b18ecc7c62255e9f66ba747f8",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "9a1b12f639dc7578047245a00431689071f4af1ae4e57904c4f953dc677b81f9",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "9e57f3c9d8ba6bdfd9fd8f60b360d068d39f0d739dda619ee4560d9a4ca15d8f",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "a081d36d5da36e7f91b7196536d230c7b5c4a60569ab82bececb764b55688d2b",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "a1e28f11437c8ced176dccf8a98affd152d8882be732913ec9600693de3649fe",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "a70cb429a93089a9b9e9a3ed0a9cdee8a2d6ffd2f650d17143904b7877131561",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "a88e459b63f2060b550438031958e8603ec190fc35fdba34afaf126c1d7999b5",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "a8ebef9d7e97db268edb2a8380c5a886c2784203075631cd6a48e5fbdacc23fd",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "a9eb8762ad930241530f9b3b96a5bbd6241910d6961536ccedb90f88d905960a",
+      "source_bucket": "injection",
+      "family": "cryptinject"
+    },
+    {
+      "sample_id": "ab601d5077625ac9fc1c81cfff7e9147333091de6191396bd51b59319334f93e",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "ad5fe540c3716a409e106905db6c8485e6fa4cdf6270c7dbefb2714d25114ba7",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "adb000d2a15a4641eda5969b6c279a9e4f50e95a8f8992ba4b80183107cd6b82",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "adbb5f15e4ad91420a5f41d76a58b7c93c3554af413e4eef10d7e39f6c923f27",
+      "source_bucket": "injection",
+      "family": "emotet"
+    },
+    {
+      "sample_id": "b434a559f37cd1868394c92a3f4375acc27aa7d1ea172763ef25dcee80d96609",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "b85a9382ca8dec2a5d2a250170ca77b33e121f94737c4accf5c44f70d8cf170c",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "bfd3237d2961c5ddf6d7d84b491678d454f741321319d133726d953e5ac94d0a",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "c058fa64eac324107128d1e9ea167cd8d628b53f4ab9390c3ed6cfc6f8cf5a09",
+      "source_bucket": "injection",
+      "family": "cryptinject"
+    },
+    {
+      "sample_id": "c0b5d1e6bf0a06ffdea03124c0a4727403293606041567a5dbafe38d155f9d39",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "ca6fe06c34ea80eab83c903308435086e6a4be256d90b5303ceb756e185ecdc2",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "cba6aa46c6cf7640149f24bc1874e9e49777300ddfded80666714f58c1ef00d2",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "ce8f69ff8f059ce45ca13956612940e8b31eb5522e7b99a4f56133548cd47f41",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "ce9bc2e6715cbbf16727ff1e9412cdd5266beca83d1480389aa4970ce80f9d62",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "d1051e78654525c84e26f961143112bbe7d5c24a2a7c04872e754b6b7b8d32bd",
+      "source_bucket": "injection",
+      "family": "injector"
+    },
+    {
+      "sample_id": "e0f2f7b783cb9f38f68eb2bfac1665a6b84808ecfd15391d698f98c2a9c8a0ec",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "e27c47f47777a95889ac2ed1f4fb798bc75a2fef5364719fcbecd29a6fee5319",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "f062d4b246e8a84ee029b887723a52df5561f4677f37bcc3c523c0358080c41d",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "f1f692854f047f14d5a253a2fe43c6f0e3e1d6e8b16c3812d311b3cde8f9456c",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "f5714980447e545e3ccd1a0594dd4a6d5a7c9162fdf5c108b659774f066cf2ef",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "f783e7bb6744c51c4168d364993273d87f988affdbc75ddc46b720d3a0b47590",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "fc63e356b98c78a06ec7a89da263a69fa9b4b40f6f11ca4431b8ce9a1771a42a",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "febe1e8933c1923e1b2539a6b696f6695a74d904bfd54d0a4bdf677c9975301c",
+      "source_bucket": "injection",
+      "family": "ceeinject"
+    },
+    {
+      "sample_id": "08b6e7aac2c190bde02b55ab4bfdf75e105ee5ec83126ddefc50129402408e30",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "0a40b541abf9d8825a6a8a843194525e8d089836e172e05be8274d71dae9b775",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "0d7f06cb6e4a1f7a474f2734f7d9013d4bb3c6eee8cfa358f4c293c6106c6dad",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "0dba0527537643b95c6efaea642820f32fd0f161bc0e5d506f232006895e2769",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "24bb1006d4dcedf7d46635282d94a8fdfdb04e9e3de0f5b81dbd3876fc6eeb17",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "25f7142c85b30b558eed5654975200fe2c4cda25fe78a77f2152c550b26bb0d0",
+      "source_bucket": "keylogger",
+      "family": "pkeylog"
+    },
+    {
+      "sample_id": "287602fd251f4959b3aa5a344f2698bcc40ecb40c83a0dfac2b553cc22b3d763",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "30246669760dbb681a1ca78c4e8780d86c883fd968f9d130374c96ad369054ab",
+      "source_bucket": "keylogger",
+      "family": "pkeylog"
+    },
+    {
+      "sample_id": "37dae3513326f516de34da17600f09a055613b3060171ee31c29332562d9cd26",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "4ab648f441b79ac2fd1c8658b951846348b9cec4342873bb2d97607ef761b29b",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "4e8f1bd1ab6727e9c9b4f356293b384617905a74a71b468d1c3595b8d64e9f46",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "58d0a8264d900f72c713f0cd111d49c6c0867a9f51a1f80e8d7caf68640860ed",
+      "source_bucket": "keylogger",
+      "family": "pkeylog"
+    },
+    {
+      "sample_id": "6f41c64991ff42b765df59253e21b44590bf5dd6cd7c56e6f4fbff98f45dd55a",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "6f54eb94c3fb9ac748d578b88b15de3c86a7e876955bafe14d6eda78446d01a2",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "7a4ccc817c1c725e3c4b5fe08adc46dea0541dc19fcfba075a2dd3d5181514d7",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "7e1c56e06e4125f28378bed4854e56d781a18d2b9628b3b1f0217efcfa70ed4f",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "814eadd06f562241bc6613882204e74f7def661ca481b41c6089ec28d4c0f2d5",
+      "source_bucket": "keylogger",
+      "family": "bladabindi"
+    },
+    {
+      "sample_id": "818f5b670ebb046054d48f6858430cc33e068e5590d2701aec1b750bfbaa2b70",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "9039ad9b9279abe63122015bfb46d2c233293c3b12888965ff51b3543218fc1f",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "9b74b5e2787ea62ddb5ad4820fe043f82bbd785c2513d2f955456f9180f34a17",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "a04484eb583c612ea728d65036839032c4cc9ca5417db748d73cef42bf44919d",
+      "source_bucket": "keylogger",
+      "family": "pkeylog"
+    },
+    {
+      "sample_id": "b3f0654c2fa01fb2e72da5240150a714fcfcb4e59547ae39d4f508ef0eca20d7",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "b6f2a85f3c4da21b815dd5fc249660be7861c14a24807eea6a90aecfa812f99d",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "b9ebe03fdf0dc72692c25ba89b6b68100166e35717f20b5700e1f1a843a41aca",
+      "source_bucket": "keylogger",
+      "family": "bladabindi"
+    },
+    {
+      "sample_id": "c46ce20ce9c186f98bfed19105d0b836a0884eb7e0641194170e2c3ad30603ae",
+      "source_bucket": "keylogger",
+      "family": "agenttesla"
+    },
+    {
+      "sample_id": "c566d181fe7fbc64eb1ba9974ba1a647866b94a5785b1c8102bfafa9ca22cd20",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "d9c765ea6bc91300cb113a80690d0bd0eb9cedbd5f50f1743de4434e90f343d6",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "dcae60413f6662b08edf8b2255555b8422eeb831ff0308560657f7ca0aad2db0",
+      "source_bucket": "keylogger",
+      "family": "agenttesla"
+    },
+    {
+      "sample_id": "f1111a159070606bcc6d45fa13163b672cf7a649a2d43ab788cf24bf2d9673b9",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "f601e2e8cc90971bf877e6322df33c7ebf70483fc966bd5ce1ab1786a058329a",
+      "source_bucket": "keylogger",
+      "family": "lokibot"
+    },
+    {
+      "sample_id": "f6da1fa840bdc1eb4a1e52963de6b53c816c19aafcc3a64fee986bf924a92be2",
+      "source_bucket": "keylogger",
+      "family": "pkeylog"
+    }
+  ]
+}

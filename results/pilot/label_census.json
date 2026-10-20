@@ -1,0 +1,171 @@
+{
+  "samples_selected": 200,
+  "samples_processed": 200,
+  "missing_samples": [],
+  "capa": {
+    "samples": 200,
+    "capa_observed": 28992,
+    "capa_matched": 236,
+    "capa_weak_negative": 28756,
+    "function_match_count": 169,
+    "block_match_count": 77,
+    "target_rule_matches": 246,
+    "unresolved_block_matches": 0,
+    "label_counts": {
+      "anti_debug": 121,
+      "keylogger": 45,
+      "injection": 71
+    },
+    "ignored_scope_counts": {}
+  },
+  "per_bucket": {
+    "antidebug": {
+      "selected": 84,
+      "samples": 84,
+      "observed": 15600,
+      "positive_functions": 87,
+      "weak_negative": 15513,
+      "label_counts": {
+        "anti_debug": 21,
+        "keylogger": 12,
+        "injection": 55
+      }
+    },
+    "injection": {
+      "selected": 84,
+      "samples": 84,
+      "observed": 1953,
+      "positive_functions": 12,
+      "weak_negative": 1941,
+      "label_counts": {
+        "anti_debug": 0,
+        "keylogger": 0,
+        "injection": 12
+      }
+    },
+    "keylogger": {
+      "selected": 32,
+      "samples": 32,
+      "observed": 11439,
+      "positive_functions": 137,
+      "weak_negative": 11302,
+      "label_counts": {
+        "anti_debug": 100,
+        "keylogger": 33,
+        "injection": 4
+      }
+    }
+  },
+  "label_counts_by_bucket": {
+    "antidebug": {
+      "anti_debug": 21,
+      "keylogger": 12,
+      "injection": 55
+    },
+    "injection": {
+      "anti_debug": 0,
+      "keylogger": 0,
+      "injection": 12
+    },
+    "keylogger": {
+      "anti_debug": 100,
+      "keylogger": 33,
+      "injection": 4
+    }
+  },
+  "per_family_positive_samples": {
+    "antidebug|gandcrab|injection": 35,
+    "antidebug|gandcrab|keylogger": 9,
+    "antidebug|gandcrab|anti_debug": 1,
+    "antidebug|zbot|anti_debug": 20,
+    "antidebug|qakbot|keylogger": 1,
+    "injection|ceeinject|injection": 11,
+    "injection|cryptinject|injection": 1,
+    "keylogger|lokibot|anti_debug": 2,
+    "keylogger|lokibot|keylogger": 2,
+    "keylogger|lokibot|injection": 2,
+    "keylogger|bladabindi|anti_debug": 1,
+    "keylogger|agenttesla|anti_debug": 1,
+    "keylogger|agenttesla|keylogger": 1,
+    "keylogger|agenttesla|injection": 1
+  },
+  "clean_counts_full_set": {
+    "keylogger": 38,
+    "injection": 1359,
+    "antidebug": 1417
+  },
+  "projected_positive_functions": {
+    "anti_debug": 473.0,
+    "keylogger": 241.61607142857142,
+    "injection": 1126.6904761904761
+  },
+  "projection_by_bucket": {
+    "keylogger": {
+      "anti_debug": 118.75,
+      "keylogger": 39.1875,
+      "injection": 4.75
+    },
+    "injection": {
+      "anti_debug": 0.0,
+      "keylogger": 0.0,
+      "injection": 194.14285714285714
+    },
+    "antidebug": {
+      "anti_debug": 354.25,
+      "keylogger": 202.42857142857142,
+      "injection": 927.797619047619
+    }
+  },
+  "mapping": {
+    "samples": 5,
+    "angr_functions": 41472,
+    "capa_observed": 5645,
+    "mapped_capa_functions": 5634,
+    "unresolved_capa_functions": 11,
+    "target_matches": 156,
+    "mapped_target_matches": 156,
+    "unresolved_target_matches": 0,
+    "exact_function_mappings": 5111,
+    "containment_function_mappings": 523,
+    "exact_block_mappings": 29,
+    "containment_block_mappings": 0,
+    "many_to_one_collisions": 41,
+    "block_parent_mismatches": 0,
+    "labeled_functions": 5473,
+    "label_counts": {
+      "anti_debug": 99,
+      "injection": 24,
+      "keylogger": 25
+    },
+    "status_counts": {
+      "positive": 148,
+      "unlabeled": 35999,
+      "weak_negative": 5325
+    },
+    "capa_mapping_coverage": 0.9980513728963685,
+    "target_match_coverage": 1.0,
+    "requested": 5,
+    "completed": 5,
+    "failed": 0,
+    "timeouts": 0,
+    "missing_capa_json": [],
+    "failures": []
+  },
+  "mapping_samples": 5,
+  "mapping_scope": "subset",
+  "mapping_unresolved_rate": 0.0,
+  "gates": {
+    "mapping_available": true,
+    "mapping_covers_all_samples": false,
+    "capa_observed_mapping": true,
+    "target_match_mapping": true,
+    "unresolved_target_rate": true,
+    "positive_projection": {
+      "anti_debug": true,
+      "keylogger": false,
+      "injection": true
+    },
+    "all_samples_processed": true
+  },
+  "gate_pass": false
+}
