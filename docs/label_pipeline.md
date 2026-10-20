@@ -220,9 +220,23 @@ manifest. The selection is `--selection full`; it writes `results/full/`.
 - Resumable by `sample_id`; failures and timeouts are recorded in
   `results/full/capa_summary.json`, never silently dropped.
 
-Full-set CFG extraction (Phase 2) and mapping follow the same freeze and use
-the per-sample subprocess isolation, timeouts, RSS watchdog, and resume rules
-as the pilot. Mapping reuses CFG ranges rather than re-running angr.
+Full-set CFG extraction (Phase 2):
+
+```bash
+./venv/bin/python -m src.extract.batch_extract \
+  --workers 2 --timeout 1800 --rss-limit-gb 3
+```
+
+- One packed `.npz` per sample under `data/graphs_v2/cfg/`, resumable and atomic.
+- Each sample runs in an isolated process; timeouts and RSS overruns are recorded
+  by category in `results/full/cfg_summary.json`, never silently dropped.
+- Nodes come from angr's per-function graph; **edges are strictly
+  intraprocedural**. Call targets are node features, not edges. The extractor
+  refuses to emit a graph that is missing intraprocedural control flow, and it
+  logs dropped interprocedural (call/tail/hook/return) edges.
+
+Label mapping (Phase 3) then reuses stored CFG block ranges instead of running
+angr a second time.
 
 **Stop condition:** full-set labels are generated for review, but **model
 training does not start** until the Ghidra audit (section 11) and the full-set

@@ -22,9 +22,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--capa-json", type=Path, required=True)
     parser.add_argument("--scratch", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--cfg-path", type=Path, help="stored CFG to reuse instead of angr")
     args = parser.parse_args(argv)
 
-    payload = map_one(args.sample_id, args.binary, args.capa_json, args.scratch)
+    payload = map_one(
+        args.sample_id,
+        args.binary,
+        args.capa_json,
+        args.scratch,
+        cfg_path=args.cfg_path,
+    )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, sort_keys=True) + "\n")
     return 0

@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Any
 
 from src.extract.angr_cfg import extract_function_ranges
+from src.extract.cfg_store import functions_from_stored_cfg, load_cfg_summary
 from src.label.mapping import MappingResult, aggregate_mapping_summaries, map_capa_to_angr
 from src.label.parse_capa import parse_capa_file
 
@@ -46,18 +47,37 @@ def map_one(
     binary: Path,
     capa_json: Path,
     scratch_dir: Path,
+    cfg_path: Path | None = None,
 ) -> dict[str, Any]:
     capa = parse_capa_file(capa_json, sample_id=sample_id)
-    inventory = extract_function_ranges(binary, scratch_dir=scratch_dir)
+    if cfg_path is not None and cfg_path.exists():
+        # Phase 3: reuse the stored CFG.  No second angr pass, and the mapping
+        # is guaranteed to agree with the graph training will consume.
+        functions = functions_from_stored_cfg(cfg_path)
+        summary = load_cfg_summary(cfg_path)
+        base = summary["base_address"]
+        inventory_summary = {
+            "base_address": base,
+            "arch": summary["arch"],
+            "function_count": summary["function_count"],
+            "block_count": summary["block_count"],
+            "source": "stored_cfg",
+        }
+    else:
+        inventory = extract_function_ranges(binary, scratch_dir=scratch_dir)
+        functions = inventory.functions
+        base = inventory.base_address
+        inventory_summary = inventory.summary()
+        inventory_summary = {**inventory_summary, "source": "angr"}
     mapping = map_capa_to_angr(
         capa,
-        inventory.functions,
-        angr_base=inventory.base_address,
+        functions,
+        angr_base=base,
         sample_id=sample_id,
     )
     return {
         "sample_id": sample_id,
-        "inventory": inventory.summary(),
+        "inventory": inventory_summary,
         "mapping": mapping.as_dict(),
     }
 
@@ -68,6 +88,7 @@ def run_worker(
     capa_json: Path,
     scratch_dir: Path,
     timeout: float,
+    cfg_path: Path | None = None,
 ) -> dict[str, Any]:
     """Run one mapping task in an isolated process with a hard timeout."""
 
@@ -87,6 +108,8 @@ def run_worker(
         "--out",
         str(out_path),
     ]
+    if cfg_path is not None:
+        command += ["--cfg-path", str(cfg_path)]
     started = time.time()
     proc = subprocess.Popen(
         command,
@@ -145,6 +168,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, default=ROOT / "results/pilot/mapping.jsonl")
     parser.add_argument("--summary", type=Path, default=ROOT / "results/pilot/mapping_summary.json")
     parser.add_argument("--scratch", type=Path, default=ROOT / "data/processed/angr_scratch")
+    parser.add_argument(
+        "--cfg-dir",
+        type=Path,
+        help="directory of stored .npz CFGs; when set, mapping reuses them (no angr)",
+    )
     parser.add_argument("--sample-id", action="append", default=[])
     parser.add_argument("--samples-file", type=Path, help="pilot samples.json; restrict to its sample IDs")
     parser.add_argument("--limit", type=int)
@@ -159,6 +187,7 @@ def main(argv: list[str] | None = None) -> int:
     summary_path = _resolve(args.summary)
     scratch = _resolve(args.scratch)
     scratch.mkdir(parents=True, exist_ok=True)
+    cfg_dir = _resolve(args.cfg_dir) if args.cfg_dir else None
 
     if args.sample_id:
         sample_ids = list(dict.fromkeys(args.sample_id))
@@ -229,6 +258,11 @@ def main(argv: list[str] | None = None) -> int:
                 capa_dir / f"{sample_id}.json",
                 scratch,
                 args.sample_timeout,
+                (
+                    cfg_dir / f"{sample_id}.npz"
+                    if cfg_dir is not None and (cfg_dir / f"{sample_id}.npz").exists()
+                    else None
+                ),
             ): sample_id
             for sample_id in sample_ids
         }

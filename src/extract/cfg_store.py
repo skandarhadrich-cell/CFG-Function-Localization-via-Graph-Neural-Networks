@@ -85,3 +85,34 @@ def load_cfg_summary(path: Path) -> dict[str, Any]:
             "dropped_cross_edges": int(data["dropped_cross_edges"][0]),
             "dropped_call_edges": int(data["dropped_call_edges"][0]),
         }
+
+
+def functions_from_stored_cfg(path: Path) -> list[AngrFunction]:
+    """Rebuild label-mapping inventories from a stored CFG, without angr.
+
+    The mapping stage only needs function/block address ranges.  Reconstructing
+    them from the packed ``.npz`` avoids a second, expensive angr pass and
+    guarantees the mapping uses exactly the CFG that training will see.
+    """
+    from src.label.mapping import AngrBlock, AngrFunction
+
+    with np.load(path, allow_pickle=True) as data:
+        addrs = data["node_block_addr"]
+        sizes = data["node_block_size"]
+        func_ids = data["node_func_id"]
+        func_va = data["func_va"]
+
+    by_func: dict[int, list[AngrBlock]] = {}
+    for addr, size, func_id in zip(addrs, sizes, func_ids):
+        by_func.setdefault(int(func_id), []).append(
+            AngrBlock(va=int(addr), size=int(size))
+        )
+
+    functions: list[AngrFunction] = []
+    for func_id, blocks in by_func.items():
+        blocks.sort(key=lambda block: block.va)
+        functions.append(
+            AngrFunction(func_va=int(func_va[func_id]), blocks=tuple(blocks))
+        )
+    functions.sort(key=lambda func: func.func_va)
+    return functions
