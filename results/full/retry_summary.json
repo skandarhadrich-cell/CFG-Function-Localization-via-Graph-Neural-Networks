@@ -1,0 +1,102 @@
+{
+  "selection": "full",
+  "max_per_cluster": null,
+  "split_scope": "all_clean",
+  "manifest_clean_rows": 2733,
+  "timestamp_utc": "2026-10-20T21:54:10+00:00",
+  "manifest": "/home/lali/cfg-gnn/data/versions/v2/manifest.csv",
+  "splits": "/home/lali/cfg-gnn/data/versions/v2/splits",
+  "out_dir": "/home/lali/cfg-gnn/data/labels/capa_raw",
+  "workers": 2,
+  "timeout_seconds": 900,
+  "selected": 2,
+  "by_bucket": {
+    "injection": 2
+  },
+  "argv": [
+    "/home/lali/cfg-gnn/src/label/run_capa.py",
+    "--config",
+    "configs/pilot_stage1.toml",
+    "--selection",
+    "full",
+    "--workers",
+    "2",
+    "--force",
+    "--samples-out",
+    "results/full/retry_samples.json",
+    "--summary-out",
+    "results/full/retry_summary.json",
+    "--sample-id",
+    "4944e0b088ebc55e3eb2cb7650ee32c4e013791d9276be18cb0ed42d7bd8cac1",
+    "--sample-id",
+    "8d451d650b5e86a15b13f5d992702a4ada45124c8e9149def84d33cacb3efc28"
+  ],
+  "capa_argv_template": [
+    "/home/lali/tools/capa/capa",
+    "--rules",
+    "/home/lali/tools/capa-rules",
+    "-j",
+    "<repaired-temporary-copy>"
+  ],
+  "capa_path": "/home/lali/tools/capa/capa",
+  "rules_path": "/home/lali/tools/capa-rules",
+  "capa_version": "capa 9.1.0",
+  "rules_commit": "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5",
+  "rules_dirty": false,
+  "elapsed_seconds": 128.24,
+  "status_counts": {
+    "failed": 2
+  },
+  "ok": 0,
+  "skipped": 0,
+  "failed": 2,
+  "timeouts": 0,
+  "failures": [
+    {
+      "sample_id": "4944e0b088ebc55e3eb2cb7650ee32c4e013791d9276be18cb0ed42d7bd8cac1",
+      "sample_sha256": "fae3baab7b877d2a35f96894c355bbcfb7b97b00a63a1fa9fcdf730114b02736",
+      "source_bucket": "injection",
+      "family": "vbinject",
+      "status": "failed",
+      "returncode": "error",
+      "seconds": 89.807,
+      "json_bytes": 0,
+      "error": "RuntimeError: CAPA exit -9: "
+    },
+    {
+      "sample_id": "8d451d650b5e86a15b13f5d992702a4ada45124c8e9149def84d33cacb3efc28",
+      "sample_sha256": "7d6c1cbac9983fa42b3e757774be2ab5b3f83e8784df3857a13bb4d431d7b7e7",
+      "source_bucket": "injection",
+      "family": "vbinject",
+      "status": "failed",
+      "returncode": "error",
+      "seconds": 127.989,
+      "json_bytes": 0,
+      "error": "RuntimeError: CAPA exit -9: "
+    }
+  ],
+  "runs": [
+    {
+      "sample_id": "4944e0b088ebc55e3eb2cb7650ee32c4e013791d9276be18cb0ed42d7bd8cac1",
+      "sample_sha256": "fae3baab7b877d2a35f96894c355bbcfb7b97b00a63a1fa9fcdf730114b02736",
+      "source_bucket": "injection",
+      "family": "vbinject",
+      "status": "failed",
+      "returncode": "error",
+      "seconds": 89.807,
+      "json_bytes": 0,
+      "error": "RuntimeError: CAPA exit -9: "
+    },
+    {
+      "sample_id": "8d451d650b5e86a15b13f5d992702a4ada45124c8e9149def84d33cacb3efc28",
+      "sample_sha256": "7d6c1cbac9983fa42b3e757774be2ab5b3f83e8784df3857a13bb4d431d7b7e7",
+      "source_bucket": "injection",
+      "family": "vbinject",
+      "status": "failed",
+      "returncode": "error",
+      "seconds": 127.989,
+      "json_bytes": 0,
+      "error": "RuntimeError: CAPA exit -9: "
+    }
+  ]
+}

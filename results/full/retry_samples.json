@@ -1,0 +1,18 @@
+{
+  "count": 2,
+  "by_bucket": {
+    "injection": 2
+  },
+  "samples": [
+    {
+      "sample_id": "4944e0b088ebc55e3eb2cb7650ee32c4e013791d9276be18cb0ed42d7bd8cac1",
+      "source_bucket": "injection",
+      "family": "vbinject"
+    },
+    {
+      "sample_id": "8d451d650b5e86a15b13f5d992702a4ada45124c8e9149def84d33cacb3efc28",
+      "source_bucket": "injection",
+      "family": "vbinject"
+    }
+  ]
+}
