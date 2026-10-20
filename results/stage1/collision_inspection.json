@@ -1,0 +1,643 @@
+{
+  "samples_with_collisions": 70,
+  "total_collision_rows": 380,
+  "top_samples": [
+    {
+      "sample_id": "5b8a813fd2b09ba46b9eb8e667929d5073fab55399ca2465f70132f1d329f2c6",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 13,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "b01e044b4e829559817c6bb520b04e03a21c8c5f607ee4e70f766b57aea3c51d",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 13,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "d658fdc782f408055387f1d9885dc3d2b0b83cfce8c00db0919608b8d3ef5a4c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 13,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "f5b34cdb7ef7b9c1b9be252467496f4921bad98f132add23c76b93c6cf4c6b71",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 13,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "17f1765b0c57bcb573c22d7085c98eafd0e1fc03cb27c2ba16fe8bb508abf4c0",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "3418c0faa0787b7ec93ec37f5bcfe7baa6e5ef6f5ca988f9d7b70c8adbbbbe36",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "5fb76199c54212c5b13bf67bdb6f381329544c0f08e0db3c6771f5b960f2265c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "67cbe64817f3a9f1b8ca35610823d740bfb2e66ec6c599bb6fb572fbd3febc66",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "6d459a04dff663db6ac55d8a0c0c191c0249832456e5330a1817b780d57e3862",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "df4cc33d8774c5ccc1b07b5796fa6b0a9db181ac12ac9edcc489a1f3e5775bcd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "f3b2a00500c4447e10705dbb92bf5dbb91aab163c9f47d47b4db74df58c8ed73",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 12,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "15fafbc5c3a2b013bb9bcaa69353396a1aab3f6aed903b01a296636679ae7b8c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 11,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "38e2dce9dc7f0f497ed2d00d95c77fa744a77801923c34d814dd1610845886c1",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 10,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "606814baed11becec2c9b9ae754ffa4e2711f5a2eb72fb3b2065b63a9df31f44",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 10,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "f2e5a312521cd4b0655bde928e41a3f75627ef154a05680be4df71cb74e705b6",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 10,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "f526b29790cc2f2f605d365d50824f95d1b026e2b37deed01c97b4577a5ed295",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 10,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "5b5237c44b429a8606b63f335e1ffa0b1b00384b324a075a192e695d2582d3d4",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 9,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "a681c6bc3558ddcfb3cd52f9283deffa69b395f6e5cabcf33b2e91d86e618bbf",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 9,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "df5b3e718e7d001efb825c48d629d37bef161032b0b504e519045ace41d9f79b",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 9,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "e0aaf3b3922e67dbf242243ecead3e4c04b2a3ea926b9dd9eb41392344996c8f",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 9,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "dc9810f59d2e39b73e509fa6dbfc8e22ceff431fa7258ad7c31ee2f45565c987",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 8,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "c74962b7fe3aa9151161ab5360d78a3359a3f7b221042f02d05dce4d28446f75",
+      "source_bucket": "injection",
+      "family": "injector",
+      "collisions": 8,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "430a8a519c688bc0aab1b2ed10ed35aa8f97d0a3ebe979bc60ab3e532c1bbf97",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 7,
+      "positive_collisions": 0
+    },
+    {
+      "sample_id": "4bd0c64f126d37894e161a95e43a343bcdd18b8fdcd60c4934df692d28f0ae41",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "collisions": 7,
+      "positive_collisions": 0
+    }
+  ],
+  "representative_collisions": [
+    {
+      "sample_id": "08aa74346aa164eb5a97a03e78e7d2a5567f691f46cc2c16effb184c08110efd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4200671,
+      "capa_func_va": 6367,
+      "capa_func_vas": [
+        6367,
+        48350,
+        48358,
+        48385,
+        48393
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "08aa74346aa164eb5a97a03e78e7d2a5567f691f46cc2c16effb184c08110efd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4204443,
+      "capa_func_va": 10139,
+      "capa_func_vas": [
+        10139,
+        26261,
+        30031
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4212201,
+      "capa_func_va": 17897,
+      "capa_func_vas": [
+        17897,
+        46484
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4212836,
+      "capa_func_va": 119339,
+      "capa_func_vas": [
+        119339,
+        119347,
+        119374,
+        119382
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "containment"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4216517,
+      "capa_func_va": 22213,
+      "capa_func_vas": [
+        22213,
+        24505
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4234813,
+      "capa_func_va": 40593,
+      "capa_func_vas": [
+        40593,
+        40632,
+        40640
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "containment"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4237290,
+      "capa_func_va": 42986,
+      "capa_func_vas": [
+        42986,
+        43072
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4237545,
+      "capa_func_va": 43241,
+      "capa_func_vas": [
+        43241,
+        43249
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4242054,
+      "capa_func_va": 47750,
+      "capa_func_vas": [
+        47750,
+        47770,
+        47775,
+        47780,
+        47784,
+        47788
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4244527,
+      "capa_func_va": 50223,
+      "capa_func_vas": [
+        50223,
+        50302
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4253188,
+      "capa_func_va": 58884,
+      "capa_func_vas": [
+        58884,
+        58924,
+        59000,
+        59097
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4253476,
+      "capa_func_va": 59172,
+      "capa_func_vas": [
+        59172,
+        59202,
+        59341
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4262141,
+      "capa_func_va": 67917,
+      "capa_func_vas": [
+        67917,
+        67956,
+        67964
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "containment"
+    },
+    {
+      "sample_id": "0a970f2d0a37a9790f3cd13cad75df5ed649c2370b00c1056fb98b768f65cc21",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4278336,
+      "capa_func_va": 84032,
+      "capa_func_vas": [
+        84032,
+        84232,
+        84391
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "04410460a193f65f8c99511068f13dca8d49f3f26deacf7d27fc72baa5b270cd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4217486,
+      "capa_func_va": 23182,
+      "capa_func_vas": [
+        23182,
+        30587
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "04410460a193f65f8c99511068f13dca8d49f3f26deacf7d27fc72baa5b270cd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4246691,
+      "capa_func_va": 52387,
+      "capa_func_vas": [
+        52387,
+        52531
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "1131adda71c942cc44a284f426d8da46b66d402735fcc763556a1fe854681bfd",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4198400,
+      "capa_func_va": 4096,
+      "capa_func_vas": [
+        4096,
+        4740
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0ff806574c22cc7eb6834485d1c2302e01f5bd618fe2b1c16755a8904532649c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4209354,
+      "capa_func_va": 15050,
+      "capa_func_vas": [
+        15050,
+        86958,
+        86966
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "0ff806574c22cc7eb6834485d1c2302e01f5bd618fe2b1c16755a8904532649c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4209643,
+      "capa_func_va": 15339,
+      "capa_func_vas": [
+        15339,
+        86762,
+        86770,
+        86797,
+        86805,
+        86832,
+        86840,
+        86851,
+        86878,
+        86896,
+        86923,
+        86931
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "125c04bf0508fa3460220638568944bb820589d2c2f878f5ad37d7ada7be002c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4266980,
+      "capa_func_va": 72676,
+      "capa_func_vas": [
+        72676,
+        72826
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "125c04bf0508fa3460220638568944bb820589d2c2f878f5ad37d7ada7be002c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4272672,
+      "capa_func_va": 79084,
+      "capa_func_vas": [
+        79084,
+        79192,
+        79352,
+        79524,
+        79528,
+        79560
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "containment"
+    },
+    {
+      "sample_id": "15fafbc5c3a2b013bb9bcaa69353396a1aab3f6aed903b01a296636679ae7b8c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4209993,
+      "capa_func_va": 99122,
+      "capa_func_vas": [
+        99122,
+        99130,
+        99157,
+        99165
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "containment"
+    },
+    {
+      "sample_id": "15fafbc5c3a2b013bb9bcaa69353396a1aab3f6aed903b01a296636679ae7b8c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4214727,
+      "capa_func_va": 20423,
+      "capa_func_vas": [
+        20423,
+        22413
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "15fafbc5c3a2b013bb9bcaa69353396a1aab3f6aed903b01a296636679ae7b8c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4231504,
+      "capa_func_va": 37200,
+      "capa_func_vas": [
+        37200,
+        37465,
+        37508
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "exact"
+    },
+    {
+      "sample_id": "15fafbc5c3a2b013bb9bcaa69353396a1aab3f6aed903b01a296636679ae7b8c",
+      "source_bucket": "antidebug",
+      "family": "gandcrab",
+      "func_va": 4231891,
+      "capa_func_va": 37671,
+      "capa_func_vas": [
+        37671,
+        37710,
+        37718
+      ],
+      "label_status": "weak_negative",
+      "label_anti_debug": 0,
+      "label_injection": 0,
+      "matched_rules": [],
+      "matched_block_vas": [],
+      "mapping_method": "containment"
+    }
+  ]
+}

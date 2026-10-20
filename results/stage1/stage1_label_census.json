@@ -1,0 +1,186 @@
+{
+  "samples_selected": 200,
+  "samples_processed": 200,
+  "missing_samples": [],
+  "active_labels": [
+    "anti_debug",
+    "injection"
+  ],
+  "capa": {
+    "samples": 200,
+    "capa_observed": 17872,
+    "capa_matched": 146,
+    "capa_weak_negative": 17726,
+    "function_match_count": 41,
+    "block_match_count": 120,
+    "target_rule_matches": 161,
+    "unresolved_block_matches": 0,
+    "label_counts": {
+      "anti_debug": 29,
+      "keylogger": 12,
+      "injection": 106
+    },
+    "ignored_scope_counts": {},
+    "active_positive_functions": 135,
+    "active_labels": [
+      "anti_debug",
+      "injection"
+    ]
+  },
+  "per_bucket": {
+    "antidebug": {
+      "selected": 101,
+      "samples": 101,
+      "observed": 15743,
+      "positive_functions": 121,
+      "weak_negative": 15622,
+      "label_counts": {
+        "anti_debug": 29,
+        "injection": 92
+      }
+    },
+    "injection": {
+      "selected": 99,
+      "samples": 99,
+      "observed": 2129,
+      "positive_functions": 14,
+      "weak_negative": 2115,
+      "label_counts": {
+        "anti_debug": 0,
+        "injection": 14
+      }
+    }
+  },
+  "label_counts_by_bucket": {
+    "antidebug": {
+      "anti_debug": 29,
+      "injection": 92
+    },
+    "injection": {
+      "anti_debug": 0,
+      "injection": 14
+    }
+  },
+  "per_family_positive_samples": {
+    "antidebug|gandcrab|anti_debug": 3,
+    "antidebug|gandcrab|injection": 34,
+    "antidebug|zbot|anti_debug": 26,
+    "antidebug|zbot|injection": 1,
+    "injection|ceeinject|injection": 14
+  },
+  "clean_counts_full_set": {
+    "keylogger": 12,
+    "injection": 1340,
+    "antidebug": 1381
+  },
+  "projected_positive_functions": {
+    "anti_debug": 396.5247524752475,
+    "injection": 1447.4355435543555
+  },
+  "projection_by_bucket": {
+    "keylogger": {
+      "anti_debug": null,
+      "injection": null
+    },
+    "injection": {
+      "anti_debug": 0.0,
+      "injection": 189.49494949494948
+    },
+    "antidebug": {
+      "anti_debug": 396.5247524752475,
+      "injection": 1257.940594059406
+    }
+  },
+  "diversity": {
+    "anti_debug": {
+      "positive_functions": 29,
+      "positive_binaries": 29,
+      "positive_clusters": 3,
+      "positive_families": 2,
+      "top_binary_share": 0.034482758620689655,
+      "top_cluster_share": 0.896551724137931,
+      "top_family_share": 0.896551724137931,
+      "checks": {
+        "positive_functions": false,
+        "positive_binaries": true,
+        "positive_clusters": false,
+        "positive_families": false,
+        "top_binary_share": true,
+        "top_cluster_share": false
+      },
+      "ready": false
+    },
+    "injection": {
+      "positive_functions": 106,
+      "positive_binaries": 49,
+      "positive_clusters": 21,
+      "positive_families": 3,
+      "top_binary_share": 0.19811320754716982,
+      "top_cluster_share": 0.39622641509433965,
+      "top_family_share": 0.8584905660377359,
+      "checks": {
+        "positive_functions": false,
+        "positive_binaries": true,
+        "positive_clusters": true,
+        "positive_families": true,
+        "top_binary_share": true,
+        "top_cluster_share": true
+      },
+      "ready": false
+    }
+  },
+  "mapping": {
+    "samples": 200,
+    "angr_functions": 194436,
+    "capa_observed": 17872,
+    "mapped_capa_functions": 17799,
+    "unresolved_capa_functions": 73,
+    "target_matches": 161,
+    "mapped_target_matches": 161,
+    "unresolved_target_matches": 0,
+    "exact_function_mappings": 16063,
+    "containment_function_mappings": 1736,
+    "exact_block_mappings": 120,
+    "containment_block_mappings": 0,
+    "many_to_one_collisions": 380,
+    "block_parent_mismatches": 0,
+    "labeled_functions": 16515,
+    "label_counts": {
+      "anti_debug": 29,
+      "injection": 106,
+      "keylogger": 12
+    },
+    "status_counts": {
+      "positive": 146,
+      "unlabeled": 177921,
+      "weak_negative": 16369
+    },
+    "capa_mapping_coverage": 0.9959153983885407,
+    "target_match_coverage": 1.0,
+    "requested": 200,
+    "completed": 200,
+    "failed": 0,
+    "timeouts": 0,
+    "missing_capa_json": []
+  },
+  "mapping_samples": 200,
+  "mapping_scope": "pilot",
+  "mapping_unresolved_rate": 0.0,
+  "gates": {
+    "mapping_available": true,
+    "mapping_covers_all_samples": true,
+    "capa_observed_mapping": true,
+    "target_match_mapping": true,
+    "unresolved_target_rate": true,
+    "positive_projection": {
+      "anti_debug": true,
+      "injection": true
+    },
+    "all_samples_processed": true,
+    "diversity": {
+      "anti_debug": false,
+      "injection": false
+    }
+  },
+  "gate_pass": true
+}

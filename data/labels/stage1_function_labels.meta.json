@@ -1,0 +1,62 @@
+{
+  "label_contract_version": "stage1-v2",
+  "active_labels": [
+    "anti_debug",
+    "injection"
+  ],
+  "keylogger_in_stage1": false,
+  "label_normalization": "capa addresses normalized to RVA; angr func_va/mapped_block_vas absolute",
+  "source_mapping": "/home/lali/cfg-gnn/results/stage1/mapping.jsonl",
+  "samples": 200,
+  "functions": 194436,
+  "status_counts": {
+    "unlabeled": 177921,
+    "weak_negative": 16380,
+    "positive": 135
+  },
+  "label_counts": {
+    "anti_debug": 29,
+    "injection": 106
+  },
+  "label_diversity": {
+    "anti_debug": {
+      "positive_functions": 29,
+      "positive_binaries": 29,
+      "positive_clusters": 3,
+      "positive_families": 2,
+      "top_binary_share": 0.034482758620689655,
+      "top_cluster_share": 0.896551724137931
+    },
+    "injection": {
+      "positive_functions": 106,
+      "positive_binaries": 49,
+      "positive_clusters": 21,
+      "positive_families": 3,
+      "top_binary_share": 0.19811320754716982,
+      "top_cluster_share": 0.39622641509433965
+    }
+  },
+  "keylogger_evidence_functions": 12,
+  "mapping_method_counts": {
+    "unmapped": 177921,
+    "exact": 16063,
+    "containment": 452
+  },
+  "collisions": 380,
+  "by_bucket": {
+    "antidebug": {
+      "functions": 51621,
+      "positive": 121,
+      "weak_negative": 14526,
+      "unlabeled": 36974
+    },
+    "injection": {
+      "functions": 142815,
+      "positive": 14,
+      "weak_negative": 1854,
+      "unlabeled": 140947
+    }
+  },
+  "csv": "/home/lali/cfg-gnn/data/labels/stage1_function_labels.csv",
+  "parquet": "/home/lali/cfg-gnn/data/labels/stage1_function_labels.parquet"
+}
