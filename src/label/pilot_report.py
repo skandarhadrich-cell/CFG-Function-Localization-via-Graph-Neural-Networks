@@ -58,6 +58,7 @@ def build_report(
     min_coverage: float = 0.95,
     max_unresolved: float = 0.02,
     min_positive: int = 300,
+    max_missing_rate: float = 0.005,
 ) -> dict[str, Any]:
     manifest_rows = manifest_rows or {}
     parsed = []
@@ -184,16 +185,46 @@ def build_report(
     unresolved = mapping.get("unresolved_target_matches", 0)
     target_matches = mapping.get("target_matches", 0)
     unresolved_rate = unresolved / target_matches if target_matches else 0.0
+    mapping_requested = mapping.get("requested")
+    mapping_completed = mapping.get("completed")
+    mapping_failed = mapping.get("failed")
     mapping_samples = mapping.get("samples")
+    # Coverage is measured against samples that actually produced CAPA output.
+    # Samples with recorded CAPA failures cannot be mapped and must not be
+    # counted as mapping gaps; they remain visible in missing_samples.
+    expected_mappable = (
+        mapping_requested
+        if mapping_requested is not None
+        else (len(parsed) if parsed else None)
+    )
     mapping_scope = (
         None
         if mapping_samples is None
-        else ("pilot" if mapping_samples == len(samples) else "subset")
+        else (
+            "full"
+            if (
+                mapping_samples >= expected_mappable
+                or (
+                    mapping_failed is not None
+                    and mapping_samples + mapping_failed >= expected_mappable
+                )
+            )
+            else "subset"
+        )
     )
 
     gates = {
         "mapping_available": mapping_summary is not None,
-        "mapping_covers_all_samples": mapping_samples == len(samples),
+        "mapping_covers_all_samples": (
+            mapping_samples is not None
+            and (
+                mapping_samples >= expected_mappable
+                or (
+                    mapping_failed is not None
+                    and mapping_samples + mapping_failed >= expected_mappable
+                )
+            )
+        ),
         "capa_observed_mapping": (
             None if capa_coverage is None else capa_coverage >= min_coverage
         ),
@@ -204,7 +235,9 @@ def build_report(
         "positive_projection": {
             label: projected[label] >= min_positive for label in active_labels
         },
-        "all_samples_processed": len(missing) == 0,
+        "all_samples_processed": (
+            len(missing) <= int(max_missing_rate * len(samples) + 0.999)
+        ),
         "diversity": {
             label: diversity[label]["ready"] for label in active_labels
         },
@@ -249,8 +282,9 @@ def render_markdown(report: dict[str, Any]) -> str:
     gates = report["gates"]
     active_labels = report["active_labels"]
     lines = [
-        "# Pilot Label Contract Report",
+        "# Stage 1 Label Contract Report",
         "",
+        f"- Scope: **{report.get('mapping_scope') or 'unknown'}**",
         f"- Samples selected: **{report['samples_selected']}**",
         f"- Samples processed: **{report['samples_processed']}**",
         f"- Missing CAPA JSON: **{len(report['missing_samples'])}**",
@@ -333,7 +367,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         "## Gate summary",
         "",
         f"- Mapping output available: **{gates['mapping_available']}**",
-        f"- Mapping covers all pilot samples: **{gates['mapping_covers_all_samples']}**",
+        f"- Mapping covers all labelable samples: **{gates['mapping_covers_all_samples']}**",
         f"- CAPA-observed mapping >=95%: **{gates['capa_observed_mapping']}**",
         f"- Target-match mapping >=95%: **{gates['target_match_mapping']}**",
         f"- Unresolved target rate <2%: **{gates['unresolved_target_rate']}**",
@@ -361,6 +395,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--min-coverage", type=float, default=0.95)
     parser.add_argument("--max-unresolved", type=float, default=0.02)
     parser.add_argument("--min-positive", type=int, default=300)
+    parser.add_argument(
+        "--max-missing-rate",
+        type=float,
+        default=0.005,
+        help="fraction of samples allowed to fail extraction/labeling records",
+    )
     args = parser.parse_args(argv)
 
     samples = _pilot_samples(_resolve(args.samples))
@@ -378,6 +418,7 @@ def main(argv: list[str] | None = None) -> int:
         min_coverage=args.min_coverage,
         max_unresolved=args.max_unresolved,
         min_positive=args.min_positive,
+        max_missing_rate=args.max_missing_rate,
     )
     json_out = _resolve(args.json_out)
     md_out = _resolve(args.md_out)

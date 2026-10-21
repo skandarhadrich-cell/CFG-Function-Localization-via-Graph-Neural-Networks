@@ -1,0 +1,46 @@
+{
+  "active_labels": [
+    "anti_debug",
+    "injection"
+  ],
+  "labels": {
+    "anti_debug": {
+      "ready": false,
+      "positive_functions": 534,
+      "positive_binaries": 373,
+      "positive_clusters": 21,
+      "positive_families": 10,
+      "top_binary_share": 0.1760299625468165,
+      "top_cluster_share": 0.5131086142322098,
+      "checks": {
+        "positive_functions": true,
+        "positive_binaries": true,
+        "positive_clusters": true,
+        "positive_families": true,
+        "top_binary_share": true,
+        "top_cluster_share": false
+      }
+    },
+    "injection": {
+      "ready": true,
+      "positive_functions": 1355,
+      "positive_binaries": 808,
+      "positive_clusters": 110,
+      "positive_families": 12,
+      "top_binary_share": 0.015498154981549815,
+      "top_cluster_share": 0.32767527675276753,
+      "checks": {
+        "positive_functions": true,
+        "positive_binaries": true,
+        "positive_clusters": true,
+        "positive_families": true,
+        "top_binary_share": true,
+        "top_cluster_share": true
+      }
+    }
+  },
+  "all_ready": false,
+  "mapping_scope": "full",
+  "mapping_samples": 2728,
+  "gate_pass": true
+}

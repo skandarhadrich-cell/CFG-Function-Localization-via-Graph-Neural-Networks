@@ -29,6 +29,8 @@ data/labels/function_labels.csv
 data/labels/function_labels.parquet
 data/labels/stage1_function_labels.csv
 data/labels/stage1_function_labels.parquet
+data/labels/stage1_full_function_labels.csv
+data/labels/stage1_full_function_labels.parquet
 data/processed_v2/
 data/graphs_v2/
 scratch/
@@ -47,6 +49,11 @@ results/checkpoints/
 results/pilot/mapping.jsonl
 results/pilot/keylogger_probe/
 results/stage1/mapping.jsonl
+results/full/mapping.jsonl
+results/full/mapping.jsonl.lock
+results/full/mapping.stale.jsonl
+results/full/retry_samples.json
+results/full/retry_summary.json
 
 # ── Logs and local noise ──────────────────────────────────────
 *.log

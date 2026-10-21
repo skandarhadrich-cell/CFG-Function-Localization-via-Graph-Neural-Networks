@@ -292,7 +292,10 @@ def main(argv: list[str] | None = None) -> int:
         "total_nodes": sum(r["summary"]["node_count"] for r in results_rows),
         "total_edges": sum(r["summary"]["edge_count"] for r in results_rows),
         "dropped_cross_edges": sum(
-            r["summary"]["dropped_cross_edges"] for r in results_rows
+            r["summary"].get("dropped_cross_edges", 0) for r in results_rows
+        ),
+        "dropped_call_edges": sum(
+            r["summary"].get("dropped_call_edges", 0) for r in results_rows
         ),
         "peak_rss_mb": max((r.get("peak_mb", 0.0) for r in results_rows), default=0.0),
         "failures": failures[:50],

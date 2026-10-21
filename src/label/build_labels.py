@@ -42,6 +42,16 @@ def _manifest_paths(manifest: Path) -> dict[str, Path]:
         }
 
 
+def _manifest_clean_ids(manifest: Path) -> set[str]:
+    """Sample IDs the run is allowed to label (clean v2 rows only)."""
+    with manifest.open(newline="") as fh:
+        return {
+            row["sample_id"]
+            for row in csv.DictReader(fh)
+            if row.get("is_clean", "1") == "1"
+        }
+
+
 def map_one(
     sample_id: str,
     binary: Path,
@@ -182,6 +192,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     manifest = _manifest_paths(_resolve(args.manifest))
+    clean_ids = _manifest_clean_ids(_resolve(args.manifest))
     capa_dir = _resolve(args.capa_dir)
     out_path = _resolve(args.out)
     summary_path = _resolve(args.summary)
@@ -202,6 +213,16 @@ def main(argv: list[str] | None = None) -> int:
         )
     if args.limit is not None:
         sample_ids = sample_ids[: args.limit]
+    # Never label a sample outside the frozen clean set.  When the caller gives
+    # no explicit list we glob the CAPA directory, which can contain stale or
+    # pilot-only JSON; drop those here rather than letting them into the table.
+    excluded = [sid for sid in sample_ids if sid not in clean_ids]
+    if excluded:
+        print(
+            f"excluding {len(excluded)} sample(s) outside the clean set "
+            f"(e.g. {excluded[:3]})"
+        )
+    sample_ids = [sid for sid in sample_ids if sid in clean_ids]
     missing = [sample_id for sample_id in sample_ids if sample_id not in manifest]
     if missing:
         raise SystemExit(f"sample IDs missing from manifest: {missing[:5]}")

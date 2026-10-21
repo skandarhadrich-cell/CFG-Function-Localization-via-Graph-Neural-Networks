@@ -1,0 +1,250 @@
+{
+  "samples_selected": 2733,
+  "samples_processed": 2731,
+  "missing_samples": [
+    "4944e0b088ebc55e3eb2cb7650ee32c4e013791d9276be18cb0ed42d7bd8cac1",
+    "8d451d650b5e86a15b13f5d992702a4ada45124c8e9149def84d33cacb3efc28"
+  ],
+  "active_labels": [
+    "anti_debug",
+    "injection"
+  ],
+  "capa": {
+    "samples": 2731,
+    "capa_observed": 409513,
+    "capa_matched": 3147,
+    "capa_weak_negative": 406366,
+    "function_match_count": 1911,
+    "block_match_count": 1500,
+    "target_rule_matches": 3411,
+    "unresolved_block_matches": 0,
+    "label_counts": {
+      "anti_debug": 534,
+      "keylogger": 1268,
+      "injection": 1355
+    },
+    "ignored_scope_counts": {},
+    "active_positive_functions": 1889,
+    "active_labels": [
+      "anti_debug",
+      "injection"
+    ]
+  },
+  "per_bucket": {
+    "keylogger": {
+      "selected": 12,
+      "samples": 12,
+      "observed": 16220,
+      "positive_functions": 111,
+      "weak_negative": 16109,
+      "label_counts": {
+        "anti_debug": 106,
+        "injection": 5
+      }
+    },
+    "injection": {
+      "selected": 1340,
+      "samples": 1338,
+      "observed": 153001,
+      "positive_functions": 367,
+      "weak_negative": 152634,
+      "label_counts": {
+        "anti_debug": 116,
+        "injection": 251
+      }
+    },
+    "antidebug": {
+      "selected": 1381,
+      "samples": 1381,
+      "observed": 240292,
+      "positive_functions": 1411,
+      "weak_negative": 238881,
+      "label_counts": {
+        "anti_debug": 312,
+        "injection": 1099
+      }
+    }
+  },
+  "label_counts_by_bucket": {
+    "keylogger": {
+      "anti_debug": 106,
+      "injection": 5
+    },
+    "injection": {
+      "anti_debug": 116,
+      "injection": 251
+    },
+    "antidebug": {
+      "anti_debug": 312,
+      "injection": 1099
+    }
+  },
+  "per_family_positive_samples": {
+    "keylogger|keylogger|anti_debug": 2,
+    "keylogger|keylogger|injection": 1,
+    "keylogger|lokibot|anti_debug": 2,
+    "keylogger|lokibot|injection": 2,
+    "keylogger|bladabindi|anti_debug": 3,
+    "keylogger|agenttesla|anti_debug": 1,
+    "keylogger|agenttesla|injection": 1,
+    "injection|ceeinject|injection": 158,
+    "injection|aitinject|anti_debug": 26,
+    "injection|aitinject|injection": 26,
+    "injection|cryptinject|injection": 55,
+    "injection|cryptinject|anti_debug": 30,
+    "injection|emotet|injection": 4,
+    "injection|injector|injection": 4,
+    "injection|injector|anti_debug": 1,
+    "antidebug|gandcrab|anti_debug": 26,
+    "antidebug|gandcrab|injection": 519,
+    "antidebug|zbot|anti_debug": 281,
+    "antidebug|zbot|injection": 6,
+    "antidebug|ursnif|injection": 29,
+    "antidebug|trickbot|injection": 3,
+    "antidebug|trickbot|anti_debug": 1
+  },
+  "clean_counts_full_set": {
+    "keylogger": 12,
+    "injection": 1340,
+    "antidebug": 1381
+  },
+  "projected_positive_functions": {
+    "anti_debug": 534.0,
+    "injection": 1355.0
+  },
+  "projection_by_bucket": {
+    "keylogger": {
+      "anti_debug": 106.0,
+      "injection": 5.0
+    },
+    "injection": {
+      "anti_debug": 116.00000000000001,
+      "injection": 251.0
+    },
+    "antidebug": {
+      "anti_debug": 312.0,
+      "injection": 1099.0
+    }
+  },
+  "diversity": {
+    "anti_debug": {
+      "positive_functions": 534,
+      "positive_binaries": 373,
+      "positive_clusters": 21,
+      "positive_families": 10,
+      "top_binary_share": 0.1760299625468165,
+      "top_cluster_share": 0.5131086142322098,
+      "top_family_share": 0.5337078651685393,
+      "checks": {
+        "positive_functions": true,
+        "positive_binaries": true,
+        "positive_clusters": true,
+        "positive_families": true,
+        "top_binary_share": true,
+        "top_cluster_share": false
+      },
+      "ready": false
+    },
+    "injection": {
+      "positive_functions": 1355,
+      "positive_binaries": 808,
+      "positive_clusters": 110,
+      "positive_families": 12,
+      "top_binary_share": 0.015498154981549815,
+      "top_cluster_share": 0.32767527675276753,
+      "top_family_share": 0.7800738007380074,
+      "checks": {
+        "positive_functions": true,
+        "positive_binaries": true,
+        "positive_clusters": true,
+        "positive_families": true,
+        "top_binary_share": true,
+        "top_cluster_share": true
+      },
+      "ready": true
+    }
+  },
+  "mapping": {
+    "samples": 2728,
+    "angr_functions": 2712053,
+    "capa_observed": 409510,
+    "mapped_capa_functions": 407772,
+    "unresolved_capa_functions": 1738,
+    "target_matches": 3411,
+    "mapped_target_matches": 3396,
+    "unresolved_target_matches": 15,
+    "exact_function_mappings": 372073,
+    "containment_function_mappings": 35699,
+    "exact_block_mappings": 1489,
+    "containment_block_mappings": 0,
+    "many_to_one_collisions": 6628,
+    "block_parent_mismatches": 0,
+    "labeled_functions": 380292,
+    "label_counts": {
+      "anti_debug": 534,
+      "injection": 1344,
+      "keylogger": 1255
+    },
+    "status_counts": {
+      "positive": 3125,
+      "unlabeled": 2331761,
+      "weak_negative": 377167
+    },
+    "capa_mapping_coverage": 0.9957559033967425,
+    "target_match_coverage": 0.9956024626209323,
+    "requested": 2731,
+    "completed": 2728,
+    "failed": 3,
+    "timeouts": 0,
+    "missing_capa_json": [],
+    "failures": [
+      {
+        "ok": false,
+        "status": "failed",
+        "sample_id": "2b3812ee61ed5db9790c5c8dba0639d53e127c18743cced01b5cbec00b737723",
+        "returncode": 1,
+        "error": "worker failed",
+        "stderr": "   ^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/light/light.py\", line 154, in _perform_vex_expr_GetI\n    return self._perform_vex_expr_GetI_get(offset, ty)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/light/light.py\", line 150, in _perform_vex_expr_GetI_get\n    return self._perform_vex_expr_Get(*a, **kw)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/heavy/actions.py\", line 95, in _perform_vex_expr_Get\n    result = super()._perform_vex_expr_Get(offset, ty, **kwargs)\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/claripy/datalayer.py\", line 85, in _perform_vex_expr_Get\n    res = super()._perform_vex_expr_Get(offset, ty, **kwargs)\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/heavy/heavy.py\", line 28, in _perform_vex_expr_Get\n    return self.state.registers.load(offset, self._ty_to_bytes(ty), action=action, inspect=inspect)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/name_resolution_mixin.py\", line 67, in load\n    return super().load(addr, size=size, **kwargs)\n           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/simple_interface_mixin.py\", line 12, in load\n    self._translate_addr(addr),\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/simple_interface_mixin.py\", line 34, in _translate_addr\n    if isinstance(a, claripy.ast.Base) and not a.singlevalued:\n                                               ^^^^^^^^^^^^^^\nangr.rustylib.claripy.errors.ClaripyError: Unsupported operation: Unsupported operation for reduction\n",
+        "elapsed_seconds": 4.095
+      },
+      {
+        "ok": false,
+        "status": "failed",
+        "sample_id": "90ba47547594bd5e1bec3e3ce545250f15981ac3cdc4bb6f60530e6c55d46382",
+        "returncode": 1,
+        "error": "worker failed",
+        "stderr": "   ^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/light/light.py\", line 154, in _perform_vex_expr_GetI\n    return self._perform_vex_expr_GetI_get(offset, ty)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/light/light.py\", line 150, in _perform_vex_expr_GetI_get\n    return self._perform_vex_expr_Get(*a, **kw)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/heavy/actions.py\", line 95, in _perform_vex_expr_Get\n    result = super()._perform_vex_expr_Get(offset, ty, **kwargs)\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/claripy/datalayer.py\", line 85, in _perform_vex_expr_Get\n    res = super()._perform_vex_expr_Get(offset, ty, **kwargs)\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/heavy/heavy.py\", line 28, in _perform_vex_expr_Get\n    return self.state.registers.load(offset, self._ty_to_bytes(ty), action=action, inspect=inspect)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/name_resolution_mixin.py\", line 67, in load\n    return super().load(addr, size=size, **kwargs)\n           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/simple_interface_mixin.py\", line 12, in load\n    self._translate_addr(addr),\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/simple_interface_mixin.py\", line 34, in _translate_addr\n    if isinstance(a, claripy.ast.Base) and not a.singlevalued:\n                                               ^^^^^^^^^^^^^^\nangr.rustylib.claripy.errors.ClaripyError: Unsupported operation: Unsupported operation for reduction\n",
+        "elapsed_seconds": 6.192
+      },
+      {
+        "ok": false,
+        "status": "failed",
+        "sample_id": "eb463be83449800bbb164a8c0f970821c8f95d4015d0f0a237a3c7811cb1a6db",
+        "returncode": 1,
+        "error": "worker failed",
+        "stderr": "   ^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/light/light.py\", line 154, in _perform_vex_expr_GetI\n    return self._perform_vex_expr_GetI_get(offset, ty)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/light/light.py\", line 150, in _perform_vex_expr_GetI_get\n    return self._perform_vex_expr_Get(*a, **kw)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/heavy/actions.py\", line 95, in _perform_vex_expr_Get\n    result = super()._perform_vex_expr_Get(offset, ty, **kwargs)\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/claripy/datalayer.py\", line 85, in _perform_vex_expr_Get\n    res = super()._perform_vex_expr_Get(offset, ty, **kwargs)\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/engines/vex/heavy/heavy.py\", line 28, in _perform_vex_expr_Get\n    return self.state.registers.load(offset, self._ty_to_bytes(ty), action=action, inspect=inspect)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/name_resolution_mixin.py\", line 67, in load\n    return super().load(addr, size=size, **kwargs)\n           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/simple_interface_mixin.py\", line 12, in load\n    self._translate_addr(addr),\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/home/lali/cfg-gnn/venv/lib/python3.14/site-packages/angr/storage/memory_mixins/simple_interface_mixin.py\", line 34, in _translate_addr\n    if isinstance(a, claripy.ast.Base) and not a.singlevalued:\n                                               ^^^^^^^^^^^^^^\nangr.rustylib.claripy.errors.ClaripyError: Unsupported operation: Unsupported operation for reduction\n",
+        "elapsed_seconds": 4.304
+      }
+    ]
+  },
+  "mapping_samples": 2728,
+  "mapping_scope": "full",
+  "mapping_unresolved_rate": 0.0043975373790677225,
+  "gates": {
+    "mapping_available": true,
+    "mapping_covers_all_samples": true,
+    "capa_observed_mapping": true,
+    "target_match_mapping": true,
+    "unresolved_target_rate": true,
+    "positive_projection": {
+      "anti_debug": true,
+      "injection": true
+    },
+    "all_samples_processed": true,
+    "diversity": {
+      "anti_debug": false,
+      "injection": true
+    }
+  },
+  "gate_pass": true
+}
