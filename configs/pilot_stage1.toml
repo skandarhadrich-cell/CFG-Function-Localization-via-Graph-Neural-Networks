@@ -19,8 +19,15 @@ capa_rules_dirty = false
 
 [labels]
 # Namespaces are prefixes; static function and basic-block scopes only.
-# keylogger namespaces are kept only to preserve evidence for future work;
-# keylogger is not an active Stage 1 label and never enters targets or loss.
+# keylogger namespaces are kept only to preserve evidence: keylogger is
+# AUDIT-ONLY and permanently excluded from targets and loss (see
+# results/audit/keylogger_negative_result.md).
+#
+# Display names below are the honest ones.  The audit
+# (results/audit/label_rule_composition.md) found anti_debug is ~99.4% timing
+# and instruction patterns, and injection is 100% a single RWX-allocation rule,
+# so neither is reported as the capability it was named after.
+label_display_names = { anti_debug = "anti_debug_timing", injection = "rwx_alloc" }
 anti_debug_namespaces = ["anti-analysis/anti-debugging"]
 keylogger_namespaces = ["collection/keylog"]
 injection_namespaces = [
@@ -30,7 +37,8 @@ injection_namespaces = [
 
 [labels.contract]
 # Revises docs/labeling_contract.md v1 for Stage 1.
-version = "stage1-v2"
+version = "stage1-v3"
+name = "stage1-two-label-rescoped"
 active_labels = ["anti_debug", "injection"]
 outputs = 2
 loss = "BCEWithLogitsLoss"
@@ -39,6 +47,25 @@ use_rule_scopes = "meta.scopes.static"
 weak_negative = "observed function with no active-label target rule match"
 unlabeled = "angr function not mapped to CAPA observed inventory"
 min_positive_functions_full_set = 300
+# Unit is canonical everywhere: functions with a positive label.
+counting_unit = "functions_with_positive_label"
+
+[labels.census]
+# Per-rule support census gate.  Fixed before the census table was read and not
+# tunable afterwards.  Of 1,031 CAPA rules only 12 emit any audited label and
+# exactly one clears this gate (allocate or change RWX memory).
+min_functions = 100
+min_clusters = 10
+min_families = 3
+max_top_cluster_share = 0.50
+secondary_min_functions = 30
+
+[labels.stage2]
+# Paused.  With these labels the "malicious block" is the block where the rule
+# fired, so localization is circular.  Revisit only if the census yields a label
+# that is not a single API/instruction pattern.
+enabled = false
+reason = "rule-defined labels make block localization circular"
 
 [pilot.sampling]
 selection = "stage1"

@@ -331,18 +331,14 @@ def build(
         _write_json(V3_DIR / "splits" / "main.json", main_payload)
         _write_json(V3_DIR / "splits" / "lofo.json", lofo_payload)
 
-        # Manifest is written last; splits reference this hash.
+        manifest_sha = write_manifest(all_rows, V3_DIR / "manifest.csv")
         main_sha = hashlib.sha256(
             (V3_DIR / "splits" / "main.json").read_bytes()
         ).hexdigest()
         lofo_sha = hashlib.sha256(
             (V3_DIR / "splits" / "lofo.json").read_bytes()
         ).hexdigest()
-        for payload in (main_payload, lofo_payload):
-            payload["v3_splits_main_sha256"] = main_sha
-            payload["v3_splits_lofo_sha256"] = lofo_sha
 
-        manifest_sha = write_manifest(all_rows, V3_DIR / "manifest.csv")
         _write_json(
             V3_DIR / "build_summary.json",
             {
@@ -361,6 +357,25 @@ def build(
                 "splits_main_sha256": main_sha,
                 "splits_lofo_sha256": lofo_sha,
             },
+        )
+
+        # SHA256SUMS, matching the v2 convention.
+        sums = []
+        for rel in ("manifest.csv", "splits/main.json", "splits/lofo.json"):
+            digest = hashlib.sha256((V3_DIR / rel).read_bytes()).hexdigest()
+            sums.append(f"{digest}  {rel}")
+        (V3_DIR / "SHA256SUMS").write_text("\n".join(sums) + "\n")
+
+        (V3_DIR / "README.md").write_text(
+            _readme(
+                external_sources=external_sources,
+                v2_clean=len(v2_clean),
+                clean_rows=len(clean_rows),
+                clean_clusters=len({row["cluster_key"] for row in clean_rows}),
+                main_counts=dict(Counter(v3_main.values())),
+                ext_summary=ext_summary,
+                created=now,
+            )
         )
 
     return {
@@ -390,6 +405,65 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
     tmp = path.with_name(path.name + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2) + "\n")
     os.replace(tmp, path)
+
+
+def _readme(
+    *,
+    external_sources: list[str],
+    v2_clean: int,
+    clean_rows: int,
+    clean_clusters: int,
+    main_counts: dict[str, int],
+    ext_summary: dict[str, Any],
+    created: str,
+) -> str:
+    joined = ", ".join(external_sources)
+    return f"""# Phase 0 v3 (external coverage expansion)
+
+Built {created} from the frozen v2 corpus plus external samples from: {joined}.
+
+This version exists to widen `anti_debug` cluster coverage. The full-set v2
+census passed every frozen diversity criterion except
+`MAX_SINGLE_CLUSTER_SHARE`: one imphash cluster (274 zbot binaries) held 51.3%
+of positives. v3 adds positives from **new** clusters rather than removing the
+dominant one.
+
+## Rules enforced by `src/data/build_v3.py`
+
+- **v2 is immutable.** v2 files are read, never written.
+- **The v2 test set is frozen byte-identical** ({main_counts.get('test', 0)} samples). Earlier
+  reported numbers stay comparable.
+- **External samples enter train/val only**, never test.
+- **A cluster present in the v2 test set causes the external sample to be
+  dropped** ({ext_summary['external_dropped_cluster_conflict_with_test']} dropped here), because placing a
+  near-duplicate of a test sample in training would leak it.
+- **No cluster crosses splits** (asserted, not assumed).
+- **External `source_bucket` is `external`** for every row: bucket is
+  stratification metadata and must not encode a guess about which capability a
+  family implements. Labels still come only from CAPA.
+- LOFO held-out families stay test-only.
+
+## Counts
+
+- v2 clean: {v2_clean}
+- v3 clean: {clean_rows} across {clean_clusters} clusters
+- main split: {main_counts}
+- external assigned: {ext_summary['external_assigned']} ({ext_summary['split_counts']})
+- new external clusters: {ext_summary['new_clusters_assigned']}
+
+## Files
+
+- `manifest.csv` — v2 rows plus accepted external rows, with a `source` column
+  (`bodmas` / `malwarebazaar`).
+- `splits/main.json`, `splits/lofo.json` — bound to this manifest.
+- `build_summary.json` — gate stats, drop list, and hashes.
+- `SHA256SUMS` — integrity checksums.
+
+## Source note
+
+`theZoo` was evaluated and rejected: 29 distinct binaries, 0 passing the v2
+quality gate. See `results/collect/PROBE_FINDINGS.md`.
+"""
 
 
 def main(argv: Iterable[str] | None = None) -> int:
