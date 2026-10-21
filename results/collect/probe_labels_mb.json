@@ -1,0 +1,775 @@
+{
+  "source": "malwarebazaar",
+  "clean_candidates": 229,
+  "clean_clusters": 150,
+  "run": {
+    "requested": 229,
+    "completed": 51,
+    "failures": [
+      {
+        "sample_id": "a88cfb093e1297165940818f7bb6e8441fb34462c021c525cba8683b8630e566",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "b9b052dfb2f19bf15aaba81f07861234f91a72a5c38d83c176a7a4dcdbb2e8c1",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "c3e552b187f95df1a59b2f1304c38caff54ce9e94688f67b52aad375ac7c610a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "ca43b69aeecd6d78b0d80e8ea38ec2988c03152758fbff87b0a422ec26b99de3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "cf6bac13c5316f2577d4b1e5a6d349ce0cad51b7adef0569dfc891b79abbec95",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d9fb746821f2498aafb3ce437b79439d4e625dd91cd873368dc7f8a550fdeb0c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e41eac343f994a3dd12ede81d19f570a7572702abc0fa35aba51f372a7432aaf",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "eafc56e985f24b31dc2f0d09c15497e25feca4e1e792d315648810d4e0fb7b55",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "eb45ecf5fc274ff594904d28fd50b176599ebf26cff22bbbfb4d2efb6f3df94c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "ecc2c1379a44fe3f689c6022c3a1709b555a99a37d84c0be898e4be1019a804b",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "ef3e41ec91f8be146c3588321f98be8d3db3933d3881112554898e7eefb8b017",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "f8836e32e116906d49910cbe22fed8acaebad1061855d9769c74d82ff2097c70",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "fd66955ead9b7b3e30668ac133f166c567d5b6bbdd67d79ba275f63e104bc132",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "034e193f88a93ebb4ac8ca8da5b3b1429600ef04e5c124457ce0bc1830bae558",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0457768f9d8d70ff59275c27bc99d45c1c48cf1e932d29c3f2e9d5e037acd802",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0457768f9d8d70ff59275c27bc99d45c1c48cf1e932d29c3f2e9d5e037acd802",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "056cdb544f37d5bd97e9d78d6afdd23279681ca849e25d377b6a04f5da8108e0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "056cdb544f37d5bd97e9d78d6afdd23279681ca849e25d377b6a04f5da8108e0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0c3631f4cb7c6c20d671500f4c3b769457486b5afa0c685920d64c3c7297fb0e",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0e0d4494780c9010ece88f39f65bfbfcb13236e1652f7fe41e9c84a5b16583a5",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0e0d4494780c9010ece88f39f65bfbfcb13236e1652f7fe41e9c84a5b16583a5",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "123a833c6ad4fefb0e612a93c8bfb2fda9525414b308f18c9d3ea56a5ea37fff",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "13c5b33339522f8f96d091708e7a8a64b0939daa6225732352fbe44cb2950e67",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1d778359ab155cb190b9f2a7086c3bcb4082aa195ff8f754dae2d665fd20aa05",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "4ad0998882a3fbd3412f0c740faebb8ef78bec4c3e566650424c40a878e6a23a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "4fccd38f504290cf5c70e7336071a90a064303c7fdf5c17f7c38001768bce115",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "547e81ee477ae73f30b4435bfa093d48082a0edfa3186a0e4af2eeab60b8d8e0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "547e81ee477ae73f30b4435bfa093d48082a0edfa3186a0e4af2eeab60b8d8e0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "6362084f61fa6a41b8b01b7c62215ad41a2623b69572ce558c33bffaa21f0af9",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "6712500bb0de148a99ec940160d3d61850e2ce3803adca8f39e9fa8621b8ea6f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "741087126c1c7edec3d0a3bc3f490723a4f410e9a278444c812e7f79013bb996",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "7502affbbb6086a020fe2ffe7b079e7ccf8e7fb11d48960561826054b2e0c1fe",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "82cfc26e57ca8fdd2f47a24ba14fa1ee8e8b29a0d54909a9fdb6346171448754",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "82cfc26e57ca8fdd2f47a24ba14fa1ee8e8b29a0d54909a9fdb6346171448754",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "86bcfce2dd342e9a1c04cfc65731d40ed1c397a4ec47bd9f5b41771297d81100",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "90b52bcddab0daf79a483788dd0bc954a820ebc0882deb6fb11a69e36bf61614",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "9217f79feca332aeeadabed6b7b0c10bb0cdf9b1d1db5aa83a4e8ac704bf80c0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a1388cb3e6ae68a6130ae12f9db4881238c97718875a3362b6bc5788e61c6663",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "aadb5217c4c9316b90ce4eb5f2b52f72d34d426d66ce00c9addaef1654853acf",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "abf99a028dae6812f6f0ca633d7424ce9272dfcfbebf6b518c1e6c97f872f3e7",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "abf99a028dae6812f6f0ca633d7424ce9272dfcfbebf6b518c1e6c97f872f3e7",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "b30b76585ea225bdf8b4c6eedf4e6e99aff0cf8aac7cdf6fb1fa58b8bde68ab3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "b804a5b07e90170c3640e0c0bfc6af38bccc8abbafbffe132a1808d6d0f24cae",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "ca087f46f97cd465f46e4ccb04181e6eae7b2c751ae7fd9e262191b979728ccc",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "cd32a737fcba8198d43fed5a68348f983f7713f79574a710deb7759e5a1301eb",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "ce6b05e2593182af90dc4e8fd315240bec81cf0734a2590ee864a05bbffb014c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d66304251f3407d1840065b40662280acc909c3972fb93f99fa07a47c3221b77",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d66304251f3407d1840065b40662280acc909c3972fb93f99fa07a47c3221b77",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e83cff5322e8e8d608328b33c5cc62a31e2370530d80e735ddbc5a477e6579ec",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e83cff5322e8e8d608328b33c5cc62a31e2370530d80e735ddbc5a477e6579ec",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "f9495e968f9a1610c0cf9383053e5b5696ecc85ca3ca2a338c24c7204cc93881",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "f9495e968f9a1610c0cf9383053e5b5696ecc85ca3ca2a338c24c7204cc93881",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "4fc04b64ff9fe77be60ebf30dec9bf876ccc5eff4e344f8f23cddaeeb4485957",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "7eb698e51a67a471d97855560f5c681296935234b810bb701b389709d3f87519",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a5a80891a1781515439afb2371a01bbf7dddb1262a0ad90644e151957a5030d8",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "07881667044b72b47a906d99ca3522e12c6cbad62b5e2e6db7930504f604366a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "4652dd831e7ecfe97e03c144c47bc9f7772fb0be6aaf17e278bc53590c0dd90d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "5975ea85d339a31e8d9b5b1eced0d699c1d59d980896f1332d1e08497f005e21",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "6e0fe228b9b85b6c3bf58342967338e7d8ff492711e1a73b336a3485c58b93e2",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "72a4f802a0818076f00fdf7ca1710fad0f35244e472a74845f9cf6c2644cc528",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "87ff9d9612267c284b867bd9d4a85224d3bf1c4d8070b3eb6541ef7c6b62c3ad",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "92eeea68a958e1a8e597abb4a3dd6047241b66324f16d30a9840699bbaf2d62c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "936ad4294125b52a7bbcbc1130128209932a3fbe505eb0fb539495c61205a5b3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "b8025d9ec1c56eef774e90a448c30efbeea547ff60cee57169680d832b76b7f4",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "beb927e2c2c93bd7af86e0290f6f30a66586275af924cd4f617f87003ab33743",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "066d30af2b837cce0c655417d9712ca1a37168574cb2fbb414036935a1940c26",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0ad0298b4303962d0cf5a392ca2c3ad4bd2cd1d857c7a4810a0d1129888773ac",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0f0f59593cfae8f5fb3d1ab9af840348c2866a8bddf95be8f98cb7e8874b1138",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "121a8901094eb205730a3a7f3e176335bf000600c2af96e75c887d61b5e1fbe3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1c2b79b3d719dc91f95394c2dbfe8149610ffa668eadec4c491000882dc3b761",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1ed013a1de4ed2a2a23b6f157b440511e179f6209c62d18f05faf2dd865db955",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1f0ed64ac1128b10a54ad87cf10d1145bf56e7046b1eb7da1ff5162a0661dc8a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "3ab0c58f330345f3dae67a4f68a4b1b4e4b8ae975aa82d90f9b013200ed4f8b0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "4565b2e3c2bb9b2aefd8efeb96a80074ad15acee32e08ee7fab5e35bceba3157",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "49e3dd606bf5bf7e1c49b26a25135b2be18ee75c7b8e751c3dc538c0043e5a3f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "5662a84c64f0b6e47610a3201cccf06a66eb533e2160be7e7ec4062fb56b2183",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "65b7741ef37e9c2a17e120a08cc5c55828d4fb18c0f9aab55de0a57ca32b8fb3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "7399ca86d5588100f67ce49f8252f1f4853e920eaf43b01a00636f790f39f76d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "755735359aa34db3831bdc917987334a7de0b0a3a952733000b26d3dcba40c82",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "7acf17eff6cd03bfee5bae9442893252292d4877375112a17c00412b36ad7719",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "805b1dbf373986fb98f346b491cea9ce75c44ea7cc55339260c344606773e236",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "902c4fbda06950d42081f1910782c041336d59c9ebb288f27d0548a3ab3c7d4a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "92f03803f03c8fb6534af1b913aa925119bb60c51f80195d43c4864849492e13",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "93cfcf58ba02b6704041d8e036b4230a4ba9561723c5e7e8fdce681684864870",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "9db343a12b7b22ba7feca33019a437067f96e03a2695f574a97f446f7dc2883b",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a450ced61b33393fc3c651b33f5e50a8e5659a2dca76e06d7ba01d6a1e5e4631",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a53a03026dd4efe462769a6e8d648454efcf53d40eb765bae506249baf4d74c5",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a9622e428e9700ea7b8dc2573751a5532ff393735530db350a68bde65a568d9f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "c0cb68c9404c00ab57d203c257621cbb77548c7ff6a322fa994f9e79b30f7cf8",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "cdb7e330d5d198d8207399452334b5bd1e5b5e7f7c1dbd7ea4eac990c8bef3cc",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d0ba595dc1afd4ea3c1aad23d2bb5e3652853b56f8358a853f41e164d4bb1f97",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d0c8596e72059a5c5e5421929f65efbebca319d1227fd2e1db89f9117ae7c55d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d49288276e163a4ebf7d2557428a91278751a05843493171e90df3257bf217be",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "d89ef5c765be3faf458e7d1673b79c4ad27e99c0ea4f2b84261554487605b651",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "8a442fc7e166b0af2eb74fad903cfb85151c5b8f86e994c037692a7b5b298049",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "046ea30e67d2a06b83db596a087b9e62bd23de95e76aefb6deb3c9348c546c48",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "046ea30e67d2a06b83db596a087b9e62bd23de95e76aefb6deb3c9348c546c48",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "068af8016c36fce5cf1e1a4722c1dc0d6e02cb6ed58b61c2ba99a54d294cc274",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0df586aa0334dcbe047d24ce859d00e537fdb5e0ca41886dab27479b6fc61ba6",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1e0215f67fb7b02bc44f33bf6a5b884c3061cbeb38e0150b559635458951fa53",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1e90b6fc99a908420de123418deded8d8eadf2114ac43ee1ec366681b5358c17",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "2cb4c54bc346421e0a4854698830405ac0dcd5046ae6c462f488f4e5319a90d2",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "37ff98395d4db062f03fdd648bbcc47f7aa0db3afa3bbc5ed44f308cf50499d0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "78b592a2710d81fa91235b445f674ee804db39c8cc34f7e894b4e7b7f6eacaff",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "7bdd1409b080eb8510163cea3761d694be0eaec7e22bc44736cbfbc3025a310b",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "81c734c21b5e15837d01c9766094bc4ffce0e3dc6b04c15e0bc1286d61897dc7",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "81fa8a3bdc452dd2b279b61fed92fe83d65e650e06bca9ee4dfcf991a4a59e77",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "996b9e029e0d93efa265c69b2cf1cfac64b3b848ae936b2c43f2decdd591757e",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "9fdea40a9872a77335ae3b733a50f4d1e9f8eff193ae84e36fb7e5802c481f72",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a1dd74d7301bf8d504449071142c81113bcd4d0c88fee46e7bacf550495a72bc",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a1dd74d7301bf8d504449071142c81113bcd4d0c88fee46e7bacf550495a72bc",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a4aec5be955ee173dc70e6bb6b34015eac9d00a24f4543454d5c44d3e0e6b0ab",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "c9434a3b15609527d6a986d747aa13a90786d1e86fddd864cbfbaf2f01bfe1fb",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "ca7cd0d3b5582ac4257c8ed31799d4fd577cdff1bf7ff018946b6284c0bbd617",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e2dce038ea6a354da4d34d579a02f14c67ceba6a1b4acea59d12101aa1c5585d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e7456c57dba442a7e63f2bd45ff5be6c8168f2fcfd15c5e405536fb3bb212dcb",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "06192a6eed800e6ca168ed4cf259aa45b891a3d95f31be030a943a96c7d5a2f9",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0cf7ec4b73687bf9b5caabffa40038e613f6eba2456335a316367edf594f59be",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0f175f7fcbd0e7ceae68a0e720765f367dd6496fd4db9df5f49ebd6f93de2508",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "1619b2fd6448e87be043e9e9474792cb6dfdbb24f9500be50711c73506b20563",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "22fef62c81c2cefa216890ea28c8c8cf5beca54310bf1a577730388a40ea5995",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "255bf67d04eedb4f8cdb35228292e18dbaa8b9625c51b046c84d90c4d1ca11b3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "266f07bcf30b2641883965d4fcc5d26e8d38c88addc31d19d86e6659d791d447",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "2828d39164b95650b137860a035ca338a7cd6645dd4caf5a68cc42dac31355ae",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "2e8905f8f76ba88b8a04981889f9daae7341166b8f0526ab331c5b9a9cba719c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "30a0c74534373c4ca760a089b93f5abd5d7e26527d0e2910fe01ea5c5531ee46",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "30b73ea359fff502d7856b0814942a953e1effc70752560021ba05e2e97ce577",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "30d7fad7b6652b6eeaf7a3aae2a68b9ccb2e1a49de60e357655b2b39707501f0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "30ed4b65336f97b2824578f1c15f58fd50b9a653b928c008bdb274b0afbc5ffb",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "31a7154c81e97cf53c59934f4af6ed1c87d3f0fb5f98aeec6c0da4efc3a859ea",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "31e0bbfc36fd9497dc406c119bfab7a6c13133c4710044c35557f1938020bc35",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "328e0c70f0471edaa9e705719a3f52eb4ad537b3f3926a1189776ec3fc6a8e93",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "362df35906c51bcf799b7afe4f85dcf721a286a9a68c38862eefa2cdb403ba7c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "38672563bb7cb452e4b66ae246f99ca20bc64736a204642760c78e6a9a799d71",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "3953a675ba8ca1bda87df3d751ff5d7013a94f8f4c9cdb140d26833fa39d23a2",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "3ea33da21e2745965c0f2884a7050635d9e72b6f72df48bb763ebbc810a88aca",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "43483130d3303ff2d67946e2b30b77b0e9b785ab9b56a65f82d001d4c8a77519",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "5601eb09023210296350c4c312ddab59018e974c372f3944af3175147874a762",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "57e14edcc1d0346a33519613471e6f8686b7e8bfeadacad6c4742d992b700049",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "5a3530d0e9be0ef502061f46559fdc0fce856543ee9f0f154595e5ad70681f0f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "5ec9325b6998e8749bc0465890f201e3d8fddb767b2eeebb4f84fd7cf942930a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "5f34e1af5ffacee0810fa07121f09769d796e619e868aa20b317dbc9d72578b4",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "6d399b5364c10cf909cb7d1efd3b7e6caff8c0ac3be1696e92b2680157449e51",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "6ebcc7d1f53568816b5a0e40d6e5117266a33dfc4a1e75425062a20425b64341",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "758e8ea6abf77f9034b24ccc2497f2255f3d9cd52e236033d4c3349164639ced",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "93d8c7f4f3c7b19c000187f1e7a5cf8a83d25f6a3e5fe992461459c06496f79f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "bdffb755157cfd5184418218f1ab2c5115ea50e09efeeebed9f211c2e957b490",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "c05ec67e75693127e5556eee229b88f93c7cef926cfe905dfd5464be9d305c94",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "cb3c27c07347120395212a72516e708891c2620d92a2f48bcf84b71523deb506",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e63f6f96da59c6a894fd3614faaadd47b5ce0d8e1828c5fbd2dbc0b4a33fe01d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e75d2101d05a26a0514be7bf9bc26ffcf11c6b9d79911f8c85a34ffe6fc4137b",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "f06b863f0be9c9f925627f92eceae12c73000ec254b5bcc7c56b913845b30a0f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "f3dc06c21bd46db75341dd93fdfb0eec3e7864ce4c78ac19afc16de9d28d714f",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "0532a82db5727b773fd280a5bc3ffa8b3be3be05bf5a9c125dbdf5f1e9fa63ce",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "081a3d200edb928e18cfac98d151d6af21b7fc1fb017f066a1ce428929c5da9b",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "093ea014b7458f9388f4c76b758c08b6a34e713736330f97fa49c99d71e2b371",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "095acff5fceaebcb8026d5dc628953ac226c8bf66aa1fbd929b2b569c9b937d2",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "351db557bca9bef2798b08e3ae6c4872e3311879ea30089ec764522c0ca30939",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "3bb40bab103c5f34e08a2c179ea379abd37d9861d7f6ac3d56d5c0d693b4260a",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "3d52822949346df4385fc98bf246b67f2667b4959cf15e490072ba00bbff59c3",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "569cf42b940d1e5d5d4d675f6172542a8ac01596c7bc69a8b65dbe7f9ff7ed25",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "6b8687e4a9ec832619d1e0477cc54e1709e25251c79571e697f6b43c4785fc29",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "81539fb95214aadc076c01161cdce901fc57b6cc8d82e27bae4915c512d9baad",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "9d0863c76aa5212eee67a9d8e8fa25547d9c99e9c47286027637fb50812a1110",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "a694ad107327c739b570523005f4f7030677c325d3116c7d7c383b4a823226dd",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "b554bb8695c6674175bb3493f8f34c3d1d5b7f4cbb6da4c2e8431bd03acb4351",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "b86dbf9c4f9cc00245d189a04dafa91cdfe40810fe6357ceda6b9b624b037c5d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "bb6f2d4376bb6c4e88d386ad55e243295b82704441e9c849ec13063febe5c112",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "bdddc217d883169695ddfb024e6bb26ac14cbc6c265fdcb50dff9832b0633df0",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "e5474bdcb0a87bd6c1c74d6a2fd6cff6c8ff913248b84e22c1ef5e82cb6f5cde",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "efb621959cf78ebda987c42334d70311e95e3359a6c149a3a134493d988e3324",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "fc490a08797ff3a4ad9b791fcecc88f90e1140759220023e97489a08ff5e0cbf",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "9c3422dbe4500c8ed8929feefd3cd13003418bed2c3190c2875ef61052f4aa6c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "bdda0a3d90cf0ee7423b918b0b268f5f8d9768c64399446014ff73d80d47ed0c",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "401bf115a8453e130a5effbe767cdac2d202a330af60182df5f73a7159668610",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "44c9f61a76cbc2469e02a2a9ec4cdc1fbca50a4cfa9dcf6b636ec23d91e8a8c9",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "783e538320d6a9f69ac93e74a1296403cd8824596c535f8fc563fbbc21bf362d",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      },
+      {
+        "sample_id": "9fdd1eccff7280a30b0ff658d73386f7b1bb2445730e9b8907816673ca1ce1bf",
+        "error": "BrokenProcessPool('A process in the process pool was terminated abruptly while the future was running or pending.')"
+      }
+    ],
+    "capa_dir": "/home/lali/cfg-gnn/data/labels/capa_external_probe"
+  },
+  "parsed_samples": 46,
+  "parse_failed": [],
+  "clean_functions_total": 64246,
+  "labels": {
+    "anti_debug": {
+      "positive_functions": 26,
+      "positive_binaries": 20,
+      "families": 3,
+      "by_family": {
+        "AZORult": 12,
+        "AsyncRAT": 7,
+        "DarkComet": 7
+      },
+      "novel_clusters": 14,
+      "novel_cluster_keys": [
+        "imphash:27d309b4973ae018ad24408d92ed4784",
+        "imphash:56a78d55f3f7af51443e58e0ce2fb5f6",
+        "imphash:5f77bccf23632019202250229664e21b",
+        "imphash:965e162fe6366ee377aa9bc80bdd5c65",
+        "imphash:9d617e643d715888a08eb0e79581244c",
+        "imphash:a0822070808cff2c8d9180fd81953fb0",
+        "imphash:b84e33ac3904e9612349e55b81587757",
+        "imphash:cd2cbd2ab59194cce2d19eeeff4c4540",
+        "imphash:d5956490519485752a6eb609a60af729",
+        "imphash:d9ad5efdb5472496d0fe8dd4305f55f0",
+        "imphash:e160ef8e55bb9d162da4e266afd9eef3",
+        "imphash:e2a592076b17ef8bfb48b7e03965a3fc",
+        "imphash:e5b4359a3773764a372173074ae9b6bd",
+        "imphash:ee652883d6cf722ddb85537fff2a8467"
+      ]
+    },
+    "injection": {
+      "positive_functions": 29,
+      "positive_binaries": 11,
+      "families": 2,
+      "by_family": {
+        "DarkComet": 25,
+        "AZORult": 4
+      },
+      "novel_clusters": 7,
+      "novel_cluster_keys": [
+        "imphash:0ee9cfa9b63c2db5b2719d73b966f7f1",
+        "imphash:9d617e643d715888a08eb0e79581244c",
+        "imphash:a46862ff792a3900aeb7b43265df4b00",
+        "imphash:b2a8eef86ac657d560ec955abffbab9d",
+        "imphash:cd2cbd2ab59194cce2d19eeeff4c4540",
+        "imphash:d9ad5efdb5472496d0fe8dd4305f55f0",
+        "imphash:e5b4359a3773764a372173074ae9b6bd"
+      ]
+    }
+  }
+}

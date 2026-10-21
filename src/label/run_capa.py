@@ -239,6 +239,21 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _kill_process_group(proc: subprocess.Popen) -> None:
+    """Kill a CAPA process and every child it spawned.
+
+    CAPA forks helpers, so signalling only the direct child leaves orphans
+    consuming CPU and holding scratch files.
+    """
+
+    import signal
+
+    try:
+        os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+    except (ProcessLookupError, PermissionError):
+        proc.kill()
+
+
 def run_one(
     sample: Sample,
     out_dir: Path,
@@ -290,15 +305,27 @@ def run_one(
             repaired = Path(temp_dir) / f"{sample.sample_id}.exe"
             repair_file(ROOT / sample.filepath, repaired)
             with tmp_out.open("wb") as stdout:
-                proc = subprocess.run(
+                # CAPA spawns its own children. Without a dedicated process
+                # group, a timeout kills only the direct child and the
+                # grandchildren keep running, holding CPU and scratch files.
+                proc = subprocess.Popen(
                     [str(capa), "--rules", str(rules), "-j", str(repaired)],
                     stdout=stdout,
                     stderr=subprocess.PIPE,
-                    timeout=timeout,
+                    start_new_session=True,
                 )
+                try:
+                    _, stderr = proc.communicate(timeout=timeout)
+                except subprocess.TimeoutExpired:
+                    _kill_process_group(proc)
+                    proc.communicate()
+                    raise
+                proc.stderr_bytes = stderr
+                proc.returncode = proc.returncode if proc.returncode is not None else -1
         if proc.returncode != 0:
             tmp_out.unlink(missing_ok=True)
-            error = proc.stderr.decode(errors="replace")[-500:].replace("\n", " ")
+            error = (proc.stderr_bytes or b"").decode(errors="replace")[-500:]
+            error = error.replace("\n", " ")
             raise RuntimeError(f"CAPA exit {proc.returncode}: {error}")
 
         json.loads(tmp_out.read_text())
