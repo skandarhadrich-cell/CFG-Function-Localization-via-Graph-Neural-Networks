@@ -253,3 +253,41 @@ binaries/clusters, and LOFO coverage. Apply the pre-registered criteria in
 - `injection` is the primary candidate if it passes the diversity checks.
 - `anti_debug` stays exploratory while its cluster concentration is high.
 - Three represented families do not establish unseen-family generalization.
+
+## 14. External collection (anti_debug coverage expansion)
+
+Purpose: the full-set `anti_debug` census passes every frozen criterion except
+`MAX_SINGLE_CLUSTER_SHARE`. One cluster (`imphash:b2c87e30ac`, 274 zbot
+binaries) holds 51.3% of positives. The fix is *more positives from new
+imphash clusters*, not removing the dominant cluster.
+
+The collection frame is pre-registered in `configs/collect_antidebug.toml`:
+targeted anti-debug-prone families, a control slice from families with no
+published anti-debug behaviour, and per-family quotas. The frame is a
+stratified sampling decision made before any label was observed.
+
+```bash
+# 1. collect candidates (resumable, hash-verified, never executes anything)
+./venv/bin/python -m src.collect.mb_pull  --probe
+./venv/bin/python -m src.collect.zoo_pull
+
+# 2. apply the *unchanged* v2 quality gate
+./venv/bin/python -m src.collect.probe_gate
+
+# 3. CAPA the survivors and measure anti_debug yield
+./venv/bin/python -m src.collect.probe_capa --source malwarebazaar --workers 3
+```
+
+- Every collected file is named after its own SHA-256; a mismatch is a fatal
+  integrity error (`tests/test_collect.py`).
+- Resume is status-aware: only successful attempts block a retry.
+- Cross-source duplicates are rejected via `data/external_meta/content_index.json`
+  (external corpus only; BODMAS hashes are never absorbed into it).
+- Provenance for every candidate is appended to
+  `data/external_meta/<source>.jsonl`.
+- Go/no-go bar is pre-registered in `src/collect/probe_gate.py`: **>= 75 new
+  positive functions across >= 5 unseen clusters**. If missed, widen the family
+  frame — never loosen the quality filter.
+
+Probe findings (2026-10-21) are recorded in `results/collect/PROBE_FINDINGS.md`.
+`theZoo` was rejected: 29 distinct binaries, 0 passing the gate.

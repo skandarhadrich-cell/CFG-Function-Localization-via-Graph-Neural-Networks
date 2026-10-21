@@ -1,0 +1,81 @@
+{
+  "candidates": 12,
+  "skipped_known": 95,
+  "skipped_unsupported": 0,
+  "extracted": 29,
+  "failed": 0,
+  "per_family": {
+    "njRAT-v0.6.4": {
+      "archives": 1,
+      "extracted": 12,
+      "failed": 0,
+      "skipped": 12
+    },
+    "Trojan.Bladabindi": {
+      "archives": 1,
+      "extracted": 1,
+      "failed": 0,
+      "skipped": 1
+    },
+    "Win32.AgentTesla": {
+      "archives": 1,
+      "extracted": 1,
+      "failed": 0,
+      "skipped": 1
+    },
+    "Win32.ZeusVM": {
+      "archives": 1,
+      "extracted": 1,
+      "failed": 0,
+      "skipped": 3
+    },
+    "Win32.XAgent": {
+      "archives": 1,
+      "extracted": 0,
+      "failed": 0,
+      "skipped": 2
+    },
+    "Win32.Alina.3.4.B": {
+      "archives": 1,
+      "extracted": 1,
+      "failed": 0,
+      "skipped": 1
+    },
+    "Win32.Fareit": {
+      "archives": 1,
+      "extracted": 3,
+      "failed": 0,
+      "skipped": 17
+    },
+    "Raccoon.Stealer.v2": {
+      "archives": 1,
+      "extracted": 0,
+      "failed": 0,
+      "skipped": 42
+    },
+    "ZeroAccess": {
+      "archives": 1,
+      "extracted": 2,
+      "failed": 0,
+      "skipped": 2
+    },
+    "PlugX": {
+      "archives": 1,
+      "extracted": 7,
+      "failed": 0,
+      "skipped": 11
+    },
+    "Win32.Carberp": {
+      "archives": 1,
+      "extracted": 1,
+      "failed": 0,
+      "skipped": 1
+    },
+    "Win32.Cridex": {
+      "archives": 1,
+      "extracted": 0,
+      "failed": 0,
+      "skipped": 2
+    }
+  }
+}

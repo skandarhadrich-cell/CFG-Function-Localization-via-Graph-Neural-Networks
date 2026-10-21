@@ -1,0 +1,97 @@
+{
+  "existing_clean_clusters": 303,
+  "sources": {
+    "malwarebazaar": {
+      "total": 460,
+      "clean": 218,
+      "pass_rate": 0.4739,
+      "flags": {
+        "non_bodmas": 460,
+        "dotnet": 208,
+        "packed": 84,
+        "no_imports": 2
+      },
+      "clean_clusters": 150,
+      "novel_clusters": 147,
+      "families": 14,
+      "top_clusters": [
+        [
+          "imphash:6d1f2b41411eacafcf447fc002d8cb00",
+          11
+        ],
+        [
+          "imphash:e5b4359a3773764a372173074ae9b6bd",
+          10
+        ],
+        [
+          "imphash:26babd76bbb7f9c516a338b0601b4c9f",
+          7
+        ],
+        [
+          "imphash:f966c70f910316ddcc988048cf3ffc4d",
+          4
+        ],
+        [
+          "imphash:09070e021d4505e6183701ac6e022a16",
+          4
+        ]
+      ]
+    },
+    "thezoo": {
+      "total": 4,
+      "clean": 0,
+      "pass_rate": 0.0,
+      "flags": {
+        "non_bodmas": 4,
+        "dotnet": 3,
+        "packed": 1
+      },
+      "clean_clusters": 0,
+      "novel_clusters": 0,
+      "families": 0,
+      "top_clusters": []
+    }
+  },
+  "go_criteria": {
+    "min_new_positives": 75,
+    "min_new_clusters": 5
+  },
+  "clean_by_family": {
+    "control_Berbew": 37,
+    "Dridex": 30,
+    "Pony": 29,
+    "AZORult": 28,
+    "DarkComet": 26,
+    "TrickBot": 19,
+    "control_Upatre": 19,
+    "HawkEye": 10,
+    "AgentTesla": 5,
+    "AsyncRAT": 5,
+    "tag_antivm": 4,
+    "Formbook": 3,
+    "tag_anti-debug": 2,
+    "QuasarRAT": 1
+  },
+  "total_by_family": {
+    "DarkComet": 40,
+    "NanoCore": 40,
+    "control_Berbew": 40,
+    "AZORult": 38,
+    "njRAT": 38,
+    "Pony": 37,
+    "AsyncRAT": 36,
+    "HawkEye": 36,
+    "Dridex": 31,
+    "QuasarRAT": 31,
+    "TrickBot": 25,
+    "control_Upatre": 22,
+    "AgentTesla": 21,
+    "Formbook": 12,
+    "tag_antivm": 9,
+    "tag_anti-debug": 4,
+    "Trojan.Bladabindi": 1,
+    "Win32.AgentTesla": 1,
+    "Win32.Alina.3.4.B": 1,
+    "njRAT-v0.6.4": 1
+  }
+}

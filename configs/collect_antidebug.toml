@@ -1,0 +1,64 @@
+# External collection frame for the anti_debug coverage expansion (v3).
+#
+# This frame is pre-registered: the family lists and per-family quotas are
+# sampling decisions (stratified by family to stop any one family dominating),
+# chosen BEFORE any label was observed.  The quality filter applied afterwards
+# is identical to v2 and is not tuned.  Nothing here may be edited after the
+# probe in order to chase the diversity metric.
+
+[limits]
+# Probe limits: cheap feasibility check before committing to a full pull.
+probe_per_family = 40
+probe_per_tag = 40
+# Full pull limits.
+per_family = 120
+per_tag = 120
+archive_password = "infected"
+
+[targeted]
+# Families chosen because they are documented to implement anti-debug /
+# anti-VM behaviour.  Deliberately excludes the frozen LOFO held-out families
+# (lokibot, emotet, ursnif) so that experiment is not silently changed.
+signatures = [
+  "Remcos",
+  "njRAT",
+  "AsyncRAT",
+  "QuasarRAT",
+  "DarkComet",
+  "NanoCore",
+  "AgentTesla",
+  "Formbook",
+  "HawkEye",
+  "TrickBot",
+  "Dridex",
+  "QakBot",
+  "Smokeloader",
+  "Carberp",
+  "Pony",
+  "AZORult",
+]
+tags = ["antidebug", "anti-debug", "antivm", "sandboxevasion"]
+
+[control]
+# Families with no published anti-debug behaviour.  Used to measure the
+# baseline positive rate so the diversity improvement cannot be attributed
+# purely to targeted collection.
+signatures = ["Upatre", "Dofoil", "Zusy", "Mira", "Berbew"]
+
+[thezoo]
+# theZoo only carries a handful of Windows RATs; this is the entire usable
+# frame for anti-debug-relevant PE samples.  theZoo coverage is thin by design.
+families = [
+  "njRAT-v0.6.4",
+  "Trojan.Bladabindi",
+  "Win32.AgentTesla",
+  "Win32.ZeusVM",
+  "Win32.XAgent",
+  "Win32.Alina.3.4.B",
+  "Win32.Fareit",
+  "Raccoon.Stealer.v2",
+  "ZeroAccess",
+  "PlugX",
+  "Win32.Carberp",
+  "Win32.Cridex",
+]

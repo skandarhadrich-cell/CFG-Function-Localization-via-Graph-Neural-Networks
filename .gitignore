@@ -19,11 +19,15 @@ htmlcov/
 
 # ── Data: malware, licensed corpora, generated artifacts ─────
 data/raw/
+data/raw_external/
 data/bodmas/
+data/external_meta/
 data/processed/
 data/graphs/
 data/logs/
 data/labels/capa_raw/
+data/labels/capa_external_probe/
+data/scratch_external_probe/
 data/labels/capa_parsed.jsonl
 data/labels/function_labels.csv
 data/labels/function_labels.parquet

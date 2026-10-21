@@ -1,0 +1,160 @@
+{
+  "candidates": 562,
+  "skipped_known": 466,
+  "skipped_non_pe": 96,
+  "downloaded": 0,
+  "extracted": 0,
+  "failed": 0,
+  "per_query": {
+    "signature:Remcos": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:njRAT": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 38,
+      "failed": 0
+    },
+    "signature:AsyncRAT": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 36,
+      "failed": 0
+    },
+    "signature:QuasarRAT": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 31,
+      "failed": 0
+    },
+    "signature:DarkComet": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 40,
+      "failed": 0
+    },
+    "signature:NanoCore": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 40,
+      "failed": 0
+    },
+    "signature:AgentTesla": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 21,
+      "failed": 0
+    },
+    "signature:Formbook": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 11,
+      "failed": 0
+    },
+    "signature:HawkEye": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 36,
+      "failed": 0
+    },
+    "signature:TrickBot": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 26,
+      "failed": 0
+    },
+    "signature:Dridex": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 32,
+      "failed": 0
+    },
+    "signature:QakBot": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Smokeloader": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Carberp": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Pony": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 40,
+      "failed": 0
+    },
+    "signature:AZORult": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 40,
+      "failed": 0
+    },
+    "tag:antidebug": {
+      "returned": 2,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "tag:anti-debug": {
+      "returned": 4,
+      "downloaded": 0,
+      "skipped": 4,
+      "failed": 0
+    },
+    "tag:antivm": {
+      "returned": 14,
+      "downloaded": 0,
+      "skipped": 9,
+      "failed": 0
+    },
+    "tag:sandboxevasion": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Upatre": {
+      "returned": 22,
+      "downloaded": 0,
+      "skipped": 22,
+      "failed": 0
+    },
+    "signature:Dofoil": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Zusy": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Mira": {
+      "returned": 0,
+      "downloaded": 0,
+      "skipped": 0,
+      "failed": 0
+    },
+    "signature:Berbew": {
+      "returned": 40,
+      "downloaded": 0,
+      "skipped": 40,
+      "failed": 0
+    }
+  }
+}
