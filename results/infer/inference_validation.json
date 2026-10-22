@@ -1,0 +1,81 @@
+{
+  "kind": "single-binary-heldout-smoke",
+  "split": "test",
+  "n_samples": 3,
+  "all_selected_sets_match_corpus_batch": true,
+  "samples": [
+    {
+      "sample_id": "0fe82dc1245fbb5001e1fae0396549fc50a083a82e1d63efa1f837813be691b6",
+      "sha256": "25c5f0d873e8167464eab10187deb28da54656398d26c7dad9ff1918a25d3dd0",
+      "functions": 116,
+      "blocks": 1912,
+      "targets": {
+        "anti_debug": {
+          "present": true,
+          "n_flagged_functions": 1,
+          "n_localized_blocks": 0
+        },
+        "keylogger": {
+          "present": false,
+          "n_flagged_functions": 0,
+          "n_localized_blocks": 0
+        },
+        "injection": {
+          "present": true,
+          "n_flagged_functions": 21,
+          "n_localized_blocks": 205
+        }
+      },
+      "selected_functions_match_corpus_batch": true
+    },
+    {
+      "sample_id": "23eceb5f2416fc722a1ec01aa7c8e4bf9cdc4ef76d508772341b7a6f0a12f2b3",
+      "sha256": "8fa6ae76c1ab6a69d33280a3139feb92ba83a30b9c10d9bedb5535695e112fbf",
+      "functions": 720,
+      "blocks": 5878,
+      "targets": {
+        "anti_debug": {
+          "present": false,
+          "n_flagged_functions": 0,
+          "n_localized_blocks": 0
+        },
+        "keylogger": {
+          "present": true,
+          "n_flagged_functions": 2,
+          "n_localized_blocks": 7
+        },
+        "injection": {
+          "present": true,
+          "n_flagged_functions": 4,
+          "n_localized_blocks": 28
+        }
+      },
+      "selected_functions_match_corpus_batch": true
+    },
+    {
+      "sample_id": "7531d632c121bfcc58530844aaffdde1956537f02dd91f1dd250c23874888aa6",
+      "sha256": "1be0fd9e7414a995b1c69aeec48b234ac5af55100c34b5794abf3a1070390984",
+      "functions": 2502,
+      "blocks": 50968,
+      "targets": {
+        "anti_debug": {
+          "present": true,
+          "n_flagged_functions": 2,
+          "n_localized_blocks": 0
+        },
+        "keylogger": {
+          "present": true,
+          "n_flagged_functions": 22,
+          "n_localized_blocks": 117
+        },
+        "injection": {
+          "present": true,
+          "n_flagged_functions": 2,
+          "n_localized_blocks": 38
+        }
+      },
+      "selected_functions_match_corpus_batch": true
+    }
+  ],
+  "note": "Each selected-function set was compared against the frozen checkpoint applied to the corpus batch for the same sample; all three targets matched exactly."
+}

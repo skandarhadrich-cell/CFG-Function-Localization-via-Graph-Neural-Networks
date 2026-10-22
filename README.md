@@ -30,8 +30,14 @@ been rebuilt. Function-scope CAPA matches are localised through CAPA's reported
 evidence locations, so an anti-debug rule is attached to the angr function that
 contains the ``rdtsc``/``icebp`` instructions rather than to every function that
 happens to share the CAPA function start. Stage 1 and the Stage 2 block
-localiser have been trained and their held-out tests evaluated once. The next
-modelling step is the GAT comparison, not a new label contract.
+localiser have been trained and their held-out tests evaluated once. A
+single-binary inference CLI now runs the frozen Stage 1 and Stage 2 models on
+one x86 PE and writes function scores plus block addresses as JSON. The next
+modelling step remains the GAT comparison, not a new label contract.
+
+Final report (PDF): [`results/final_report.pdf`](results/final_report.pdf).
+The reproducible source is `scripts/make_final_report.py` and the HTML
+intermediate is `results/final_report.html`.
 
 ---
 
@@ -136,6 +142,8 @@ src/eval/stage1_test.py        once-only Stage 1 test evaluation
 src/eval/stage2_test.py        once-only Stage 2 test evaluation
 src/eval/stage2_end_to_end.py  Stage 1 selected functions -> block metrics
 src/eval/folds.py              cluster fold assignment
+src/infer/                     one-binary CLI, feature/model path, JSON report
+docs/inference.md              CLI usage, output schema, inference caveats
 tests/                         unit and corpus invariants
 ```
 
@@ -250,6 +258,26 @@ F1 is **0.3723** (IoU **0.2375**). The anti-debug block threshold (0.94) was
 selected on 27 validation functions and is very conservative; its test AP is
 0.336, so the ranking is better than the thresholded recall suggests. Full
 tables and caveats are in `results/train/stage2/report.md`.
+
+### Single-binary inference
+
+The frozen checkpoints can score one x86 PE and localise blocks inside the
+functions selected by Stage 1:
+
+```bash
+./venv/bin/python -m src.infer.run \
+  --binary data/raw/antidebug/<sample_id>.exe \
+  --out results/infer/<sample_id>.json
+```
+
+The CLI extracts the CFG with the same timeout/RSS-protected angr worker used
+by the corpus builder, rebuilds the exact 187 block features, loads
+`results/train/stage1/best.pt` and `results/train/stage2/best.pt`, and writes a
+JSON report. `--graph <file.npz>` skips extraction for a graph that already
+exists. `--no-stage2` produces function scores only. A non-x86 input or a failed
+extraction exits with code 2 and an explicit error; it is never treated as a
+negative. The output contract is documented in
+[`docs/inference.md`](docs/inference.md).
 
 ## 7. Evaluation
 

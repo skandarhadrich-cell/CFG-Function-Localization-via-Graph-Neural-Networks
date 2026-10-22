@@ -1,0 +1,250 @@
+{
+  "kind": "static-capstone-decode",
+  "not_manual_validation": true,
+  "sample_sha256": "25c5f0d873e8167464eab10187deb28da54656398d26c7dad9ff1918a25d3dd0",
+  "target": "injection",
+  "blocks": [
+    {
+      "block_rva": "0x5afe",
+      "block_va": "0x10005afe",
+      "size": 7,
+      "score": 0.997368,
+      "decoded_bytes": 7,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x10005afe",
+          "text": "push edi"
+        },
+        {
+          "address": "0x10005aff",
+          "text": "call dword ptr [0x1000a0b0]"
+        }
+      ],
+      "api": "KERNEL32.dll!lstrlenW",
+      "function_rva": "0x5880",
+      "function_score": 0.99959
+    },
+    {
+      "block_rva": "0x5ad4",
+      "block_va": "0x10005ad4",
+      "size": 13,
+      "score": 0.988737,
+      "decoded_bytes": 13,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x10005ad4",
+          "text": "push dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "0x10005ad8",
+          "text": "lea esi, [edi + eax*2]"
+        },
+        {
+          "address": "0x10005adb",
+          "text": "call dword ptr [0x1000a160]"
+        }
+      ],
+      "api": "KERNEL32.dll!lstrlenA",
+      "function_rva": "0x5880",
+      "function_score": 0.99959
+    },
+    {
+      "block_rva": "0x6aca",
+      "block_va": "0x10006aca",
+      "size": 7,
+      "score": 0.997368,
+      "decoded_bytes": 7,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x10006aca",
+          "text": "push esi"
+        },
+        {
+          "address": "0x10006acb",
+          "text": "call dword ptr [0x1000a0b0]"
+        }
+      ],
+      "api": "KERNEL32.dll!lstrlenW",
+      "function_rva": "0x6a40",
+      "function_score": 0.999526
+    },
+    {
+      "block_rva": "0x6b69",
+      "block_va": "0x10006b69",
+      "size": 11,
+      "score": 0.995603,
+      "decoded_bytes": 11,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x10006b69",
+          "text": "push 0x1000feb0"
+        },
+        {
+          "address": "0x10006b6e",
+          "text": "call dword ptr [0x1000a160]"
+        }
+      ],
+      "api": "KERNEL32.dll!lstrlenA",
+      "function_rva": "0x6a40",
+      "function_score": 0.999526
+    },
+    {
+      "block_rva": "0x779d",
+      "block_va": "0x1000779d",
+      "size": 9,
+      "score": 0.99639,
+      "decoded_bytes": 9,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x1000779d",
+          "text": "push dword ptr [esi + 0x68]"
+        },
+        {
+          "address": "0x100077a0",
+          "text": "call dword ptr [0x1000a0b0]"
+        }
+      ],
+      "api": "KERNEL32.dll!lstrlenW",
+      "function_rva": "0x7330",
+      "function_score": 0.999497
+    },
+    {
+      "block_rva": "0x76bc",
+      "block_va": "0x100076bc",
+      "size": 14,
+      "score": 0.995896,
+      "decoded_bytes": 14,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x100076bc",
+          "text": "mov edi, eax"
+        },
+        {
+          "address": "0x100076be",
+          "text": "push 0x100"
+        },
+        {
+          "address": "0x100076c3",
+          "text": "push edi"
+        },
+        {
+          "address": "0x100076c4",
+          "text": "call dword ptr [0x1000a0f4]"
+        }
+      ],
+      "api": "KERNEL32.dll!GetWindowsDirectoryW",
+      "function_rva": "0x7330",
+      "function_score": 0.999497
+    },
+    {
+      "block_rva": "0x711e",
+      "block_va": "0x1000711e",
+      "size": 7,
+      "score": 0.996378,
+      "decoded_bytes": 7,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x1000711e",
+          "text": "push esi"
+        },
+        {
+          "address": "0x1000711f",
+          "text": "call dword ptr [0x1000a0b0]"
+        }
+      ],
+      "api": "KERNEL32.dll!lstrlenW",
+      "function_rva": "0x6f40",
+      "function_score": 0.999274
+    },
+    {
+      "block_rva": "0x70ec",
+      "block_va": "0x100070ec",
+      "size": 16,
+      "score": 0.94799,
+      "decoded_bytes": 16,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x100070ec",
+          "text": "push 0x8000"
+        },
+        {
+          "address": "0x100070f1",
+          "text": "push 0"
+        },
+        {
+          "address": "0x100070f3",
+          "text": "push dword ptr [ebp + 8]"
+        },
+        {
+          "address": "0x100070f6",
+          "text": "call dword ptr [0x1000a104]"
+        }
+      ],
+      "api": "KERNEL32.dll!VirtualFree",
+      "function_rva": "0x6f40",
+      "function_score": 0.999274
+    },
+    {
+      "block_rva": "0x2c45",
+      "block_va": "0x10002c45",
+      "size": 8,
+      "score": 0.999233,
+      "decoded_bytes": 8,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x10002c45",
+          "text": "push 0"
+        },
+        {
+          "address": "0x10002c47",
+          "text": "call dword ptr [0x1000a118]"
+        }
+      ],
+      "api": "KERNEL32.dll!ExitThread",
+      "function_rva": "0x2ad0",
+      "function_score": 0.997568
+    },
+    {
+      "block_rva": "0x2b8e",
+      "block_va": "0x10002b8e",
+      "size": 20,
+      "score": 0.961919,
+      "decoded_bytes": 20,
+      "complete": true,
+      "instructions": [
+        {
+          "address": "0x10002b8e",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "0x10002b91",
+          "text": "push 0x100"
+        },
+        {
+          "address": "0x10002b96",
+          "text": "push ebx"
+        },
+        {
+          "address": "0x10002b97",
+          "text": "push 0x1000f240"
+        },
+        {
+          "address": "0x10002b9c",
+          "text": "call dword ptr [0x1000a138]"
+        }
+      ],
+      "api": "KERNEL32.dll!GetEnvironmentVariableW",
+      "function_rva": "0x2ad0",
+      "function_score": 0.997568
+    }
+  ]
+}
