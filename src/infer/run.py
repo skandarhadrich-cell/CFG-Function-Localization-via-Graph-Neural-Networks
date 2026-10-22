@@ -17,6 +17,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from src.infer.pdf import render_sample_pdf
 from src.infer.pipeline import (
     DEFAULT_STAGE1, DEFAULT_STAGE2, InferenceError, build_features,
     check_x86_pe, extracted_graph, load_models, predict_graph, sha256_file,
@@ -42,6 +43,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="function-level scores only")
     parser.add_argument("--out", type=Path, default=Path("results/infer/report.json"),
                         help="JSON output path")
+    parser.add_argument("--pdf", type=Path,
+                        help="PDF output path (default: same stem as --out)")
+    parser.add_argument("--no-pdf", action="store_true",
+                        help="do not generate the per-sample PDF")
+    parser.add_argument("--html", type=Path,
+                        help="optional path to keep the rendered HTML source")
+    parser.add_argument("--open", action="store_true",
+                        help="open the generated PDF in the desktop viewer")
     parser.add_argument("--timeout", type=float, default=1800.0,
                         help="angr extraction timeout in seconds")
     parser.add_argument("--rss-limit-gb", type=float, default=3.0,
@@ -60,7 +69,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="do not print the text summary")
     parser.add_argument("--debug", action="store_true",
                         help="show a traceback on unexpected errors")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if args.no_pdf and args.pdf is not None:
+        parser.error("--pdf and --no-pdf are mutually exclusive")
+    if args.no_pdf and args.open:
+        parser.error("--open requires PDF output")
+    if args.no_pdf and args.html is not None:
+        parser.error("--html requires PDF output")
+    return args
 
 
 def _run_graph(binary: Path, graph_path: Path, args, models, sha: str,
@@ -108,6 +124,19 @@ def _run_graph(binary: Path, graph_path: Path, args, models, sha: str,
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     binary = args.binary.expanduser()
+    pdf_path = None
+    if not args.no_pdf:
+        pdf_path = args.pdf.expanduser() if args.pdf else args.out.with_suffix(".pdf")
+        if pdf_path.resolve() == args.out.resolve():
+            print("error: --pdf must not be the same path as --out", file=sys.stderr)
+            return 2
+    if args.html is not None:
+        html_path = args.html.expanduser()
+        if html_path.resolve() == args.out.resolve() or (
+            pdf_path is not None and html_path.resolve() == pdf_path.resolve()
+        ):
+            print("error: --html must differ from --out and --pdf", file=sys.stderr)
+            return 2
     try:
         if not binary.exists() or not binary.is_file():
             raise InferenceError(f"binary not found: {binary}")
@@ -169,6 +198,25 @@ def main(argv: list[str] | None = None) -> int:
         if not args.quiet:
             print(render_text(report), end="")
             print(f"\nwrote {args.out}")
+
+        if pdf_path is not None:
+            try:
+                render_sample_pdf(
+                    report,
+                    pdf_path,
+                    html_path=args.html,
+                    open_pdf=args.open,
+                )
+            except Exception as exc:  # noqa: BLE001
+                print(
+                    f"error: JSON written to {args.out}, but PDF generation failed: {exc}",
+                    file=sys.stderr,
+                )
+                if args.debug:
+                    raise
+                return 2
+            if not args.quiet:
+                print(f"wrote {pdf_path}")
         return 0
     except InferenceError as exc:
         print(f"error: {exc}", file=sys.stderr)

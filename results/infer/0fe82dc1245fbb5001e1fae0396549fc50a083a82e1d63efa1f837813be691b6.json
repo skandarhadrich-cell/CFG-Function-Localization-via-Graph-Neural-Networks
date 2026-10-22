@@ -1,6 +1,6 @@
 {
   "schema_version": "cfg-gnn.infer.v1",
-  "generated_at": "2026-10-22T22:47:01.990340+00:00",
+  "generated_at": "2026-10-22T23:10:39.598236+00:00",
   "sample": {
     "path": "data/raw/antidebug/0fe82dc1245fbb5001e1fae0396549fc50a083a82e1d63efa1f837813be691b6.exe",
     "path_absolute": "/home/lali/cfg-gnn/data/raw/antidebug/0fe82dc1245fbb5001e1fae0396549fc50a083a82e1d63efa1f837813be691b6.exe",

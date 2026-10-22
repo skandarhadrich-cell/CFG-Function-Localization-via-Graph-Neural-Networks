@@ -273,10 +273,13 @@ functions selected by Stage 1:
 The CLI extracts the CFG with the same timeout/RSS-protected angr worker used
 by the corpus builder, rebuilds the exact 187 block features, loads
 `results/train/stage1/best.pt` and `results/train/stage2/best.pt`, and writes a
-JSON report. `--graph <file.npz>` skips extraction for a graph that already
-exists. `--no-stage2` produces function scores only. A non-x86 input or a failed
-extraction exits with code 2 and an explicit error; it is never treated as a
-negative. The output contract is documented in
+JSON report plus a sample-specific PDF. With `--out results/infer/sample.json`
+the PDF is written to `results/infer/sample.pdf`. Use `--pdf PATH` to choose a
+different PDF path, `--no-pdf` to skip it, `--html PATH` to keep the HTML source,
+and `--open` to launch the PDF. `--graph <file.npz>` skips extraction for a
+graph that already exists. `--no-stage2` produces function scores only. A
+non-x86 input or a failed extraction exits with code 2 and an explicit error; it
+is never treated as a negative. The output contract is documented in
 [`docs/inference.md`](docs/inference.md).
 
 ## 7. Evaluation

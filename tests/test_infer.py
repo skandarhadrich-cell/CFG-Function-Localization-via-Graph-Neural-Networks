@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 import torch
 
+from src.infer.pdf import build_sample_html, find_chromium, render_sample_pdf
 from src.infer.report import build_report, render_text
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -102,6 +103,36 @@ def test_report_block_cap_marks_warning():
     # 0 means unlimited in the CLI caller, but here it is passed literally;
     # this test checks the report does not crash on the cap boundary.
     assert report["targets"]["anti_debug"]["present"] is True
+
+
+def _sample_report():
+    arrays, p1, p2, models, sample, extraction = _synthetic()
+    return build_report(
+        sample=sample, arrays=arrays, p1=p1, p2=p2, models=models,
+        extraction=extraction, api_stats={"loaded": True, "imports": 1, "thunks": 1},
+        warnings=["test warning"], all_functions=False,
+        max_blocks_per_function=10,
+    )
+
+
+def test_sample_pdf_html_contains_targets_and_blocks():
+    report = _sample_report()
+    text = build_sample_html(report)
+    assert "Behaviour and block localisation report" in text
+    assert "anti_debug" in text
+    assert "keylogger" in text
+    assert "0x1000" in text
+    assert "test warning" in text
+    assert "Block localization" in text
+
+
+@pytest.mark.skipif(find_chromium() is None, reason="Chromium not installed")
+def test_render_sample_pdf_smoke(tmp_path):
+    report = _sample_report()
+    out = render_sample_pdf(report, tmp_path / "sample.pdf", timeout=60)
+    assert out.exists()
+    assert out.stat().st_size > 1000
+    assert out.read_bytes().startswith(b"%PDF")
 
 
 @pytest.mark.skipif(not (CORPUS / "graph_meta.npz").exists(), reason="corpus missing")
