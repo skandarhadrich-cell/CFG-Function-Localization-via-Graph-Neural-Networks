@@ -1,0 +1,53 @@
+{
+  "n_blocks": 14051,
+  "per_class": {
+    "anti_debug": {
+      "support_blocks": 136,
+      "predicted_blocks": 8,
+      "precision": 1.0,
+      "recall": 0.058823529411764705,
+      "f1": 0.1111111111111111,
+      "iou": 0.058823529411764705,
+      "average_precision": 0.3364153291187024,
+      "threshold": 0.94,
+      "support_functions": 27,
+      "function_hit_rate": 0.14814814814814814
+    },
+    "keylogger": {
+      "support_blocks": 1344,
+      "predicted_blocks": 1839,
+      "precision": 0.4312126155519304,
+      "recall": 0.5900297619047619,
+      "f1": 0.49827207037386106,
+      "iou": 0.3317991631799163,
+      "average_precision": 0.4232705399921692,
+      "threshold": 0.49999999999999994,
+      "support_functions": 149,
+      "function_hit_rate": 0.8657718120805369
+    },
+    "injection": {
+      "support_blocks": 2094,
+      "predicted_blocks": 3050,
+      "precision": 0.6462295081967213,
+      "recall": 0.9412607449856734,
+      "f1": 0.7663297045101088,
+      "iou": 0.6211786952410967,
+      "average_precision": 0.6175447018455956,
+      "threshold": 0.6399999999999999,
+      "support_functions": 197,
+      "function_hit_rate": 0.9949238578680203
+    }
+  },
+  "macro_f1": 0.4585709619983603,
+  "macro_iou": 0.33726712927759256,
+  "macro_function_hit_rate": 0.6696146060322351,
+  "loss": 1.064697504043579,
+  "split": "test",
+  "checkpoint": "results/train/stage2/best.pt",
+  "thresholds": [
+    0.94,
+    0.49999999999999994,
+    0.6399999999999999
+  ],
+  "best_epoch": 2
+}

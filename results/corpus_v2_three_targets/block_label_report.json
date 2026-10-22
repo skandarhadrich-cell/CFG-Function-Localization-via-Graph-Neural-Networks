@@ -1,0 +1,68 @@
+{
+  "blocks": 17957769,
+  "masked_blocks": 120319,
+  "positive_blocks": {
+    "anti_debug": 1432,
+    "keylogger": 9504,
+    "injection": 15263
+  },
+  "positive_functions_with_localisation": {
+    "anti_debug": 448,
+    "keylogger": 1255,
+    "injection": 1344
+  },
+  "positive_functions_total": {
+    "anti_debug": 448,
+    "keylogger": 1255,
+    "injection": 1349
+  },
+  "api_seed_blocks": {
+    "anti_debug": 800,
+    "keylogger": 6889,
+    "injection": 14798
+  },
+  "split_support": {
+    "train": {
+      "anti_debug": {
+        "blocks": 1138,
+        "functions": 394
+      },
+      "keylogger": {
+        "blocks": 7050,
+        "functions": 950
+      },
+      "injection": {
+        "blocks": 10226,
+        "functions": 939
+      }
+    },
+    "val": {
+      "anti_debug": {
+        "blocks": 158,
+        "functions": 27
+      },
+      "keylogger": {
+        "blocks": 1110,
+        "functions": 152
+      },
+      "injection": {
+        "blocks": 2943,
+        "functions": 203
+      }
+    },
+    "test": {
+      "anti_debug": {
+        "blocks": 136,
+        "functions": 27
+      },
+      "keylogger": {
+        "blocks": 1344,
+        "functions": 153
+      },
+      "injection": {
+        "blocks": 2094,
+        "functions": 202
+      }
+    }
+  }
+}

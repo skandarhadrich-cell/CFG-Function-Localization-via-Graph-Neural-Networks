@@ -35,6 +35,8 @@ data/labels/stage1_function_labels.csv
 data/labels/stage1_function_labels.parquet
 data/labels/stage1_full_function_labels.csv
 data/labels/stage1_full_function_labels.parquet
+data/labels/stage1_full_three_targets.csv
+data/labels/stage1_full_three_targets.parquet
 data/processed_v2/
 data/graphs_v2/
 scratch/
@@ -55,6 +57,8 @@ results/pilot/keylogger_probe/
 results/stage1/mapping.jsonl
 results/full/mapping.jsonl
 results/full/mapping.jsonl.lock
+results/full/mapping_three_target.jsonl
+results/full/mapping_three_target.jsonl.lock
 results/full/mapping.stale.jsonl
 results/full/retry_samples.json
 results/full/retry_summary.json

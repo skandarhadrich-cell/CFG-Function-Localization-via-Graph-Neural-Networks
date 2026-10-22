@@ -214,10 +214,22 @@ def map_capa_to_angr(
 
     for capa_func in result.functions:
         function_match = index.find_function(angr_base + capa_func.capa_func_va)
-        block_matches = {
-            block_rva: index.find_block(angr_base + block_rva)
-            for block_rva in capa_func.matched_block_vas
-        }
+        block_matches: dict[int, _AddressMatch] = {}
+        for block_rva in capa_func.matched_block_vas:
+            match = index.find_block(angr_base + block_rva)
+            if match.function is None:
+                # Function-scope evidence can point at an instruction whose
+                # block was not recovered, or at a function start.  Fall back
+                # to the containing function rather than dropping the match.
+                function_match_fallback = index.find_function(angr_base + block_rva)
+                if function_match_fallback.function is not None:
+                    match = _AddressMatch(
+                        function_match_fallback.function,
+                        None,
+                        function_match_fallback.method,
+                        function_match_fallback.candidates,
+                    )
+            block_matches[block_rva] = match
 
         mapped_function = function_match.function
         if function_match.method == "exact":
@@ -261,19 +273,23 @@ def map_capa_to_angr(
                     }
                 )
 
-        # Function-scope matches label the mapped function.  Block-scope
-        # matches label their block's angr parent independently.  In the
-        # normal case these are the same function.
+        # Function-scope matches label the mapped function only when CAPA did
+        # not report evidence locations.  When it did, the evidence blocks are
+        # the localisable part: label their angr parents, and keep the CAPA
+        # function-start function as a weak negative if it is a different
+        # angr function.  This avoids turning one large CAPA function into
+        # dozens of unrelated positives when angr split it.
         labeled_targets: list[tuple[AngrFunction, str, dict[str, int]]] = []
-        if mapped_function is not None and (
-            capa_func.function_match_count or not capa_func.block_match_count
+        has_block_targets = bool(capa_func.matched_block_vas)
+        has_function_evidence = capa_func.function_evidence_count > 0
+        if (
+            mapped_function is not None
+            and not has_function_evidence
+            and capa_func.function_match_count
         ):
-            labels = (
-                capa_func.function_labels
-                if capa_func.function_match_count
-                else {label: 0 for label in LABELS}
+            labeled_targets.append(
+                (mapped_function, function_match.method, capa_func.function_labels)
             )
-            labeled_targets.append((mapped_function, function_match.method, labels))
         for parent in mapped_block_parents:
             method = "exact" if any(
                 match.function is not None and match.function.func_va == parent.func_va
@@ -281,6 +297,14 @@ def map_capa_to_angr(
                 for match in block_matches.values()
             ) else "containment"
             labeled_targets.append((parent, method, capa_func.block_labels))
+        if mapped_function is not None and has_block_targets and not any(
+            target.func_va == mapped_function.func_va
+            for target, _method, _labels in labeled_targets
+        ):
+            labeled_targets.append(
+                (mapped_function, function_match.method,
+                 {label: 0 for label in LABELS})
+            )
 
         if not labeled_targets and mapped_function is not None:
             # Weak negatives are attached to the CAPA function's own mapped
@@ -305,7 +329,11 @@ def map_capa_to_angr(
             row = rows.get(target.func_va)
             if row is None:
                 continue
-            if mapped_function is not None and target.func_va != mapped_function.func_va:
+            if (
+                capa_func.block_match_count
+                and mapped_function is not None
+                and target.func_va != mapped_function.func_va
+            ):
                 collisions.append(
                     {
                         "type": "block_parent_mismatch",
@@ -320,12 +348,13 @@ def map_capa_to_angr(
                 if match.block is not None and match.function is not None
                 and match.function.func_va == target.func_va
             ]
+            is_positive = any(target_labels.values())
             _merge(
                 row,
                 capa_func,
                 labels=target_labels,
-                rules=capa_func.matched_rules,
-                block_vas=block_vas,
+                rules=capa_func.matched_rules if is_positive else [],
+                block_vas=block_vas if is_positive else [],
                 method=method,
                 collision=False,
             )

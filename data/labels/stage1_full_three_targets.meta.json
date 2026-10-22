@@ -1,0 +1,77 @@
+{
+  "label_contract_version": "stage1-three-target-v1",
+  "active_labels": [
+    "anti_debug",
+    "keylogger",
+    "injection"
+  ],
+  "keylogger_in_stage1": true,
+  "label_normalization": "capa addresses normalized to RVA; angr func_va/mapped_block_vas absolute",
+  "source_mapping": "/home/lali/cfg-gnn/results/full/mapping_three_target.jsonl",
+  "samples": 2727,
+  "functions": 2712053,
+  "status_counts": {
+    "unlabeled": 2331752,
+    "weak_negative": 377257,
+    "positive": 3044
+  },
+  "label_counts": {
+    "anti_debug": 448,
+    "keylogger": 1255,
+    "injection": 1349
+  },
+  "label_diversity": {
+    "anti_debug": {
+      "positive_functions": 448,
+      "positive_binaries": 373,
+      "positive_clusters": 21,
+      "positive_families": 10,
+      "top_binary_share": 0.020089285714285716,
+      "top_cluster_share": 0.6116071428571429
+    },
+    "keylogger": {
+      "positive_functions": 1255,
+      "positive_binaries": 242,
+      "positive_clusters": 41,
+      "positive_families": 12,
+      "top_binary_share": 0.015139442231075698,
+      "top_cluster_share": 0.7569721115537849
+    },
+    "injection": {
+      "positive_functions": 1349,
+      "positive_binaries": 804,
+      "positive_clusters": 108,
+      "positive_families": 12,
+      "top_binary_share": 0.015567086730911787,
+      "top_cluster_share": 0.3291326908821349
+    }
+  },
+  "keylogger_evidence_functions": 1255,
+  "mapping_method_counts": {
+    "unmapped": 2331752,
+    "exact": 370474,
+    "containment": 9827
+  },
+  "collisions": 6642,
+  "by_bucket": {
+    "antidebug": {
+      "functions": 794190,
+      "positive": 1589,
+      "weak_negative": 220608,
+      "unlabeled": 571993
+    },
+    "injection": {
+      "functions": 1843416,
+      "positive": 1374,
+      "weak_negative": 141004,
+      "unlabeled": 1701038
+    },
+    "keylogger": {
+      "functions": 74447,
+      "positive": 81,
+      "weak_negative": 15645,
+      "unlabeled": 58721
+    }
+  },
+  "parquet": "/home/lali/cfg-gnn/data/labels/stage1_full_three_targets.parquet"
+}

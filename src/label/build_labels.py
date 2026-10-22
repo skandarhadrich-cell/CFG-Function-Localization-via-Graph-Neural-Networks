@@ -175,7 +175,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Map CAPA labels onto angr functions.")
     parser.add_argument("--manifest", type=Path, default=ROOT / "data/manifest.csv")
     parser.add_argument("--capa-dir", type=Path, default=ROOT / "data/labels/capa_raw")
-    parser.add_argument("--out", type=Path, default=ROOT / "results/pilot/mapping.jsonl")
+    parser.add_argument("--out", type=Path, default=ROOT / "results/full/mapping_three_target.jsonl")
     parser.add_argument("--summary", type=Path, default=ROOT / "results/pilot/mapping_summary.json")
     parser.add_argument("--scratch", type=Path, default=ROOT / "data/processed/angr_scratch")
     parser.add_argument(

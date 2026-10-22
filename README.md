@@ -1,528 +1,306 @@
-# CFG-GNN: Function-Level Malware Capability Classification
+# CFG-GNN: hierarchical malware function and block localisation
 
-Weakly supervised classification of PE binaries at the **function level**, using control-flow graphs
-(CFGs), basic-block features, and graph neural networks.
+Function-level and basic-block-level localisation of malicious behaviour in x86
+PE binaries, using control-flow graphs (CFGs) and graph neural networks.
 
-**Status:** Phase 0 v1 frozen; Phase 0 **v2** (packed-filter revision) built with
-**2,733 clean samples / 303 clusters** and its own versioned splits. The pilot label-contract run
-stopped for revision: CAPA 9.1.0 processed all 200 pilot samples, but `keylogger` projected to
-~242 positive functions, below the ~300 gate; `anti_debug` (~473) and `injection` (~1,127) pass.
-Stage 1 therefore trains **two** labels — `anti_debug` and `injection` — with two sigmoids; the
-keylogger label and its evidence are preserved for future work but are not part of the Stage 1
-targets or loss (contract §9 in
-[`docs/labeling_contract.md`](docs/labeling_contract.md)). The Stage 1 pilot (200 samples from v2
-train/val, cluster-capped) **passed its pipeline gate** (99.6% mapping coverage, 100% target
-coverage, 0 unresolved); full-set v2 CAPA and CFG extraction are in progress. See
-[`results/stage1/pilot_findings.md`](results/stage1/pilot_findings.md),
-[`results/phase0_v2/threshold_audit.md`](results/phase0_v2/threshold_audit.md), and
-[`results/phase0_v2/change_report.md`](results/phase0_v2/change_report.md). Model training has not
-started and will not until the Ghidra audit and full-set diversity review are complete. The
-original four-class/two-stage HTML plan is archived at
-[`docs/archive/legacy-two-stage-plan.html`](docs/archive/legacy-two-stage-plan.html) and is not
-current.
+```text
+PE binary
+   │
+   ▼
+angr CFG recovery
+   │
+   ▼
+Stage 1 — GCN over each function's CFG
+   │        anti_debug / keylogger / injection / not selected
+   ▼
+flagged functions only
+   │
+   ▼
+Stage 2 — block head over the same CFG trunk
+   │        which basic blocks carry the behaviour
+   ▼
+function ranking + block localisation report
+```
 
----
-
-## 1. Scope
-
-**What this project does**
-
-- Takes an x86/x64 PE binary, recovers per-function CFGs with angr, and labels functions with
-  CAPA-derived capabilities.
-- Trains a GNN to assign two independent probabilities per function in Stage 1: `anti_debug` and
-  `injection`. `keylogger` evidence is preserved but the label is deferred (it failed the
-  projection gate), so it is not a target and not a loss term.
-- Tests whether graph structure and opcode statistics alone can recover those labels when the
-  Windows API features are removed (`no-API` ablation).
-
-**What this project does not claim**
-
-- It is **not** a benign-vs-malicious detector. There is no benign corpus; unmatched functions are
-  "no targeted CAPA rule matched", not "safe".
-- It is **not** family attribution. Source folders and family names are stratification metadata,
-  not targets.
-- It is **not** block-level ground truth. Stage 2 (block localization) is an optional extension
-  built on weak CAPA block addresses.
-
-The labels are CAPA's output. The model is therefore evaluated as **weak supervision**: the
-interesting question is whether CFG structure and opcodes carry signal beyond the API calls that
-CAPA itself keys on.
+**Status (2026-10-22):** the project has been reset to the original three-target
+plan. The previous XOR/7-rule methodology detour and its checkpoints, evaluation
+code, and reports were removed. The three-target label table, the 187-dimensional
+block-feature corpus, the cluster-stratified split, and the Stage 1 trainer have
+been rebuilt. Function-scope CAPA matches are localised through CAPA's reported
+evidence locations, so an anti-debug rule is attached to the angr function that
+contains the ``rdtsc``/``icebp`` instructions rather than to every function that
+happens to share the CAPA function start. Stage 1 and the Stage 2 block
+localiser have been trained and their held-out tests evaluated once. The next
+modelling step is the GAT comparison, not a new label contract.
 
 ---
 
-## 2. Design decisions
+## 1. Task
 
-The original 14-day, four-class, two-stage plan is superseded. The current design:
+**Stage 1 — function classification.** For every recovered function in a
+malware sample, predict the three target behaviours:
 
-| Decision | Choice | Reason |
+| class | CAPA namespace | meaning |
 |---|---|---|
-| Task order | Single-stage function classifier first | Stage 2 is meaningless if Stage 1 is weak |
-| Label shape | 2 independent sigmoids (multi-label), Stage 1: `anti_debug`, `injection` | A function can match both; no invented priority order. `keylogger` deferred after failing the ~300-projection gate |
-| "Class 0" | Removed | Unmatched is a weak negative, not a benign class; unmapped is unlabeled |
-| Label inventory | `feature_counts.functions` + rule scopes | `layout.functions` only contains matched blocks, not all analyzed functions |
-| Source folders | `source_bucket`, used only for stratification | The family-to-class mapping was heuristic and is not ground truth |
-| Supervision | CAPA 9.1 rule namespaces | Weak labels, documented as such |
-| Evaluation | Positive-only + weak-negative agreement | Weak negatives are not true negatives |
-| API features | Full vs no-API vs API-dropout | Directly tests "does the model just re-learn CAPA?" |
-| Splits | imphash/family-grouped | Near-duplicates must never cross train/test |
-| Generalization | Main split + repeated LOFO for eligible families | One held-out family is not enough evidence |
-| Scale | Full clean corpus, no compute caps | Filter only for data quality |
-| Compute | CPU-first, pilot before full run | angr/CAPA dominate; GPU only helps training |
-| Schedule | Phases and gates, no fixed dates | Throughput is measured, not guessed |
-
----
-
-## 3. Dataset
-
-BODMAS "disarmed" PE corpus, stored under `data/raw/` (git-ignored).
-
-| Source bucket | Files on disk | Clean after Phase 0 | Families (clean) | Dominant clean family |
-|---|---:|---:|---:|---|
-| `keylogger` | 537 | 38 | 5 | lokibot (23) |
-| `injection` | 1,529 | 1,359 | 6 | ceeinject (1,127) |
-| `antidebug` | 2,408 | 1,417 | 7 | gandcrab (937) |
-| **Total** | **4,474** | **2,814** | **18** | — |
-
-The 4,470 BODMAS path-list IDs are all present. The extra 4 `.exe` files are nested TheZoo
-samples outside the path lists; they are marked `non_bodmas` and excluded. `carberp` has no clean
-samples, so 18 families remain represented.
-
-**Phase 0 v2 (packed-filter revision, used for Stage 1)**
-
-v1 above stays frozen under `data/versions/v1/`. v2 lives under `data/versions/v2/` and is built
-from `configs/phase0_v2.toml` with a documented, validated PE-based packed rule:
-
-| Flag / rule | v1 | v2 | Notes |
-|---|---:|---:|---|
-| `packed` flag | 1,398 | 1,485 | v2 adds `text_entropy >= 7.8 and num_imports <= 20` |
-| **Clean samples** | 2,814 | **2,733** | 81 v1-clean samples newly excluded (36 antidebug, 19 injection, 26 keylogger) |
-| Clean imphash clusters | 310 | **303** | 7 clusters fully removed |
-| Main split | 1,969/423/422 | **1,913/410/410** | same seed and ratios; regenerated |
-| LOFO split | 2,302/405/107 | **2,247/396/90** | regenerated; held-out families unchanged |
-
-The 7.8-vs-7.9 threshold audit (including the 14-sample delta: 10 zbot, 4 ceeinject, plus all 27
-pilot CAPA-flagged suspects) is recorded in
-[`results/phase0_v2/threshold_audit.md`](results/phase0_v2/threshold_audit.md); CAPA packer
-detections are used only as audit evidence, never as an exclusion criterion. Removed IDs, cluster
-changes, and split-membership changes are in
-[`results/phase0_v2/change_report.md`](results/phase0_v2/change_report.md).
-
-**Data quality filters (no compute caps)**
-
-| Flag | Files | Notes |
-|---|---:|---|
-| `packed` | 1,398 | UPX section names/signature, known packer strings, or high-entropy text with no imports |
-| `dotnet` | 265 | COM descriptor or `mscoree`/`mscorlib` import |
-| `non_bodmas` | 4 | nested TheZoo extras |
-| `no_imports` | 8 | informational; not used to exclude unless also packed/high-entropy |
-| **Clean** | **2,814** | flags overlap, so the excluded total is 1,660 |
-
-The earlier 502 packed estimate was based on `file(1)` output and undercounted samples whose UPX
-section names remain but whose UPX signature was stripped. No unpacking is attempted. The clean
-set is therefore smaller than the pre-Phase 0 estimate of 3,600–3,800.
-
-**Header disarmament.** 4,470 of 4,474 files need repair (`machine = 0`, `subsystem = 0`); the
-4 nested extras are already valid. angr fails with `ArchNotFound` and CAPA exits 21 until the
-fields are repaired (0x14c for PE32, 0x8664 for PE32+; subsystem 3 when zero). Repair is
-deterministic and done into an ephemeral per-job copy; `data/raw/` is never modified. Sixteen
-`injector` samples use a compact DOS header with `e_lfanew = 0x10`; the parser accepts them.
-
-**Hashing caveat.** Filenames are the BODMAS altered-sample IDs. Their content SHA-256 is
-**different** from the filename. Join labels on `sample_id` (filename stem), and store
-`content_sha256` separately in the manifest.
-
-**Buckets are not labels.** The family→bucket mapping is heuristic. Phase 1 reports a
-`source_bucket × CAPA-label` cross-tab so this assumption is visible instead of hidden.
-
----
-
-## 4. Labels
-
-CAPA is the weak supervisor, not ground truth. The full operational contract is in
-[`docs/labeling_contract.md`](docs/labeling_contract.md). The key point, verified against CAPA
-9.1.0 and real JSON, is that **`meta.analysis.layout.functions` is not an exhaustive function
-inventory**: it only contains functions with at least one matched basic block. In one clean
-`gandcrab` sample, `feature_counts.functions` had 77 functions while `layout.functions` had 69.
-
-CAPA 9.1 JSON is parsed as follows:
-
-- `rules[rule].matches` is a **list** of `[address, match]` pairs, not a dict keyed by address.
-- `meta.analysis.feature_counts.functions` is the analyzed-function inventory.
-- `meta.analysis.layout.functions[].matched_basic_blocks` is used only to map matched blocks back
-  to their parent functions.
-- There is no `meta.function` on matches. Use `meta.scopes.static` (`function` or
-  `basic block`), not `meta.scope` (often `null`).
-- Function-scope target matches label the function address directly. Basic-block-scope target
-  matches label the parent function. File/process/call-scope matches are ignored.
-- Normalize CAPA and angr addresses using `meta.analysis.base_address` before matching.
-
-| Label | CAPA namespace prefix | Examples |
-|---|---|---|
-| `anti_debug` | `anti-analysis/anti-debugging` | debugger detection, timing checks |
-| `keylogger` | `collection/keylog` | keystroke capture, raw input, hooks — **deferred after the pilot stop; evidence only, never a Stage 1 target** |
-| `injection` | `host-interaction/process/inject`, `load-code/pe/inject-*` | thread injection, shellcode injection |
-
-Each angr function gets one of three states:
-
-| State | Meaning | `label_mask` |
-|---|---|---:|
-| `positive` | A target CAPA rule matched and the address mapped to angr | 1 |
-| `weak_negative` | CAPA observed the function, but no target rule matched | 1 |
-| `unlabeled` | No successful CAPA-inventory mapping | 0 |
-
-The weak-negative meaning is deliberately narrow:
-
-> **No selected CAPA rule matched inside a function CAPA analyzed.**
-
-It does **not** mean benign, safe, or "the capability is absent." Unlabeled functions are masked
-out of the loss and evaluation; they are never silently converted to negatives. Positive and
-weak-negative counts, exact/containment mapping, unresolved matches, and many-to-one collisions
-are reported per sample. Mapping coverage and a Ghidra audit are pilot gates.
-
-Training uses a masked `BCEWithLogitsLoss`. Evaluation reports positive-only metrics and
-"agreement with CAPA weak negatives" separately; it does not call the latter specificity or
-true-negative rate. A positive-unlabeled sensitivity analysis is optional, not the primary
-pipeline. Label incidence is reported per label and per family; any label projecting below ~300
-positive functions full-set is a stop-and-revisit condition.
-
----
-
-## 5. Phases
-
-No dates. Each phase has an exit gate; the next phase does not start until the gate passes.
-
-### Phase 0 — Data foundation — complete
-
-- `src/data/repair_pe.py`: deterministic PE header repair (machine, subsystem) into a scratch copy.
-- `src/data/build_manifest.py`: manifest and frozen splits; quality flags, family metadata, and
-  imphash/sha cluster keys.
-- `src/data/validate_manifest.py`: angr load gate and stratified CAPA smoke test.
-- `configs/phase0.toml`, `tests/test_phase0.py`: pinned filter/split settings and unit tests.
-- `data/manifest.csv`: 4,474 rows; 2,814 marked clean.
-- `data/splits/main.json`, `data/splits/lofo.json`: frozen assignments.
-- `results/phase0_report.md`, `phase0_summary.json`, `phase0_validation.csv`,
-  `phase0_capa_smoke.csv`: counts, integrity check, and gate evidence.
-- **Gate:** met. All **2,814/2,814** clean rows load in angr; **12/12** stratified CAPA smoke samples
-  return exit 0; zero imphash/sha clusters cross splits; counts documented. A full-set CAPA
-  exit-code pass is the Phase 1 labeling run, not a Phase 0 step.
-
-### Pilot — label contract + end-to-end on ~200 samples
-
-Run Phases 1–4 on 200 clean samples drawn from main train/val only (test untouched), plus 20
-known-bad samples (10 .NET, 10 packed) to prove the filters reject them. The completed v1 pilot
-deliberately included every keylogger train/val sample; the **Stage 1 pilot** instead draws 200
-samples from the v2 main train/val split with a hard per-cluster cap (4) and family-balanced
-fill (`configs/pilot_stage1.toml`, `--selection stage1`), so no single imphash cluster or family
-can dominate.
-
-The pilot must first settle the label contract on real JSON. It should compare the old
-`layout.functions` view with the `feature_counts.functions` + rule-scope view and quantify how
-many positives and weak negatives change. It must not proceed to full labeling until that
-comparison and the mapping audit are clean.
-
-Pilot configuration: [`configs/pilot.toml`](configs/pilot.toml).
-
-- **Gate:**
-  - 100% repair success; CAPA/angr load all clean pilot samples.
-  - ≥95% of CAPA-observed functions map to angr (exact or containment).
-  - ≥95% of target rule matches map to an angr function/block; unresolved target matches <2% and
-    individually logged.
-  - Per-label positive counts and projected full-set counts; label census.
-  - 30–50 functions audited in Ghidra, stratified by label, bucket, and label status.
-  - Measured angr seconds/sample and RSS; block-count distribution; one measured training epoch
-    (wall time, loader share, RSS); full-API vs no-API sanity signal.
-- Abort or revise if any label projects below ~300 positive functions, if clean-sample failure
-  exceeds 20%, or if mapping coverage misses the thresholds. Keylogger is the most likely label to
-  trigger the stop condition.
-- The full run is committed only after the pilot numbers replace the rough estimates.
-
-The pilot is a pipeline and label-contract test, not a test-set evaluation. Do not tune on the
-main test split.
-
-### Phase 1 — CAPA labeling (full clean set)
-
-- 4 workers, resume by `sample_id`, 240 s timeout, JSON to `data/labels/capa_raw/` (ignored).
-- `src/label/run_capa.py`, `src/label/parse_capa.py`, `src/label/mapping.py`.
-- Parse `feature_counts.functions` as the analyzed inventory; use rule scopes for function/block
-  matches; use `layout.functions` only for block-to-function mapping.
-- `data/labels/stage1_function_labels.parquet` (Stage 1): `sample_id`, `func_va`,
-  `capa_func_va`, **two** binary labels (`anti_debug`, `injection`), `label_status`,
-  `label_mask`, matched rules, matched block addresses, mapping method, and collision flag.
-  `keylogger` matches stay in the raw CAPA JSON as evidence but are not label-table columns.
-- Record CAPA version, rules commit/dirty status, argv, sample SHA-256, extractor, and base
-  address in label metadata.
-- Report mapping coverage, unresolved matches, many-to-one collisions, label census, and
-  `source_bucket × label` cross-tabs.
-- **Gate:** label census (per active label, per family); ≥300 projected positives per active
-  label; pre-registered diversity checks (binaries/clusters/families and top shares); mapping
-  coverage thresholds from the pilot; stop if an active label is too sparse or mapping is
-  unresolved. `keylogger` already failed and is out of scope for Stage 1.
-
-### Phase 2 — CFG extraction
-
-- `src/extract/angr_cfg.py`, `src/extract/batch_extract.py`.
-- `CFGFast(normalize=True, resolve_indirect_jumps=True, data_references=False)`, 4 workers,
-  size-aware queue, 300 s cap, RSS watchdog at 3 GB, resume by sample.
-- Use **per-function** graphs. Message-passing edges must be intraprocedural: assert
-  `func_id[src] == func_id[dst]` for every edge; drop and log cross-function edges. Calls are node
-  features, not graph edges. Preserve edge direction in the baseline.
-- Store per-sample packed arrays (node features not yet computed): block address/size,
-  instructions, call targets, directed edges, `func_id`, function VA/size.
-- **Gate:** ≥80% clean-sample extraction coverage; failures categorized; memory violations logged;
-  zero cross-function edges in the training dataset.
-
-### Phase 3 — Features and datasets
-
-- Opcode 50-dim vocabulary (train split only), structural 5-dim, API 80-dim from angr-resolved call
-  targets, architecture flag 1-dim → **136 dims**. No-API variant: 56 dims.
-- Fit opcode/API vocabularies and all scalers on **train only**. In the no-API variant, remove API
-  identities from every feature path, not just the 80-dim vector.
-- Packed per-sample arrays: node features, `edge_index`, `func_id`, node labels, function labels,
-  `label_mask`.
-- Custom PyG `Dataset` with segment pooling by `func_id`; no per-function files, no `gpickle`.
-- **Gate:** shapes, no NaN/Inf, split integrity (`sample_id` and cluster sets disjoint), no
-  train/test vocabulary overlap, DataLoader batch test, no API leakage in the no-API build.
-
-### Phase 4 — Stage 1 classifier
-
-- GCN: 2 layers, 64 hidden, BatchNorm + ReLU + dropout 0.3, per-function mean+max pooling,
-  **2 output logits** (Stage 1: `anti_debug`, `injection`). GAT comparison: 4 heads × 16.
-- Loss: masked `BCEWithLogitsLoss` with per-label `pos_weight`; Adam 1e-3; early stopping
-  patience 15. Unlabeled functions are excluded by `label_mask`.
-- Runs: full-API, no-API, API-dropout p=0.5; 3 seeds once the epoch cost is measured.
-- Baselines and ablations:
-  - majority per label;
-  - MLP on pooled features (no graph);
-  - GCN with CFG edges removed / MLP on node features (does message passing help?);
-  - logistic regression or random forest on pooled features (does a simple model suffice?).
-- **Gate:** report whether no-API retains signal and whether graph structure contributes anything
-  beyond node features. A full-API-only win or a no-edge/MLP win is a negative result and is
-  reported as such, not hidden.
-
-### Phase 5 — Evaluation and write-up
-
-- Primary positive-only metrics: per-label precision/recall/F1 at validation-tuned thresholds,
-  AUROC/AP. Report "agreement with CAPA weak negatives" separately, never as true-negative rate.
-- Calibration with the caveat that weak negatives bias it.
-- Per-family breakdown and **repeated leave-one-family-out** results for eligible families;
-  report the distribution across held-out families, not one number. Eligibility is per label:
-  at least ~20 clean samples and ~30 positive functions in the held-out family. Keylogger remains
-  a single-family case study because only `lokibot` is large enough to hold out.
-- Confidence intervals by **cluster-level bootstrap** for the main split and binary-level
-  bootstrap within held-out families for LOFO. Do not resample functions independently.
-- Frozen test set; no tuning on test.
-- Latency per stage.
-- **Gate:** reproducible results from committed configs and seeds; CIs and held-out-family
-  spread reported; no claim of benign detection.
-
-### Phase 6 — Optional Stage 2 localization
-
-Only if Phase 4 produces a usable Stage 1.
-
-- Train on out-of-fold Stage 1 predictions (includes false positives).
-- Node labels from **target-rule** `matched_basic_blocks`; block labels inherit the same weak-label
-  and mapping caveats as function labels.
-- Compare against a rule-based block baseline.
-- Metrics: block IoU, precision@k, top-k recall; no-API variant.
-- **Gate:** Stage 2 beats the rule baseline on held-out data, or the negative result is documented.
-
-### Phase 7 — Optional extras
-
-- GAT attention figures as an **appendix**, not proof.
-- `run_pipeline.py` end-to-end demo; notebooks; final docs.
-
----
-
-## 6. Splits
-
-Two protocols, reported separately:
-
-1. **Main:** group key = `imphash` (or `sha:<content>` when there are no imports), stratified by
-   `source_bucket`, 70/15/15, greedy bin-packing per bucket. No cluster crosses splits. The largest
-   cluster is placed in train; train is consequently dominated by near-duplicates, while val/test
-   are cluster-diverse.
-2. **Leave-one-family-out (LOFO):** hold out one mid-size family per bucket; train on the rest.
-   This is the generalization test: unseen family, not just unseen binary. The frozen JSON is the
-   initial single-fold test. Phase 5 repeats LOFO for each family with enough clean samples and
-   enough positive functions for the label; report the distribution across held-out families.
-
-| Version | Protocol | Train | Val | Test | Clusters (train/val/test) |
-|---|---|---:|---:|---:|---|
-| v1 (frozen) | Main | 1,969 | 423 | 422 | 112 / 95 / 103 |
-| v1 (frozen) | LOFO (initial) | 2,302 | 405 | 107 | 151 / 111 / 48 |
-| **v2** | Main | 1,913 | 410 | 410 | 112 / 92 / 99 |
-| **v2** | LOFO | 2,247 | 396 | 90 | 143 / 109 / 51 |
-
-Main per bucket (train/val/test): keylogger 26/6/6, injection 951/204/204, antidebug
-992/213/212. LOFO holds out `lokibot` (23), `emotet` (50), and `ursnif` (34); keylogger has only
-13 train / 2 val after `lokibot` is removed. Keylogger cannot support a meaningful repeated-LOFO
-distribution; it is reported as a case study and subject to the label-census stop condition.
-
-All function- and block-level datasets inherit the sample split. Splits are frozen JSON files and
-record their manifest SHA-256 (v1 `fcd27780…`, v2 `09a6e1d8…`); regenerating them requires an
-explicit version bump. Stage 1 uses the v2 splits; v1 remains untouched under `data/versions/v1/`.
-
-Reported counts: files, imphash clusters, families. Metrics are always per family. Because one
-890-sample cluster is 45% of train, report cluster-level or family-held-out metrics alongside
-sample-level metrics; sample accuracy alone will overstate generalization. Confidence intervals
-use imphash-cluster resampling on main and binary-level resampling within held-out families on
-LOFO; functions are never treated as independent observations.
-
----
-
-## 7. Compute
-
-Kali VM: 16 GB RAM, 4 physical cores / 8 threads (i7-1165G7), CPU-only PyTorch.
-
-| Work | Workers | Measured / rough wall clock |
-|---|---:|---|
-| Phase 0 manifest + splits | 1 | ~1–2 min |
-| Phase 0 angr load gate (2,814) | 4 | 184 CPU-s → ~46 s wall |
-| Phase 0 CAPA smoke (12) | 1 | 193 s |
-| Pilot (200 + 20) | 4 | 2–4 h |
-| CAPA full set (2,814) | 4 | 7–11 h |
-| angr full set (2,814) | 4 (3 if RSS >3 GB) | 12–18 h |
-| Features + dataset | 4 | 1–2 h |
-| Stage 1 | 4 torch threads | measured by pilot |
-
-Phase 0 numbers are measured on this VM. The remaining figures are rough extrapolations; the pilot
-replaces them. CAPA and angr are single-threaded, so 4 physical cores cap real parallelism. Keep
-the phases sequential. Repeated LOFO reuses extracted features and retrains only; budget it as
-`eligible_folds × Stage 1`, not as another extraction pass.
-
-**GPU:** the installed wheel is `torch 2.14.0+cpu`; `torch.cuda.is_available()` is `False`,
-`get_arch_list()` is empty, and there is no `nvidia-smi`. The MX350 lives on the Windows host and
-VMware Workstation does not expose it to the guest. It is GP107 (sm_61, 2 GB). A CUDA build is only
-worth trying if `'sm_61'` appears in that build's `torch.cuda.get_arch_list()`; even then, 2 GB VRAM
-streams batches and the gain on a 2×64 model is likely small. Decision is deferred until the pilot
-measures a CPU epoch. Packed arrays are portable, so training can move to WSL2/Windows without
-changing extraction.
-
----
-
-## 8. Repository layout
-
-Current:
-
-```
-configs/phase0.toml         Phase 0 filters and split configuration
-configs/pilot.toml          pilot sampling, mapping gates, CAPA pin
-docs/labeling_contract.md   operational weak-label contract
-docs/archive/               superseded legacy plan, kept for history
-src/collect/mb_fetch.py     legacy sample-collection script; not used by the pipeline
-src/data/repair_pe.py       deterministic machine/subsystem repair
-src/data/build_manifest.py  manifest + frozen splits
-src/data/validate_manifest.py  angr load gate + CAPA smoke test
-tests/test_phase0.py        repair and split-integrity tests
-data/raw/                   BODMAS binaries (ignored)
-data/bodmas/                BODMAS metadata and npz (ignored)
-data/manifest.csv           4,474 rows; 2,814 clean
-data/splits/main.json       frozen main split
-data/splits/lofo.json       frozen leave-one-family-out split
-data/labels/                empty until Phase 1
-data/graphs/                reserved (ignored)
-results/phase0_report.md    counts, split integrity, gate status
-results/phase0_summary.json
-results/phase0_validation.csv
-results/phase0_validation_summary.json
-results/phase0_capa_smoke.csv
+| `anti_debug` | `anti-analysis/anti-debugging` | anti-debugging / anti-analysis rules |
+| `keylogger` | `collection/keylog` | keystroke-collection rules |
+| `injection` | `host-interaction/process/inject`, `load-code/pe/inject-` | process/PE injection rules |
+| *(background)* | none of the above | not selected; **not** a benign sample |
+
+The three targets are independent sigmoids: a function may match more than one.
+A function with no target match is the background class. It is a **weak
+negative**, not a benign function — the corpus is malware-only and there is no
+benign control corpus.
+
+**Stage 2 — block localisation.** For functions flagged by Stage 1, classify each
+basic block as carrying the target behaviour or not, then map scores back to
+virtual addresses. Evaluate with block-level precision, recall, F1, and IoU.
+
+## 2. Data
+
+| item | value |
+|---|---|
+| corpus | BODMAS v2 clean set, x86 PE |
+| clean samples | 2,733 |
+| graphs extracted | 2,729 (4 angr failures) |
+| function labels | 2,712,053 mapped rows |
+| target positives | anti_debug 448 · keylogger 1,255 · injection 1,349 |
+| splits | `three_target.json`: 70/15/15 cluster-stratified |
+| excluded | 855 x64 samples (all packed), see `docs/data/x64_scope.md` |
+
+Labels are CAPA 9.1.0 namespace matches on static function and basic-block
+scopes. The full contract is in [`docs/labeling_contract.md`](docs/labeling_contract.md).
+
+**Label caveat.** The labels are observational, not ground truth. The audit in
+[`results/audit/`](results/audit/) records the concentration: the keylogger label
+is 75.7 % one cluster and is largely keyboard-state API presence; anti-debug is
+61.2 % one cluster; injection is 32.9 %. Those figures are reported with every
+result. They do not change the targets, but they limit what a held-out score can
+mean. Function-scope evidence localisation keeps the anti-debug label at 448
+functions (down from 534 when the whole CAPA function was inherited by every
+contained angr function).
+
+## 3. Features
+
+Each basic block is a 187-dimensional vector:
+
+| dims | feature |
+|---|---|
+| 0–114 | 114 opcode frequencies + `other` |
+| 115–119 | log block size, log instructions, log in-degree, log out-degree, is-entry |
+| 120–183 | 64 hashed API-reference buckets |
+| 184–186 | log resolved API calls, log distinct buckets, has API call |
+
+The opcode vocabulary includes anti-debug/system instructions (`rdtsc`, `icebp`,
+`int1`, `cpuid`, `pushfd`/`popfd`, `in`/`out`, `sysenter`/`syscall`, ...), not
+just general integer operations.
+
+API references are resolved from the PE import table through import thunks and
+through the import-reference instruction itself (`call/jmp dword ptr [IAT]`),
+which covers calls that angr does not resolve to a call target. No CAPA rule
+name or label value enters the model input. The layout is written to `results/corpus_v2_three_targets/feature_spec.json`.
+
+## 4. Model
+
+- GCN: two message-passing layers, residual skip, mean+max function pooling,
+  small MLP head. Edges are intraprocedural only.
+- Stage 1 head: three logits (multi-label BCE).
+- Stage 2 head: per-block logits on the shared trunk.
+- GAT: planned as the second encoder; it is not implemented yet.
+
+The model is implemented directly in PyTorch. PyTorch Geometric is not a
+dependency at this stage.
+
+## 5. Repository layout
+
+```text
+configs/pilot_stage1.toml      three-target configuration
+data/versions/v2/              frozen manifest + main/LOFO splits
+data/graphs_v2/cfg/            one .npz CFG per sample (git-ignored)
+data/labels/                   CAPA JSON, mapping, three-target parquet (git-ignored)
+docs/                          contract, data scope, pipeline runbook
+results/audit/                 label composition and concentration
+results/corpus_v2_three_targets/  block features + labels (git-ignored)
+results/train/stage1/          Stage 1 metrics/report (+ checkpoint, git-ignored)
+results/train/stage2/          Stage 2 metrics/report (+ checkpoint, git-ignored)
+src/collect/                   MalwareBazaar / theZoo collectors
+src/data/                      manifest, repair, versioning
+src/extract/                   angr CFG recovery and .npz store
+src/features/block_features.py block features + corpus builder
+src/label/                     CAPA parsing, mapping, merge, contract
+src/models/gcn.py              GCN, node head, batching, standardizer
+src/train/stage1.py            three-target function trainer
+src/train/stage2.py            frozen-trunk block localiser
+src/data/build_block_labels.py block labels from CAPA evidence + API seeds
+src/eval/stage1_test.py        once-only Stage 1 test evaluation
+src/eval/stage2_test.py        once-only Stage 2 test evaluation
+src/eval/stage2_end_to_end.py  Stage 1 selected functions -> block metrics
+src/eval/folds.py              cluster fold assignment
+tests/                         unit and corpus invariants
 ```
 
-Planned:
+## 6. Running
 
-```
-configs/                   full.toml (pilot.toml already exists)
-src/data/                  repair_pe.py, build_manifest.py, dataset.py
-src/label/                 run_capa.py, parse_capa.py, mapping.py
-src/extract/               angr_cfg.py, batch_extract.py
-src/features/              opcode_features.py, api_features.py, structural_features.py, compose.py
-src/models/                stage1_gcn.py, stage1_gat.py
-src/train/                 trainer_s1.py
-src/eval/                  evaluate_s1.py, plots.py
-src/run_pilot.py
-notebooks/                 cfg inspection, feature validation, results
-data/manifest.csv
-data/splits/main.json, lofo.json
-data/labels/function_labels.parquet
-data/labels/capa_raw/      raw CAPA JSON (ignored)
-data/processed/            ephemeral repaired copies and packed arrays (ignored)
-```
-
----
-
-## 9. Reproducibility
-
-- Python 3.14 virtualenv; `requirements.txt` pins direct dependencies; `requirements.lock.txt`
-  freezes the environment.
-- CAPA **9.1.0** with rules commit `805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5`; the rules
-  repository working tree was clean when pinned. Every label run records the actual CAPA version,
-  rules commit/dirty status, argv, sample SHA-256, extractor, and base address. A rules change is a
-  new label version.
-- CPU-only PyTorch is intentional.
-- Seeds fixed per run; configs in TOML; resume state and failure logs kept.
-- Raw data is not committed. Labels, splits, manifests, configs, and small result tables are.
-
-Setup:
+All commands use the pinned environment:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+./venv/bin/python -m pytest tests/ -q
+
+# 1. Map CAPA labels onto the stored angr graphs (no re-extraction).
+./venv/bin/python -m src.label.build_labels \
+  --manifest data/versions/v2/manifest.csv \
+  --capa-dir data/labels/capa_raw \
+  --out results/full/mapping_three_target.jsonl \
+  --summary results/full/mapping_three_target_summary.json \
+  --cfg-dir data/graphs_v2/cfg --workers 8
+
+# 2. Flatten the mapping into the three-target label table.
+./venv/bin/python -m src.label.merge_labels \
+  --mapping results/full/mapping_three_target.jsonl \
+  --manifest data/versions/v2/manifest.csv \
+  --splits data/versions/v2/splits/three_target.json \
+  --out-prefix data/labels/stage1_full_three_targets \
+  --format parquet
+
+# 3. Rebuild the cluster-stratified three-target split.
+./venv/bin/python -m src.data.build_three_target_splits
+
+# 4. Rebuild the block-feature corpus (API features included).
+./venv/bin/python -m src.features.block_features
+
+# 5. Train Stage 1 on the three-target split (no test during selection).
+./venv/bin/python -m src.train.stage1 \
+  --corpus-dir results/corpus_v2_three_targets \
+  --out-dir results/train/stage1 \
+  --splits data/versions/v2/splits/three_target.json \
+  --epochs 20 --patience 5 --batch-graphs 8 \
+  --dropout 0.5 --weight-decay 0.005 \
+  --edge-dropout 0.20 --feature-dropout 0.10 \
+  --pos-weight-cap 300 --no-test
+
+# 6. Evaluate the held-out test once with the validation-selected model.
+./venv/bin/python -m src.eval.stage1_test \
+  --checkpoint results/train/stage1/best.pt \
+  --corpus-dir results/corpus_v2_three_targets \
+  --splits data/versions/v2/splits/three_target.json \
+  --split test --out-dir results/train/stage1
+
+# 7. Build block labels aligned to the flattened block order.
+./venv/bin/python -m src.data.build_block_labels \
+  --labels data/labels/stage1_full_three_targets.parquet \
+  --corpus-dir results/corpus_v2_three_targets
+
+# 8. Train Stage 2 with the Stage 1 trunk frozen.
+./venv/bin/python -m src.train.stage2 \
+  --corpus-dir results/corpus_v2_three_targets \
+  --stage1-checkpoint results/train/stage1/best.pt \
+  --out-dir results/train/stage2 \
+  --splits data/versions/v2/splits/three_target.json \
+  --epochs 15 --patience 4 --batch-graphs 8 \
+  --dropout 0.5 --lr 1e-3 --weight-decay 1e-4 \
+  --edge-dropout 0.10 --feature-dropout 0.05 \
+  --pos-weight-cap 50 --no-test
+
+# 9. Evaluate the held-out test once: oracle functions and end-to-end.
+./venv/bin/python -m src.eval.stage2_test \
+  --checkpoint results/train/stage2/best.pt \
+  --split test --out-dir results/train/stage2
+./venv/bin/python -m src.eval.stage2_end_to_end \
+  --stage1-checkpoint results/train/stage1/best.pt \
+  --stage2-checkpoint results/train/stage2/best.pt \
+  --split test --out-dir results/train/stage2
 ```
 
----
+Stage 1 writes `best.pt`, `metrics.json`, and `report.md`. Model selection uses
+the validation split only; the test split is evaluated once after training. The
+three-target split holds 394/27/27 anti-debug, 950/152/153 keylogger, and
+944/203/202 injection positives in train/val/test; the low anti-debug support is
+a property of the label's cluster concentration and is reported with every
+result.
 
-## 10. Limitations and risks
+### Stage 1 result
 
-- **Weak labels.** CAPA rules are the target. The no-API ablation is the only defense against
-  simply learning CAPA's API logic; it may still fail.
-- **No benign class.** All-zero means "no selected CAPA rule matched in a function CAPA analyzed",
-  not "safe" or "capability absent". These are weak negatives.
-- **Negative-label uncertainty.** CAPA's layout is match-oriented; `layout.functions` is not an
-  inventory. The label contract uses `feature_counts.functions` plus rule scopes, but unmatched
-  functions may still be false negatives. Positive-only metrics and the optional PU sensitivity
-  analysis are the defense; do not report weak-negative agreement as true specificity.
-- **Mapping uncertainty.** CAPA and angr may recover different function boundaries, and addresses
-  must be base-normalized. Exact/containment coverage, unresolved matches, and many-to-one
-  collisions are reported and gated in the pilot; unmapped angr functions stay unlabeled.
-- **Family skew.** The clean set is dominated by ceeinject (1,127) and gandcrab (937); keylogger
-  has only 38 clean samples. A random file split would leak; grouped splits are mandatory.
-- **Clean-set erosion.** Only 2,733/4,474 files survive the v2 filters (1,485 packed, 265 .NET,
-  4 non-BODMAS); v1 kept 2,814. Results do not cover the excluded ~39%. Only 9 clean samples are
-  x64, so the architecture flag is nearly constant and x64 generalization is not established.
-- **Keylogger sparsity.** 38 clean samples (23 lokibot) in v1 — 12 in v2 after the packed filter —
-  produced a projected ~242 positive functions: below the ~300 gate. The pilot stopped rather than
-  forcing a three-label result; keylogger is deferred and excluded from Stage 1 targets/loss.
-- **CAPA coverage.** Many functions have no target match; target-positive counts may be sparse even
-  when CAPA analyzes the sample. `anti_debug` is additionally concentrated: 78% of pilot positives
-  came from one binary/cluster, so its diversity gate (and therefore any strong claim) is
-  unresolved pending full v2 labels.
-- **Tiny graphs.** Median ~5 blocks per function; the GNN has limited structure to exploit.
-- **Near-duplicates.** imphash is a coarse proxy. The largest clean cluster has 890 samples and is
-  45% of train; LOFO and cluster-level reporting are the stronger generalization tests.
-- **Disarmed headers.** Any tool that trusts the PE machine field needs the repair step.
-- **No GPU in the VM.** Training is CPU-bound; measure before committing epochs.
+The first held-out test (evaluated once, thresholds selected on validation):
 
----
+| target | test support | precision | recall | F1 | AP |
+|---|---:|---:|---:|---:|---:|
+| `anti_debug` | 27 | 0.7895 | 0.5556 | **0.6522** | 0.4836 |
+| `keylogger` | 153 | 0.3292 | 0.3464 | **0.3376** | 0.2477 |
+| `injection` | 202 | 0.3761 | 0.6535 | **0.4774** | 0.3327 |
 
-## 11. Safety
+Macro F1 is **0.4890**; any-target selection F1 is **0.4948**; background
+(not-selected) F1 is **0.9976**. The full table and caveats are in
+`results/train/stage1/report.md`. The test supports are small because the labels
+are clustered; do not read the macro F1 as a family-wide generalisation claim.
 
-The repository contains live malware samples under `data/raw/` (git-ignored). Never execute them.
-Analyse only inside an isolated VM with no network access and no shared clipboard or host mounts
-beyond the dedicated data folder. Do not commit samples, CAPA outputs derived from them, or
-anything that bypasses the licence terms.
+### Stage 2 result
 
----
+The Stage 2 trunk is the frozen Stage 1 GCN; only the per-block head is
+trained. The oracle-function test (all true positive functions) and the
+end-to-end test (only Stage 1 selected functions) were evaluated once:
 
-## 12. References
+| target | block support | oracle P | oracle R | oracle F1 | oracle IoU | end-to-end P | end-to-end R | end-to-end F1 | end-to-end IoU |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `anti_debug` | 136 | 1.0000 | 0.0588 | **0.1111** | 0.0588 | 0.6667 | 0.1081 | **0.1860** | 0.1026 |
+| `keylogger` | 1,344 | 0.4312 | 0.5900 | **0.4983** | 0.3318 | 0.2980 | 0.6598 | **0.4106** | 0.2583 |
+| `injection` | 2,094 | 0.6462 | 0.9413 | **0.7663** | 0.6212 | 0.3585 | 0.9470 | **0.5202** | 0.3515 |
 
-- BODMAS: An Open Dataset for Learning based Temporal Analysis of PE Malware (IEEE S&P Workshops,
-  2021).
-- Mandiant CAPA: <https://github.com/mandiant/capa>
-- angr: Shoshitaishvili et al., "SOK: (State of) The Art of War: Offensive Techniques in Binary
-  Analysis" (IEEE S&P, 2016).
-- PyTorch Geometric: Fey & Lenssen, "Fast Graph Representation Learning with PyTorch Geometric"
-  (ICLR Workshop, 2019).
-- GCN: Kipf & Welling, "Semi-Supervised Classification with Graph Convolutional Networks" (ICLR,
-  2017).
-- GAT: Veličković et al., "Graph Attention Networks" (ICLR, 2018).
+Macro oracle block F1 is **0.4586** (IoU **0.3373**); macro end-to-end block
+F1 is **0.3723** (IoU **0.2375**). The anti-debug block threshold (0.94) was
+selected on 27 validation functions and is very conservative; its test AP is
+0.336, so the ranking is better than the thresholded recall suggests. Full
+tables and caveats are in `results/train/stage2/report.md`.
+
+## 7. Evaluation
+
+**Stage 1:** per-class precision, recall, F1, and average precision; any-target
+selection precision/recall/F1; background (not-selected) precision/recall/F1.
+Metrics are computed only on eligible functions — mapped functions in samples
+with at least one CAPA rule. Unmapped functions and zero-rule samples are
+excluded, not treated as negatives.
+
+**Stage 2:** block-level precision, recall, F1, and IoU. The oracle-function
+number uses all true positive functions; the end-to-end number uses only
+functions selected by Stage 1, so Stage 1 false positives add block false
+positives and missed functions add block false negatives. Addresses map back to
+the extracted CFG.
+
+The split is grouped by cluster, so near-duplicate samples do not cross
+train/validation/test. The test split is frozen and is not used for model
+selection. Family-held-out evaluation is reported separately when the held-out
+family has enough positives.
+
+## 8. Limitations
+
+- **Weak labels.** CAPA rule matches are not ground-truth annotations. The
+  three target names are shorthand for their namespaces, not proof of intent.
+- **Malware only.** There is no benign corpus. Background means "no target rule
+  matched", not "safe". A benign-vs-malicious claim is out of scope.
+- **Keylogger and anti-debug concentration.** 75.7 % of keylogger positives and
+  61.2 % of anti-debug positives come from one cluster each. Keylogger is largely
+  keyboard-state API presence. Held-out scores for these two targets should be
+  read per cluster, not as broad capability detection.
+- **x86 PE only.** ELF, ARM, and x64 are not in this corpus. The 855 x64 BODMAS
+  rows are packed and fail the v2 filter.
+- **Static CFG recovery.** Packed binaries, indirect jumps, and missed code
+  reduce recall. angr failures are recorded, not silently dropped.
+- **Stage 2 labels** come from CAPA evidence and import-resolved API-call
+  blocks. They are weaker than hand annotations; the metrics measure recovery
+  of those seeds, not every malicious block. The anti-debug block threshold is
+  unstable because validation has only 27 anti-debug functions. The Ghidra
+  spot-check is still open (40 functions selected, 0 verdicts recorded).
+
+## 9. Safety
+
+The repository does not ship malware. Raw samples, per-sample CAPA JSON, and
+serialized graphs are git-ignored. Do not commit samples, model checkpoints
+derived from them, or reports that embed sample bytes. Analysis is static; no
+sample is executed.
+
+## 10. References
+
+- BODMAS: Blue Hexagon / Whyisyoung, 2019.
+- CAPA: Mandiant, 2020–.
+- angr: Shoshitaishvili et al., S&P 2016.
+- GCN: Kipf & Welling, ICLR 2017.
+- GAT: Veličković et al., ICLR 2018.

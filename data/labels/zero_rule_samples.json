@@ -1,0 +1,776 @@
+{
+ "definition": "clean samples whose CAPA output matched zero rules; excluded from loss, never treated as negatives",
+ "count": 110,
+ "samples": [
+  {
+   "sample_id": "00744a7ef922a9757070d5352ff38baaf76cab29b3d05bc48165ea767f87d2bc",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "0ac487069ad3477f8a3a8066bc52398cbb86fc6cfd29c21242f4bc8788d5cf67",
+   "family": "smokeloader",
+   "source_bucket": "antidebug",
+   "cluster_key": "imphash:af6c9055c38fe01949ec112de82cd356",
+   "split": ""
+  },
+  {
+   "sample_id": "0d5173a6143d68520259da27191f0c3d4be65cc48d58e0dc2a433594d68e70d1",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "14de89b4a0dc5fba7c64ad5ff18e63731432c811cef8886017b477043bf72e0c",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "156df460c6e839b8b65f735b544ddaa09bd063a2c333226a34b5c4b8a644757f",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "1e28c8cbdef0eb38c18ffe70f159fe6a8f76b8b85cc4eafacc08b559e2ea6ecb",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "1e35a9fc3c3cb2352a75b22ebd3ac3c0bbe98ea18ac27c137afbe6ab5346cfb3",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "262069c31d524f16254b42c71e3631196754e61308fe5ba5e1a1c64dc9a7fe8b",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "28bebea79becab2ddb16c14a5697ac0bba6d6bc6767525f10ca1bf1752d00144",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "2b3812ee61ed5db9790c5c8dba0639d53e127c18743cced01b5cbec00b737723",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "2ba218c5b767e486ba30e84c9d26f72de37ec74fe7a62f3f13419959d414b26f",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "2dfae4504ddcd9dac4ec8b4bc86c96687fa26e4f09d8321b3290dff1d446594d",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "2f2ab9626c78b4d1dd5b4e913fbea61c9db77810c461301a52929dfc0226be76",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "2fdf116c4259193392dce2fb0c97d2d22403a1a9b49ed8227899460a67121fe0",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "313d49abe1f53ce5e7f365d6de93c4dee15c709fd0198eaf81fdbd90d2322b87",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "31426ac9d019b6f7ea07a0f4432175b956719c94ca9524d5394484586e318b40",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "315c0e3fe76ffadbdaf6dfd7425d2636d8c16673edab83c0deafe7bf3a31d196",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "3a225ec862b2e59f4cd7b9ea5db7e0a6e1db3c9d39e164da07746707a875075a",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "3b2d22c7653a1ac4ef8802568ce7f470ff799c012764064e578f5f38c26edaa4",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "3d24b3e7ae5abb15ff482e43441348743b8b0396f046d54eb6d5b408ab0947e6",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "3d7dcf9537df6eff0f1f1978275e3c6e4cd0a8a1a8c7dbce964095bb70c170ad",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "3df12169247dca4cd14613ec6855e9c550208073f4910cd38b7f1ffec794a4d8",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "401f1d5bed268372ca3d3a7169c8dad025ea09450bf89a7a29ff4b3ad20e54a7",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "4161861cc9d7fc641a4184d7ab6e731499e1051a5f70e8e780c0c6df06b10373",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "4270eee00e68f0e8d10d079337858677e357326d9372e33fafe9c05dfd6cf737",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "428e940e88510abccae8b831bb93c98078082ca5c14cdfb3df6a697f65054ecc",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "4b576eaa59eff8c02497fe277f38097241501452feca350c86517e6680d00fb1",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "4d44459a304952886ad8793bfe0948da9f98ff68a2739f7a31d0fb5e8332c167",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "504eea8fecaa4567412a6cf82d88891a8d9a7e0208ae0269d5a4047c85807678",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "50d589cc709234ad5cb7ab620ecf0b6f8ccc2de1895c35dbf9336bdb3f7bbb96",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "50e4d054695e549da903f7b10e44a26cd4d82318aa5f42ff2e38724ae1d3bc0d",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "51ab3e629f652bdd4fe1916bdac350a1f9dbf017288c993ef5db0498f99760ab",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "51f8ae3ee20df086dcd907749d5cc8e6fb5752b8d4ca9993a1973bf67473aefe",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "5521fe4ed0e968b55a5a0231e1ec3a20ca86a64d0fc49d548255b4098630df8b",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "55e7c0aaa05ff64b5b81016dc5a8b125afb0356407347a4135a9f55b9ff1674d",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "58713bc9abc8c8bb3fd711580e9ee5f69b63ee300036358d282676e07d04cf78",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "58b89a7fc2e5b1c4f44b7a591016559e7ec9b8466995fe29358bcbde8fde853a",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "59a180498a11f388093b9b41da83587475b509a6f6c7f56a85acf611076d39e0",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "5ca084f5675771088ec22c0629e7ab00acc901e2daa6cdfa09b67a50ef9d1a91",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "5d63ffcb81e190b3bb83bde4102138cc72de03f7fc02774223a518870fa97a2e",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "604aa1a8790bc464c9d678a0b5a034310c826a08c0339c092ecde4059ba45c87",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "60a684aa4ca74c01c71ee781398b854e746a359d502f154b4473e47f38f947b8",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "626ab50ee2a237e00755ea5ddc204599b7848492e43ca01aac3fd99dc665e6f6",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "63c78f6a950d36bb4b8e8b614f876346b3745bf8cc11ec23cd660cebc131f281",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "640f24f712555c6449c906db99e89043615dc00756e3588ea6514b7242618e8a",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "667903eb47e2581ec71c2e0a76f307507dfb247ab5598480b4c25859de613cac",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "67edb3bccd0cc1ad2d888138147552a2c436c701a49ea9f8639a728d2010ea54",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "6f42a9998fdc54398b733d0d6c92876943a38126c922179117db728ee56fb2d6",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "740047d50ef89078f1bf442502f3327eeb83a2a1fd8276afecd7749fdbb555db",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "776873424c38abef54f5f6beff7cef63b4d8ed1b9c844850393d61ced699135d",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "7a3d90b0a6e05d8e840a84cd5a45dd443af0dcf80b41f8d073c418c93910f925",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "7bd4171dc6806f6f055c0e4f171580adfb4ec6d512ab64a5c561258ebc5d9088",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "7bff9a48d27f377269848bbaae77726d8edfb428b6126a94100d555f6478a288",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "832a06799362b33e09131daa6dc897c13ef4117665b71a68d9153d26915d6529",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "83685b5ada9dc58e09889b8a8bd97b5d1ee3d534187da0f56d2fbda56bca4872",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "83f14fd4490ad801db86f807903e786a0df094fbd96d99303b749279b687f922",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "84c08f595ba54fbf60ab6e0bd48a05323bfc07edb134cb115a636c6e738a2b1a",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "85d7acc321135580e2a87c8970270fc813ab25fd883869c9c6d1ffe4f086bab1",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "8af591767bc4b8937918b5a292d3e4a4ec43c386871daa795e2391e7e4c3170a",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "8cc2a9ef0b4bde024d31d82a13a2b338c9d5b6068bc1f49943a325939d0b735c",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "8da5de2563ccd635e659c1edc62a66c5279085acb9d0c701d1d189959276afac",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "8f741df23845e284144bd65fcda35017f708b94211d7246fe85a20896072faab",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "8f92f748e8ba8f611870804f74ffca612c6e283d6a2e30407055f976a74b98ba",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "8fee20a697fec14080a23acef7b8a24a6f45784ee499e0b0f1da9661bc45e9b1",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "9060af8f240a45393934f18eef8516c76b4e45ea048e7ec70befa3f179748d53",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "941fcd02ec6640f17fa5c6eaee018e5182b52c6b18ecc7c62255e9f66ba747f8",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "94387210ca6617f4232a7359d374e5ba21404748c6df7d0880b7541c8a78a170",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "95f9281434f32aaff72401576719148db8e6aa73892b38cde9807312a3ad972b",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "9bcdb454cba10cf9aeafcc10fb0a210bd41c836f9d86f8033b51c1f9f58c248b",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "9d5374562d1e4519e945ada83be106565b2a6e58168bad8753eff3231295fda2",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "9d5afec9ce710e0b46a48e02a7bee936a6b575a8b4a9e2faefff45b29f049fe6",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "a1e69e6eb948dd4659ca3491ec2f28f660c4591b545fb9cdac80edf61f73ce02",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "a547402e3fc602ba50551e2167ad08955abdacc30fc8bc57c47d6287503690a4",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "a5e91f8b367d55fbbf05d2f11a5fc44c0e0f1ee04bd37a4cb36b91d3c7209a71",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "aa5775c672c8218bc0d8da69ffe77df8cb1f624a5a3e5bcef23418662812a5b4",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "ad170841b0d7c214e54ff7d24c818be886762e5e13fb8a75321b87f1c38075d0",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "add4edd905bb13d2ce4be4444a3537d954e46e633dfea1ed03a4ecef4eddc61d",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b153c99469470b261c7e09e1d1de6533779472cc747e04befa4315f7803d6cc5",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b1b0b75691b6b3a75266ceb98ee6a74f294f9cc4651e8fa053436a6c55ab8850",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b24dc15cd5b27108eaa4c81e3513090831068536ee60f7d69439afe9533bfb0b",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b3eca72d1db0951fa13a918156761c4b34f0c8e1a329cac7f7076c45605c0e63",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b5ac34f71b8c8baafbd974372258239ae68605f77d2cb12d0eb0f0ffda0807d6",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b8950ba68202d5cb5b472beca81949874585342b0cf14d681ef6e16f65deeddb",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b9347155ae9f388d136ddd6c4e9bd8fe7b0de1de40ba54fd67b66ad62cb43504",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "b9477b0775f0d56f345b9e43f88448a1648fc5b08c5345d47bdda4b6c45babb6",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "be43cb6d146f719bea0c08b2e051aa2260aee9dbf5369a39978ee3a62813e1e4",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "becb8a6035d919edf91b3854e934d2134433c5d1e48ba38744858072cf1221ce",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "befa4eb84bea9f5a276007afe3c2f50c2ac335a105f23ecf6ee84d01c8425b6e",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "bf1241e8e8fb003baf68e9df4a6ac864544c23a241a9a0e67a42134bd9c1ec3e",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "c209dfaf22872aab081558106ec40f36093f9c138265c475e33af7bc1c55eb12",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "c38053efb24ae8e4c3198f73a97126073a68e2f236245822797a3879c6310910",
+   "family": "zbot",
+   "source_bucket": "antidebug",
+   "cluster_key": "imphash:39382f318c98967e0ed3b19d4354ef88",
+   "split": ""
+  },
+  {
+   "sample_id": "c6826cc6b48402b263e5869222fc61cc15181ad93e8812d3356999f329e10411",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "ca6fe06c34ea80eab83c903308435086e6a4be256d90b5303ceb756e185ecdc2",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "cc8ed02689cec50faedc7ffd9857e5558c9d0422a6dbe05e995c52fca7f5e6c7",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "cfa0e108152bb7ba86ee2277c5ac80c0406687d7c6b17fc76e51a17e0ead89ae",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "d6a9e79988fc3bb47d870dd7b54fef8056be17f83030a4728a2d62e0f0321505",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "d8f036235504e371d40874f06931dba8196a28f8ad46fa9b4d7b845b9a91a58d",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "dd3f8d29d16058ea38f149b80635616407fb09db49534f810beab54016cd2c29",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "df50e1fcf3d5a3b82d073a32fb10d28b05fd07eaec840555d63b7ebfeb55a5e9",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e1ba8d9bc285460f6131e7852930369a74efb29bdf4a3740defe3188df96a494",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e1ce1ba5cd76d84d801a709904e53fb3bfd8dd64998244ea2912f5fe22ff01bf",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e27c47f47777a95889ac2ed1f4fb798bc75a2fef5364719fcbecd29a6fee5319",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e62d8878e8c13f83603827a024b673018e183bd5d3c884ef4893f774612e480e",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e7a3c037eefb24ed2d5e8dc99a3d8e8f7ab925cc1bdc685edecadaadada609e4",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e94e4e372086e2efe4f38cd542f267ab339f0a8098c8f897041ad1dfc3ef6664",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e95da629b434f6ed25fbda46f4465157d29603c8c6ec89ac21a5f123ef82c396",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "e9c9a70ebab546c1aa79dd42a4f45cb08a8c351d92fa3abe8ff360d60db1d9bd",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "ee15fc5915f9ea8d82ac099f1e8273d55e828587ebf68551abcbba0cac923963",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "f4c1b14d2f1ad481b8603e1c8617a8984550db211d2a5656246b4d4ea441d491",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  },
+  {
+   "sample_id": "f677fdc854ca730f415769003c585aeaf258b6457b415619fee10cb57ce6550b",
+   "family": "ceeinject",
+   "source_bucket": "injection",
+   "cluster_key": "imphash:ef3fd1c1a81435e51fcc42212e25d2ec",
+   "split": ""
+  }
+ ]
+}

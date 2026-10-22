@@ -1,70 +1,53 @@
-# Stage 1 Label Contract Report
+# Stage 1 label report — three targets
 
-- Scope: **full**
-- Samples selected: **2733**
-- Samples processed: **2731**
-- Missing CAPA JSON: **2**
-- Active labels: **anti_debug, injection**
+- Scope: **full v2 clean set**
+- Samples in label table: **2,727**
+- Graphs: **2,729**
+- Active labels: **anti_debug, keylogger, injection**
+- Label contract: `stage1-three-target-v1`
 
-## CAPA census
+## Counts
 
-- CAPA-observed functions: **409513**
-- Stage 1 positive functions: **1889**
-- Function-scope target matches: **1911**
-- Basic-block target matches: **1500**
-- Unresolved CAPA-layout block matches: **0**
+| label | positive functions | positive samples | clusters | families | top-cluster share | top-binary share |
+|---|---:|---:|---:|---:|---:|---:|
+| `anti_debug` | 448 | 373 | 21 | 10 | 61.2 % | 2.0 % |
+| `keylogger` | 1,255 | 242 | 41 | 12 | 75.7 % | 1.5 % |
+| `injection` | 1,349 | 804 | 108 | 12 | 32.9 % | 1.6 % |
 
-| Label | Positive functions | Projected full-set | Gate >=300 |
-|---|---:|---:|---|
-| `anti_debug` | 534 | 534.0 | PASS |
-| `injection` | 1355 | 1355.0 | PASS |
-
-## Diversity diagnostics
-
-These are pre-registered claim diagnostics, not performance-tuned thresholds.
-
-| Label | Functions | Binaries | Clusters | Families | Top binary | Top cluster | Ready |
-|---|---:|---:|---:|---:|---:|---:|---|
-| `anti_debug` | 534 | 373 | 21 | 10 | 17.6% | 51.3% | NO |
-| `injection` | 1355 | 808 | 110 | 12 | 1.5% | 32.8% | YES |
-
-Diversity criteria: >=20 positive binaries, >=10 clusters, >=3 families, top binary <=50%, top cluster <=50%. Labels that fail remain eligible for training but cannot support a binary-level generalization claim.
+`status_counts`: positive **3,044**, weak_negative **377,257**, unlabeled
+**2,331,752**. The unit is functions with a positive label; a function can carry
+more than one target.
 
 ## Mapping
 
-- Mapping samples: **2728** (full)
-- CAPA-observed -> angr coverage: **0.9957559033967425**
-- Target-match -> angr coverage: **0.9956024626209323**
-- Unresolved target rate: **0.440%**
-- Many-to-one collisions: **6628**
+- CAPA-observed functions: **409,510**
+- Mapped CAPA functions: **407,772** (99.58 %)
+- Target matches: **3,411**
+- Mapped target matches: **3,395** (99.53 %)
+- Unresolved target matches: **22**
+- Many-to-one collisions: **6,642**
+- Block-parent mismatches: **0**
 
-## Per bucket
-
-| Bucket | Selected | Processed | Observed | Positive functions | Projected full-set positive functions |
-|---|---:|---:|---:|---:|---|
-| `keylogger` | 12 | 12 | 16220 | 111 | 111.0 |
-| `injection` | 1340 | 1338 | 153001 | 367 | 367.0 |
-| `antidebug` | 1381 | 1381 | 240292 | 1411 | 1411.0 |
-
-## CAPA label counts by source bucket
-
-`source_bucket` is stratification metadata, not ground truth.
-
-| Bucket | anti_debug | injection |
-|---|---:|---:|
-| `keylogger` | 106 | 5 |
-| `injection` | 116 | 251 |
-| `antidebug` | 312 | 1099 |
+Function-scope matches are localised through CAPA's nested evidence locations
+(e.g. the `rdtsc` instructions for `execute anti-debugging instructions`). The
+label goes to the angr function containing the evidence; the CAPA function start
+is kept as a weak negative when it is a different angr function. This reduced
+`anti_debug` from 534 (start-only mapping) to 448.
 
 ## Gate summary
 
-- Mapping output available: **True**
-- Mapping covers all labelable samples: **True**
-- CAPA-observed mapping >=95%: **True**
-- Target-match mapping >=95%: **True**
-- Unresolved target rate <2%: **True**
-- All selected samples processed: **True**
-- Diversity ready: `anti_debug`=False, `injection`=True
-- Overall pipeline gate: **PASS**
+- Operational count gate (`>=300` positive functions): all three **PASS**.
+- Diversity diagnostics (`>=20` binaries, `>=10` clusters, `>=3` families,
+  top binary/cluster `<=50 %`): `injection` **PASS**; `keylogger` and
+  `anti_debug` **FAIL** on top-cluster share.
+- Labels that fail diversity remain trainable, but cannot support a broad
+  binary-level generalisation claim. Report per-cluster support with every
+  held-out score.
 
-Weak negatives mean only that no selected CAPA rule matched in a function CAPA analyzed. They are not benign labels.
+## Concentration caveat
+
+The labels are CAPA rule matches, not ground truth. `keylogger` is dominated by
+keyboard-state API presence and one cluster. `anti_debug` is dominated by timing
+and instruction patterns and one cluster. `injection` is dominated by RWX
+allocation rather than end-to-end injection. The detailed audit is in
+`results/audit/label_composition.md`.

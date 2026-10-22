@@ -1,0 +1,55 @@
+{
+  "n_eval": 91957,
+  "n_positive_any": 377,
+  "threshold": 0.5,
+  "thresholds": [
+    0.95,
+    0.94,
+    0.95
+  ],
+  "per_class": {
+    "anti_debug": {
+      "support": 27,
+      "predicted": 19,
+      "precision": 0.7894736842105263,
+      "recall": 0.5555555555555556,
+      "f1": 0.6521739130434783,
+      "average_precision": 0.4836308776364278,
+      "threshold": 0.95
+    },
+    "keylogger": {
+      "support": 153,
+      "predicted": 161,
+      "precision": 0.32919254658385094,
+      "recall": 0.3464052287581699,
+      "f1": 0.33757961783439494,
+      "average_precision": 0.24769098496291478,
+      "threshold": 0.94
+    },
+    "injection": {
+      "support": 202,
+      "predicted": 351,
+      "precision": 0.37606837606837606,
+      "recall": 0.6534653465346535,
+      "f1": 0.4773960216998191,
+      "average_precision": 0.3327204736844103,
+      "threshold": 0.95
+    }
+  },
+  "macro_f1": 0.48904985085923075,
+  "selected": {
+    "precision": 0.43548387096774194,
+    "recall": 0.5729442970822282,
+    "f1": 0.4948453608247423
+  },
+  "background": {
+    "support": 91580,
+    "precision": 0.9982396868610665,
+    "recall": 0.9969425638785762,
+    "f1": 0.997590703722117
+  },
+  "loss": 0.5144696235656738,
+  "split": "test",
+  "checkpoint": "results/train/stage1/best.pt",
+  "best_epoch": 2
+}

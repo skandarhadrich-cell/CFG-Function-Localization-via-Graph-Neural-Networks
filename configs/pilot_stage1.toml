@@ -1,13 +1,18 @@
-# Stage 1 pilot configuration (two-label contract, Phase 0 v2 data).
-# v1 manifest/splits remain frozen under data/versions/v1/; Stage 1 uses v2.
+# Stage 1 configuration: three-target function localisation.
+# Corpus: the v2 clean set (x86 PE, ~2,700 samples) in three source buckets.
+# Labels: anti_debug, keylogger, injection (CAPA namespace matches).
 
 [paths]
 manifest = "data/versions/v2/manifest.csv"
 splits = "data/versions/v2/splits"
+split_file = "data/versions/v2/splits/three_target.json"
 labels_raw = "data/labels/capa_raw"
-labels_table = "data/labels/stage1_function_labels.parquet"
+labels_table = "data/labels/stage1_full_three_targets.parquet"
+mapping = "results/full/mapping_three_target.jsonl"
 graphs = "data/graphs_v2"
 processed = "data/processed_v2"
+corpus = "results/corpus_v2_three_targets"
+train = "results/train/stage1"
 results = "results"
 
 [tools]
@@ -19,15 +24,6 @@ capa_rules_dirty = false
 
 [labels]
 # Namespaces are prefixes; static function and basic-block scopes only.
-# keylogger namespaces are kept only to preserve evidence: keylogger is
-# AUDIT-ONLY and permanently excluded from targets and loss (see
-# results/audit/keylogger_negative_result.md).
-#
-# Display names below are the honest ones.  The audit
-# (results/audit/label_rule_composition.md) found anti_debug is ~99.4% timing
-# and instruction patterns, and injection is 100% a single RWX-allocation rule,
-# so neither is reported as the capability it was named after.
-label_display_names = { anti_debug = "anti_debug_timing", injection = "rwx_alloc" }
 anti_debug_namespaces = ["anti-analysis/anti-debugging"]
 keylogger_namespaces = ["collection/keylog"]
 injection_namespaces = [
@@ -36,56 +32,27 @@ injection_namespaces = [
 ]
 
 [labels.contract]
-# Revises docs/labeling_contract.md v1 for Stage 1.
-version = "stage1-v3"
-name = "stage1-two-label-rescoped"
-active_labels = ["anti_debug", "injection"]
-outputs = 2
+version = "stage1-three-target-v1"
+name = "three-target-function-localization"
+active_labels = ["anti_debug", "keylogger", "injection"]
+outputs = 3
 loss = "BCEWithLogitsLoss"
 observed_inventory = "meta.analysis.feature_counts.functions"
 use_rule_scopes = "meta.scopes.static"
 weak_negative = "observed function with no active-label target rule match"
+function_scope_localization = "capa nested evidence locations; fallback to capa function start"
 unlabeled = "angr function not mapped to CAPA observed inventory"
 min_positive_functions_full_set = 300
-# Unit is canonical everywhere: functions with a positive label.
 counting_unit = "functions_with_positive_label"
-
-[labels.census]
-# Per-rule support census gate.  Fixed before the census table was read and not
-# tunable afterwards.  Of 1,031 CAPA rules only 12 emit any audited label and
-# exactly one clears this gate (allocate or change RWX memory).
-min_functions = 100
-min_clusters = 10
-min_families = 3
-max_top_cluster_share = 0.50
-secondary_min_functions = 30
+zero_rule_policy = "exclude_from_loss_not_negative"
 
 [labels.stage2]
-# Paused.  With these labels the "malicious block" is the block where the rule
-# fired, so localization is circular.  Revisit only if the census yields a label
-# that is not a single API/instruction pattern.
-enabled = false
-reason = "rule-defined labels make block localization circular"
-
-[pilot.sampling]
-selection = "stage1"
-clean_target = 200
-max_per_cluster = 4
-# Stage 1 selection reads v2 main train/val only; test is never eligible.
-
-[pilot.mapping_gate]
-min_observed_function_coverage = 0.95
-min_target_match_coverage = 0.95
-max_unresolved_target_matches = 0.02
-manual_audit_functions = 40
-
-[pilot.compute]
-# The pathological bladabindi sample needed ~600 s CAPA and ~1000 s angr.
-# Timeouts are recorded and retryable; they never become silent drops.
-workers = 4
-capa_timeout_seconds = 900
-cfg_timeout_seconds = 1800
-rss_limit_gb = 3.0
+# Block labels are seeded from CAPA basic-block matches and from API-call
+# blocks inside positive functions.  The API-call part uses the PE import
+# table, not CAPA rule names.
+enabled = true
+label_source = "capa basic-block matches + import-resolved API-call blocks"
+targets = ["anti_debug", "keylogger", "injection"]
 
 [evaluation.diversity]
 # Pre-registered claim diagnostics; frozen before model performance is seen.
@@ -98,11 +65,19 @@ max_single_cluster_share = 0.50
 min_holdout_positive_binaries = 10
 min_holdout_positive_clusters = 5
 
-[evaluation.repeated_lofo]
-min_clean_samples = 20
-min_positive_functions = 30
+[pilot.sampling]
+selection = "stage1"
+clean_target = 200
+max_per_cluster = 4
 
-[evaluation.bootstrap]
-main_unit = "imphash_cluster"
-lofo_unit = "binary"
-# Never resample functions independently.
+[pilot.mapping_gate]
+min_observed_function_coverage = 0.95
+min_target_match_coverage = 0.95
+max_unresolved_target_matches = 0.02
+manual_audit_functions = 40
+
+[pilot.compute]
+workers = 4
+capa_timeout_seconds = 900
+cfg_timeout_seconds = 1800
+rss_limit_gb = 3.0

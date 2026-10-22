@@ -169,9 +169,9 @@ def build_table(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Flatten mapping JSONL into the label table.")
-    parser.add_argument("--mapping", type=Path, default=ROOT / "results/pilot/mapping.jsonl")
+    parser.add_argument("--mapping", type=Path, default=ROOT / "results/full/mapping_three_target.jsonl")
     parser.add_argument("--manifest", type=Path, default=ROOT / "data/versions/v2/manifest.csv")
-    parser.add_argument("--splits", type=Path, default=ROOT / "data/versions/v2/splits/main.json")
+    parser.add_argument("--splits", type=Path, default=ROOT / "data/versions/v2/splits/three_target.json")
     parser.add_argument("--out-prefix", type=Path, default=ROOT / "data/labels/function_labels")
     parser.add_argument("--format", choices=("csv", "parquet", "both"), default="both")
     args = parser.parse_args(argv)
@@ -206,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
     meta = {
         "label_contract_version": LABEL_CONTRACT_VERSION,
         "active_labels": list(ACTIVE_LABELS),
-        "keylogger_in_stage1": False,
+        "keylogger_in_stage1": "keylogger" in ACTIVE_LABELS,
         "label_normalization": "capa addresses normalized to RVA; angr func_va/mapped_block_vas absolute",
         "source_mapping": str(mapping_path),
         **summary,

@@ -1,229 +1,130 @@
-# CAPA Labeling Contract
+# CAPA label contract — three targets
 
-**Status:** frozen for the pilot. Version 1 (v1, three labels).
-**Stage 1** trains only on the v2 two-label revision in §9; the v1 sections
-remain the frozen record for the completed pilot.
-**Tool identity:** CAPA **9.1.0**; rules commit
-`805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5` (clean working tree at the time of
-pinning). The pilot must record the actual executable version, rules commit,
-argv, and sample hashes in its label metadata.
+**Version:** `stage1-three-target-v1`
+**Tool:** CAPA 9.1.0, rules commit `805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5`
+**Scope:** x86 PE, BODMAS v2 clean set.
 
 This document defines what a positive, a weak negative, and an unlabeled
-function mean. It exists because CAPA's JSON is match-oriented, not an
-exhaustive function inventory.
+function mean. The labels are CAPA rule matches, not ground-truth annotations.
 
-## 1. Why `layout.functions` is not an inventory
+## 1. Target namespaces
 
-CAPA's `compute_layout()` only emits functions containing at least one matched
-basic block. It deliberately avoids writing unreferenced functions. In a clean
-`gandcrab` sample inspected during Phase 0:
+A rule is in scope only when its `meta.namespace` starts with one of:
 
-- `meta.analysis.layout.functions`: **69** functions
-- `meta.analysis.feature_counts.functions`: **77** functions
-- **8** analyzed functions were absent from `layout.functions`
-
-There is a second trap: `layout.functions` is populated from basic-block-scope
-matches. A function-scope-only match does not necessarily create a layout entry.
-The label parser must therefore use:
-
-- `meta.analysis.feature_counts.functions` for the analyzed-function inventory;
-- `meta.analysis.layout.functions[].matched_basic_blocks` only to map matched
-  blocks back to their parent functions;
-- the rule scopes directly for function-scope matches.
-
-Do not infer "CAPA parsed this function and found nothing" from absence in
-`layout.functions`.
-
-## 2. Target rules
-
-A rule is in scope when its `meta.namespace` starts with one of:
-
-| Label | Namespace prefix |
+| label | namespace |
 |---|---|
 | `anti_debug` | `anti-analysis/anti-debugging` |
 | `keylogger` | `collection/keylog` |
-| `injection` | `host-interaction/process/inject` or `load-code/pe/inject-*` |
+| `injection` | `host-interaction/process/inject`, `load-code/pe/inject-` |
 
-Use `meta.scopes.static`, not `meta.scope`. In real CAPA 9.1 JSON, `meta.scope`
-is often `null`, while `meta.scopes` looks like:
+Only `meta.scopes.static` values `function` and `basic block` produce Stage 1
+labels. File-, process-, and call-scope matches are ignored.
 
-```json
-{"static": "basic block", "dynamic": "call"}
-```
+## 2. Function inventory
 
-Only static `function` and static `basic block` scopes produce function labels.
-File/process/call-scope matches are ignored for Stage 1.
+Use `meta.analysis.feature_counts.functions` as the analyzed-function
+inventory. `meta.analysis.layout.functions` is not an inventory: CAPA emits a
+layout entry only for functions containing a matched basic block. A
+function-scope-only match does not necessarily create one.
 
-## 3. Address normalization
+For basic-block matches, resolve the block to its parent function through
+`meta.analysis.layout.functions[].matched_basic_blocks`.
 
-CAPA and angr may load the image at different base addresses. Before matching:
+## 3. Addresses
 
-1. Read `meta.analysis.base_address`.
-2. Normalize CAPA addresses to RVAs, or rebase them to angr's
-   `project.loader.main_object.mapped_base`.
-3. Record the normalization used in every label row or label-file metadata.
+CAPA addresses are normalized to RVAs by subtracting
+`meta.analysis.base_address`. The mapping layer compares those RVAs with the
+angr function/block ranges in the extracted CFG. The final label table stores
+the absolute angr `func_va` alongside the CAPA RVA.
 
-Never compare raw CAPA VAs with angr VAs without checking the base.
+## 4. Three states
 
-## 4. Mapping procedure
+| state | definition | used in loss/metrics |
+|---|---|---|
+| `positive` | mapped function with at least one active target rule match | yes, as positive |
+| `weak_negative` | mapped function with no active target match, in a sample where CAPA matched at least one rule of any kind | yes, as negative |
+| `unlabeled` | angr function not mapped to CAPA's observed inventory, or sample with no CAPA rule match at all | no |
 
-For each successfully analyzed sample:
+A weak negative is **not** a benign function. The corpus is malware-only. A
+sample with zero CAPA rules is unlabeled and excluded from the loss; its list is
+`data/labels/zero_rule_samples.json`.
 
-### CAPA-side sets
+## 5. Multi-label
 
-- `observed`: addresses in `meta.analysis.feature_counts.functions`, plus any
-  address in `layout.functions` (defensive; layout should be a subset), plus any
-  function-scope target match address (matched functions are observed by
-  definition).
-- `function_matches`: target rule matches whose `meta.scopes.static` is
-  `function`. The match address is the function address.
-- `block_matches`: target rule matches whose `meta.scopes.static` is
-  `basic block`. Map each block address to its parent function using
-  `layout.functions[].matched_basic_blocks`. If the block is not in the layout,
-  record a mapping failure; do not drop it silently.
-- `matched`: `function_matches ∪ parent(block_matches)`.
-- `weak_negatives`: `observed − matched`.
+The three targets are independent. A function can be positive for more than one
+target; the model uses three sigmoids and `BCEWithLogitsLoss`. The background
+class is "none of the three", not a fourth learned class.
 
-### angr-side mapping
+## 6. Label table
 
-- Exact function-start match first.
-- Otherwise, map a CAPA function address to the angr function whose address
-  range contains it.
-- Map CAPA block addresses to exact angr block starts first, then to the angr
-  block whose range contains the address.
-- If multiple CAPA functions map to one angr function, union their labels and
-  record a many-to-one collision.
-- If a CAPA target match cannot be mapped to an angr function, record it as an
-  unresolved target match. It is not silently converted to a negative.
+`data/labels/stage1_full_three_targets.parquet` has one row per mapped angr
+function:
 
-### Three output states
-
-| State | Definition | `label_mask` | Label vector |
-|---|---|---:|---|
-| `positive` | Mapped angr function has at least one target match | 1 | one or more 1s |
-| `weak_negative` | Mapped CAPA-observed function has no target match | 1 | `[0,0,0]` |
-| `unlabeled` | Angr function has no successful CAPA inventory mapping | 0 | excluded |
-
-The weak-negative meaning is exactly:
-
-> **No selected CAPA rule matched inside a function CAPA analyzed.**
-
-It does **not** mean benign, safe, or "the capability is absent."
-
-## 5. Required label-table fields
-
-`data/labels/function_labels.parquet` should contain at least:
-
-- `sample_id`
-- `func_va`
-- `capa_func_va` (or blank for unmapped)
-- `label_anti_debug`, `label_keylogger`, `label_injection`
-- `label_status` (`positive`, `weak_negative`, `unlabeled`)
-- `label_mask`
-- `matched_rules` (list of rule names)
-- `matched_block_vas` (list)
-- `mapping_method` (`exact`, `containment`, `unmapped`)
-- `mapping_collision` (boolean)
-
-The contract is frozen for the pilot. If mapping logic changes, bump the label
-contract version and regenerate labels rather than mixing versions.
-
-## 6. Coverage and audit
-
-For each sample, report:
-
-- `capa_observed` and `capa_matched` counts;
-- `angr_functions` and `mapped_angr_functions` counts;
-- exact vs containment mappings;
-- unresolved target matches;
-- many-to-one collisions;
-- label counts by status.
-
-Pilot gate (provisional until measured):
-
-- **≥95%** of CAPA-observed functions map to angr by exact match or containment;
-- **≥95%** of target rule matches map to an angr function/block;
-- unresolved target matches are **<2%** and individually logged;
-- label census projects **≥300 positive functions** per label on the full clean
-  set;
-- 30–50 functions are manually audited in Ghidra, stratified by label, bucket,
-  and status. Record disagreements; this is an audit, not ground truth.
-
-If the keylogger projection falls below ~300 positive functions, stop and
-revise the label set rather than forcing a three-label result.
-
-## 7. Evaluation consequences
-
-Training may use weak negatives with a masked BCE loss, but evaluation must not
-pretend they are true negatives:
-
-- Primary positive metrics: per-label precision, recall, F1, AUROC, and AP on
-  positive-labeled functions.
-- Secondary: ranking metrics where unlabeled functions are not counted as
-  negatives.
-- Report "agreement with CAPA weak negatives" separately. Do not call it
-  specificity or true-negative rate.
-- Calibration is reported with the caveat that weak negatives bias it.
-- A positive-unlabeled sensitivity analysis is optional; it is not the primary
-  pipeline for the first project.
-
-## 8. Reproducibility metadata
-
-Every CAPA run must record:
-
-- CAPA executable version and path;
-- rules repository commit and dirty status;
-- complete argv;
-- sample SHA-256;
-- extractor name and base address;
-- timestamp.
-
-The rules revision is part of the experiment. Re-running with a different rules
-commit is a new label version.
-
-## 9. Stage 1 revision — v2 (two active labels)
-
-**Status:** frozen for the Stage 1 pilot before any model training.
-**Contract id:** `stage1-v2` (see `src/label/contract.py` and
-`configs/pilot_stage1.toml`).
-
-The pilot stopped with `STOP / REVISE`: the keylogger projection (~242
-positive functions) was below the ~300 gate. Stage 1 therefore changes the
-label set rather than inflating the positive count:
-
-- **Active labels:** `anti_debug`, `injection`.
-- **Model head:** two independent logits with two independent sigmoids and
-  `BCEWithLogitsLoss`. No softmax, no argmax, no class 0, no third output.
-- **`keylogger` is removed from the target tensor and the loss entirely.** Its
-  targets are not zero-filled into a third output; there is no third output.
-- **Evidence preserved:** the parser still recognizes
-  `collection/keylog` namespaces so keylogger CAPA JSON, raw match evidence,
-  and the pilot audit reports remain available for future work. Those fields
-  never enter the Stage 1 label table (`label_keylogger` is not a column),
-  targets, masks, or loss.
-- **Observed function with no active-label match** is a weak negative for
-  Stage 1 — including functions whose only match is a keylogger rule. The
-  `unlabeled` definition is unchanged (angr function with no CAPA inventory
-  mapping).
-- `source_bucket` stays stratification metadata, never ground truth.
-
-Pre-registered diversity criteria (frozen before model performance is seen):
-
-| Criterion | Minimum / maximum |
+| column | meaning |
 |---|---|
-| Projected positive functions per active label | ≥300 |
-| Positive binaries | ≥20 |
-| Positive imphash clusters | ≥10 |
-| Positive families | ≥3 |
-| Largest binary share of a label's positives | ≤50% |
-| Largest imphash-cluster share | ≤50% |
-| Held-out (test) positive binaries / clusters | ≥10 / ≥5 |
+| `sample_id` | BODMAS sample SHA-256 |
+| `func_va` | absolute angr function address |
+| `capa_func_va` | CAPA function RVA, when mapped |
+| `label_anti_debug`, `label_keylogger`, `label_injection` | 0/1 target flags |
+| `label_status` | `positive`, `weak_negative`, `unlabeled` |
+| `label_mask` | bitmask over the three labels |
+| `matched_rules` | CAPA rule names contributing to the labels |
+| `matched_block_vas` | absolute block addresses for block-scope matches |
+| `mapping_method` | `exact`, `containment`, or `unmapped` |
+| `source_bucket`, `family`, `cluster_key`, `split` | stratification metadata |
 
-A label that fails a diversity criterion may still be trained and reported,
-but its claims stay exploratory — no "demonstrated generalization" wording.
-Thresholds are never retuned after inspecting model performance.
+Current counts (2,727 samples / 2,712,053 functions):
 
-Pipeline gates for the Stage 1 pilot are unchanged (≥95% mapping coverage,
-<2% unresolved target matches, 30–50-function Ghidra spot check). Full-set
-training runs only after the v2 packed filter is frozen and the Stage 1 pilot
-passes its gates.
+| label | positive functions | positive samples | clusters | top-cluster share |
+|---|---:|---:|---:|---:|
+| `anti_debug` | 448 | 373 | 21 | 61.2 % |
+| `keylogger` | 1,255 | 242 | 41 | 75.7 % |
+| `injection` | 1,349 | 804 | 108 | 32.9 % |
+
+The concentration is a property of the CAPA label, not of the model. It is
+reported with every held-out result.
+
+Function-scope matches are localised through CAPA's reported evidence
+locations. CAPA reports the CAPA function address at the top of a match and the
+matched feature locations (e.g. the `rdtsc` instructions) in the nested match
+tree. The mapping attaches the label to the angr function(s) containing those
+locations, not to every angr function that happens to share the CAPA function
+start. Rules without evidence locations fall back to the CAPA function start.
+This is why `anti_debug` is 448 rather than the 534 that a start-only mapping
+produced.
+
+## 7. Stage 2 labels
+
+Stage 2 needs block-level targets. They are seeded from:
+
+1. CAPA evidence locations for the same namespaces, including basic-block
+   matches and the nested evidence of function-scope matches; and
+2. blocks inside a positive function that call an API resolved from the PE
+   import table.
+
+These are weak block labels. They are suitable for localisation training but
+not for claims of exact malicious-block ground truth. The manual Ghidra
+spot-check is the validation gate; it is still open (40 functions selected,
+0 verdicts recorded), so the current block metrics use the CAPA/API seeds only.
+
+## 8. Splits
+
+The training split is `data/versions/v2/splits/three_target.json` (protocol
+`three-target-cluster-stratified-v3`). It is grouped by `cluster_key`, follows
+70/15/15 sample counts, and places target positives as close to the same
+proportions as the cluster groups allow. The frozen v2 `main.json` is retained
+as history but is not used for Stage 1: it was created before keylogger was a
+target and put 1,026 of 1,255 keylogger positives in test.
+
+The three-target split holds 394/27/27 anti-debug, 950/152/153 keylogger, and
+944/203/202 injection positives in train/validation/test. The test split is not
+used for model selection.
+
+## 9. Reproducibility
+
+- Label generation: `src/label/parse_capa.py`, `src/label/mapping.py`,
+  `src/label/build_labels.py`, `src/label/merge_labels.py`.
+- Label contract constants: `src/label/contract.py`.
+- Config: `configs/pilot_stage1.toml`.
+- Raw CAPA JSON and the mapping JSONL are git-ignored because they derive from
+  malware samples.

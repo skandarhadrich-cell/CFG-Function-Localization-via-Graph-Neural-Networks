@@ -162,12 +162,11 @@ if __name__ == "__main__":
 
 
 class Stage1ContractTests(unittest.TestCase):
-    def test_active_labels_are_two(self) -> None:
+    def test_active_labels_are_three(self) -> None:
         from src.label.contract import ACTIVE_LABELS, ALL_LABELS
 
-        self.assertEqual(ACTIVE_LABELS, ("anti_debug", "injection"))
-        self.assertIn("keylogger", ALL_LABELS)
-        self.assertNotIn("keylogger", ACTIVE_LABELS)
+        self.assertEqual(ACTIVE_LABELS, ("anti_debug", "keylogger", "injection"))
+        self.assertEqual(ALL_LABELS, ACTIVE_LABELS)
 
     def test_diversity_thresholds_are_preregistered(self) -> None:
         from src.label import contract
@@ -193,3 +192,53 @@ class AtomicWriteTests(unittest.TestCase):
             self.assertEqual(
                 [p.name for p in Path(tmp).iterdir()], ["x.json"]
             )
+
+
+class EvidenceLocationMappingTests(unittest.TestCase):
+    def test_evidence_labels_the_containing_function_not_the_capa_start(self) -> None:
+        doc = {
+            "meta": {
+                "version": "capa 9.1.0",
+                "analysis": {
+                    "base_address": {"type": "absolute", "value": BASE},
+                    "feature_counts": {
+                        "functions": [
+                            {"address": addr(0x2000), "count": 1},
+                            {"address": addr(0x3000), "count": 1},
+                        ]
+                    },
+                    "layout": {"functions": []},
+                },
+            },
+            "rules": {
+                "anti": {
+                    "meta": {
+                        "name": "anti",
+                        "namespace": "anti-analysis/anti-debugging",
+                        "scopes": {"static": "function"},
+                    },
+                    "matches": [
+                        [
+                            addr(0x2000),
+                            {
+                                "success": True,
+                                "children": [
+                                    {"locations": [addr(0x3008)]},
+                                ],
+                            },
+                        ]
+                    ],
+                }
+            },
+        }
+        result = parse_capa_document(doc, sample_id="sample")
+        funcs = [
+            AngrFunction(0x402000, (AngrBlock(0x402000, 0x20),)),
+            AngrFunction(0x403000, (AngrBlock(0x403000, 0x20),)),
+        ]
+        mapping = map_capa_to_angr(result, funcs, angr_base=BASE, sample_id="sample")
+        rows = {row["func_va"]: row for row in mapping.rows}
+        self.assertEqual(rows[0x403000]["label_status"], "positive")
+        self.assertEqual(rows[0x403000]["label_anti_debug"], 1)
+        self.assertEqual(rows[0x402000]["label_status"], "weak_negative")
+        self.assertEqual(mapping.summary["label_counts"]["anti_debug"], 1)

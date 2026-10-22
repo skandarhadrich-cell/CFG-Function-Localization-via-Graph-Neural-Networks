@@ -48,6 +48,7 @@ class CapaFunctionLabel:
     matched_block_vas: list[int] = field(default_factory=list)
     block_match_counts: dict[int, int] = field(default_factory=dict)
     function_match_count: int = 0
+    function_evidence_count: int = 0
     block_match_count: int = 0
 
     @property
@@ -186,6 +187,25 @@ def _match_pairs(matches: Any) -> Iterable[tuple[Any, Any]]:
             raise ValueError(f"unsupported CAPA match entry: {item!r}")
 
 
+def _location_objects(node: Any) -> Iterable[Any]:
+    """Yield every feature location in a CAPA match tree.
+
+    A function-scope rule match reports the CAPA function address in the
+    top-level pair and the evidence (e.g. the ``rdtsc`` instructions, the API
+    call instructions) in nested ``locations`` fields.  Those evidence
+    addresses are what make a function-scope label localisable to an angr
+    function when CAPA and angr disagree about function boundaries.
+    """
+    if isinstance(node, dict):
+        for location in node.get("locations") or []:
+            yield location
+        for child in node.get("children") or []:
+            yield from _location_objects(child)
+    elif isinstance(node, (list, tuple)):
+        for child in node:
+            yield from _location_objects(child)
+
+
 def _scope(rule_meta: dict[str, Any]) -> str | None:
     scopes = rule_meta.get("scopes") or {}
     if isinstance(scopes, dict) and scopes.get("static"):
@@ -273,7 +293,7 @@ def parse_capa_document(
             continue
 
         rule_name = rule_meta.get("name") or "<unnamed>"
-        for address_obj, _match in _match_pairs(rule.get("matches")):
+        for address_obj, match_node in _match_pairs(rule.get("matches")):
             target_match_count += 1
             rule_match_counts[rule_name] += 1
             target_rva = _to_rva(address_obj, base)
@@ -292,9 +312,15 @@ def parse_capa_document(
             if scope == "function":
                 func_rva = target_rva
                 block_rva = None
+                evidence = [
+                    rva
+                    for rva in (_to_rva(loc, base) for loc in _location_objects(match_node))
+                    if rva is not None
+                ]
             else:
                 func_rva = block_to_parent.get(target_rva)
                 block_rva = target_rva
+                evidence = []
                 if func_rva is None:
                     unresolved.append(
                         {
@@ -310,18 +336,26 @@ def parse_capa_document(
             entry = get_function(func_rva)
             if scope == "function":
                 entry.function_match_count += 1
+                if evidence:
+                    entry.function_evidence_count += 1
             else:
                 entry.block_match_count += 1
             if rule_name not in entry.matched_rules:
                 entry.matched_rules.append(rule_name)
-            if block_rva is not None:
-                entry.block_match_counts[block_rva] = entry.block_match_counts.get(block_rva, 0) + 1
-                if block_rva not in entry.matched_block_vas:
-                    entry.matched_block_vas.append(block_rva)
+            addresses = ([block_rva] if block_rva is not None else []) + evidence
+            for address in dict.fromkeys(addresses):
+                entry.block_match_counts[address] = entry.block_match_counts.get(address, 0) + 1
+                if address not in entry.matched_block_vas:
+                    entry.matched_block_vas.append(address)
             for label in label_names:
                 entry.labels[label] = 1
                 if scope == "function":
                     entry.function_labels[label] = 1
+                    # Evidence addresses localise the rule to a block for
+                    # Stage 2; the function fallback still covers rules with
+                    # no locations.
+                    if evidence:
+                        entry.block_labels[label] = 1
                 else:
                     entry.block_labels[label] = 1
         rule_match_counts[f"namespace:{namespace}"] += len(rule.get("matches") or [])

@@ -174,3 +174,25 @@ class ParseCapaTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EvidenceLocationTests(unittest.TestCase):
+    def test_function_scope_evidence_is_localised(self) -> None:
+        doc = document()
+        doc["rules"]["anti-debug function"]["matches"] = [
+            [
+                addr(BASE + 0x2000),
+                {
+                    "success": True,
+                    "children": [
+                        {"locations": [addr(BASE + 0x3008)]},
+                    ],
+                },
+            ]
+        ]
+        result = parse_capa_document(doc, sample_id="sample")
+        anti = next(func for func in result.functions if func.capa_func_va == 0x2000)
+        self.assertEqual(anti.function_match_count, 1)
+        self.assertEqual(anti.matched_block_vas, [0x3008])
+        self.assertEqual(anti.block_labels["anti_debug"], 1)
+        self.assertEqual(anti.function_labels["anti_debug"], 1)

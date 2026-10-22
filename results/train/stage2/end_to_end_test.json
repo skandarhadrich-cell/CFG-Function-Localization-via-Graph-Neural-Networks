@@ -1,0 +1,94 @@
+{
+  "per_class": {
+    "anti_debug": {
+      "function": {
+        "tp": 15,
+        "fp": 4,
+        "fn": 12,
+        "precision": 0.7894736842105263,
+        "recall": 0.5555555555555556,
+        "f1": 0.6521739130434783,
+        "iou": 0.4838709677419355
+      },
+      "block": {
+        "tp": 8,
+        "fp": 4,
+        "fn": 66,
+        "precision": 0.6666666666666666,
+        "recall": 0.10810810810810811,
+        "f1": 0.18604651162790697,
+        "iou": 0.10256410256410256
+      },
+      "selected_functions": 19,
+      "true_functions": 27,
+      "selected_blocks": 303,
+      "true_blocks_selected": 74,
+      "true_blocks_total": 136
+    },
+    "keylogger": {
+      "function": {
+        "tp": 53,
+        "fp": 108,
+        "fn": 100,
+        "precision": 0.32919254658385094,
+        "recall": 0.3464052287581699,
+        "f1": 0.33757961783439494,
+        "iou": 0.20306513409961685
+      },
+      "block": {
+        "tp": 256,
+        "fp": 603,
+        "fn": 132,
+        "precision": 0.2980209545983702,
+        "recall": 0.6597938144329897,
+        "f1": 0.41058540497193263,
+        "iou": 0.25832492431886983
+      },
+      "selected_functions": 161,
+      "true_functions": 153,
+      "selected_blocks": 5795,
+      "true_blocks_selected": 388,
+      "true_blocks_total": 1344
+    },
+    "injection": {
+      "function": {
+        "tp": 132,
+        "fp": 219,
+        "fn": 70,
+        "precision": 0.37606837606837606,
+        "recall": 0.6534653465346535,
+        "f1": 0.4773960216998191,
+        "iou": 0.31353919239904987
+      },
+      "block": {
+        "tp": 1484,
+        "fp": 2655,
+        "fn": 83,
+        "precision": 0.3585407103165016,
+        "recall": 0.9470325462667517,
+        "f1": 0.5201542236242552,
+        "iou": 0.3514921837991473
+      },
+      "selected_functions": 351,
+      "true_functions": 202,
+      "selected_blocks": 20826,
+      "true_blocks_selected": 1567,
+      "true_blocks_total": 2094
+    }
+  },
+  "macro_block_f1": 0.3722620467413649,
+  "macro_block_iou": 0.23746040356070655,
+  "stage1_thresholds": [
+    0.95,
+    0.94,
+    0.95
+  ],
+  "stage2_thresholds": [
+    0.94,
+    0.49999999999999994,
+    0.6399999999999999
+  ],
+  "split": "test",
+  "stage1_checkpoint": "/home/lali/cfg-gnn/results/train/stage1/best.pt",
+  "stage2_checkpoint": "/home/lali/cfg-gnn/results/train/stage2/best.pt"
+}

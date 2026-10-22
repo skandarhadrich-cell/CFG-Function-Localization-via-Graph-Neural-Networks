@@ -1,0 +1,20 @@
+{
+  "samples": 2729,
+  "blocks": 17957769,
+  "edges": 16609971,
+  "functions": 2749125,
+  "feature_width": 187,
+  "label_counts": {
+    "anti_debug": 448,
+    "keylogger": 1255,
+    "injection": 1349
+  },
+  "eligible_functions": 380213,
+  "zero_rule_samples": 109,
+  "api": {
+    "pe_loaded": 2729,
+    "pe_failed": 0,
+    "calls": 3420290,
+    "resolved_calls": 450103
+  }
+}
