@@ -7,7 +7,7 @@
   ],
   "keylogger_in_stage1": true,
   "label_normalization": "capa addresses normalized to RVA; angr func_va/mapped_block_vas absolute",
-  "source_mapping": "/home/lali/cfg-gnn/results/full/mapping_three_target.jsonl",
+  "source_mapping": "./results/full/mapping_three_target.jsonl",
   "samples": 2727,
   "functions": 2712053,
   "status_counts": {
@@ -73,5 +73,5 @@
       "unlabeled": 58721
     }
   },
-  "parquet": "/home/lali/cfg-gnn/data/labels/stage1_full_three_targets.parquet"
+  "parquet": "./data/labels/stage1_full_three_targets.parquet"
 }

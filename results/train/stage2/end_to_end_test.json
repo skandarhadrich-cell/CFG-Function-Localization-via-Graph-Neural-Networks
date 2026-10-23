@@ -89,6 +89,6 @@
     0.6399999999999999
   ],
   "split": "test",
-  "stage1_checkpoint": "/home/lali/cfg-gnn/results/train/stage1/best.pt",
-  "stage2_checkpoint": "/home/lali/cfg-gnn/results/train/stage2/best.pt"
+  "stage1_checkpoint": "./results/train/stage1/best.pt",
+  "stage2_checkpoint": "./results/train/stage2/best.pt"
 }

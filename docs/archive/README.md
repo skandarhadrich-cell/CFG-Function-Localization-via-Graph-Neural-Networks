@@ -9,4 +9,5 @@ project is visible, but they are **not** the current methodology.
   uses three independent sigmoids, and treats unmatched CAPA functions as weak
   negatives or unlabeled, not as a benign category.
 
-For the current design, start with [the README](../../README.md).
+For the current design, start with [the README](../../README.md). Historical
+pilot outputs are indexed in [`results/README.md`](../../results/README.md).

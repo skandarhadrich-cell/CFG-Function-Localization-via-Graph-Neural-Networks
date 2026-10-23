@@ -1,7 +1,7 @@
 {
-  "manifest": "/home/lali/cfg-gnn/data/versions/v1/manifest.csv",
+  "manifest": "./data/versions/v1/manifest.csv",
   "manifest_sha256": "fcd27780a1964b04faf68c4f8d637fcca6a232b183d155152beec3b28a903d7e",
-  "pilot_audit": "/home/lali/cfg-gnn/results/pilot/packing_audit.json",
+  "pilot_audit": "./results/pilot/packing_audit.json",
   "thresholds": {
     "7.8": {
       "removed": 81,

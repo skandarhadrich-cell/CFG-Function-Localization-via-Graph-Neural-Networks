@@ -65,6 +65,7 @@ results/full/retry_summary.json
 
 # ── Logs and local noise ──────────────────────────────────────
 *.log
+*.tmp
 .DS_Store
 .idea/
 .vscode/

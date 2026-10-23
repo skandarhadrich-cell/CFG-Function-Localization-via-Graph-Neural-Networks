@@ -1,6 +1,6 @@
 {
   "v1": {
-    "manifest": "/home/lali/cfg-gnn/data/versions/v1/manifest.csv",
+    "manifest": "./data/versions/v1/manifest.csv",
     "manifest_sha256": "fcd27780a1964b04faf68c4f8d637fcca6a232b183d155152beec3b28a903d7e",
     "clean_samples": 2814,
     "clusters": 310,
@@ -31,7 +31,7 @@
     }
   },
   "v2": {
-    "manifest": "/home/lali/cfg-gnn/data/versions/v2/manifest.csv",
+    "manifest": "./data/versions/v2/manifest.csv",
     "manifest_sha256": "09a6e1d8210914b920d6884d3d2bd085e1c55df583955336039d1bc91a1490c8",
     "clean_samples": 2733,
     "clusters": 303,

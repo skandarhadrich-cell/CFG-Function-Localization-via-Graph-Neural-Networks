@@ -3,7 +3,7 @@
   "created_utc": "2026-10-20T16:47:22+00:00",
   "git_commit": "4143e0fba6ef207d6d4235f79f00f623a0b591fa",
   "git_dirty": true,
-  "manifest": "/home/lali/cfg-gnn/data/versions/v2/manifest.csv",
+  "manifest": "./data/versions/v2/manifest.csv",
   "manifest_sha256": "09a6e1d8210914b920d6884d3d2bd085e1c55df583955336039d1bc91a1490c8",
   "manifest_rows": 4474,
   "clean_rows": 2733,
@@ -2743,7 +2743,7 @@
     "ffee6267a6cd1941eac42ef02c43a660a55b384932ee29587bf17b42cb1dea76"
   ],
   "clean_clusters": 303,
-  "splits_dir": "/home/lali/cfg-gnn/data/versions/v2/splits",
+  "splits_dir": "./data/versions/v2/splits",
   "main_sha256": "a31b361dc226e709ed950242b0f8b4c2b74a1d5ce907c8ad21ae146084828d97",
   "lofo_sha256": "095a822233c4c081fbf400f3e3bf8916f3c3401267cb5a198f129e1c824e6368",
   "main_manifest_sha256": "09a6e1d8210914b920d6884d3d2bd085e1c55df583955336039d1bc91a1490c8",
@@ -2753,7 +2753,7 @@
     "injection": "emotet",
     "antidebug": "ursnif"
   },
-  "config": "/home/lali/cfg-gnn/configs/pilot_stage1.toml",
+  "config": "./configs/pilot_stage1.toml",
   "config_sha256": "8fbbeb7d8c3e59472e51bd1cc727ad3ba1c024afeb59030d7f2ec5e8c5a3da07",
   "label_contract": {
     "version": "stage1-v2",

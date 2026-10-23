@@ -1,8 +1,8 @@
 {
   "timestamp_utc": "2026-10-20T14:11:19+00:00",
-  "manifest": "/home/lali/cfg-gnn/data/manifest.csv",
-  "splits": "/home/lali/cfg-gnn/data/splits",
-  "out_dir": "/home/lali/cfg-gnn/data/labels/capa_raw",
+  "manifest": "./data/manifest.csv",
+  "splits": "./data/splits",
+  "out_dir": "./data/labels/capa_raw",
   "workers": 2,
   "timeout_seconds": 300,
   "selected": 6,
@@ -10,7 +10,7 @@
     "keylogger": 6
   },
   "argv": [
-    "/home/lali/cfg-gnn/src/label/run_capa.py",
+    "./src/label/run_capa.py",
     "--sample-id",
     "245f728b324ebaef0b3db37f39ed779075cd30ced2a19b7aa98281f817076431",
     "--sample-id",
@@ -31,14 +31,14 @@
     "results/pilot/keylogger_nonpacked"
   ],
   "capa_argv_template": [
-    "/home/lali/tools/capa/capa",
+    "~/tools/capa/capa",
     "--rules",
-    "/home/lali/tools/capa-rules",
+    "~/tools/capa-rules",
     "-j",
     "<repaired-temporary-copy>"
   ],
-  "capa_path": "/home/lali/tools/capa/capa",
-  "rules_path": "/home/lali/tools/capa-rules",
+  "capa_path": "~/tools/capa/capa",
+  "rules_path": "~/tools/capa-rules",
   "capa_version": "capa 9.1.0",
   "rules_commit": "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5",
   "rules_dirty": false,

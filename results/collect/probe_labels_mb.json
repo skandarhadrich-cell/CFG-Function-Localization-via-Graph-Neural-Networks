@@ -6,7 +6,7 @@
     "requested": 229,
     "completed": 229,
     "failures": [],
-    "capa_dir": "/home/lali/cfg-gnn/data/labels/capa_external_probe"
+    "capa_dir": "./data/labels/capa_external_probe"
   },
   "parsed_samples": 221,
   "parse_failed": [],

@@ -1,7 +1,7 @@
 # BODMAS disarming and repair (2026-10-22)
 
-`PE_modifier.py` and a README describing the disarm are not present in
-`/mnt/hgfs/D/` (only `BODMAS_disarmed_malware_binaries.zip`,
+`PE_modifier.py` and a README describing the disarm are not present in the
+local BODMAS source folder (only `BODMAS_disarmed_malware_binaries.zip`,
 `bodmas_metadata.csv`, `FlraeVM.vdi`) or in the public
 `whyisyoung/BODMAS` repository. The behaviour is established empirically.
 

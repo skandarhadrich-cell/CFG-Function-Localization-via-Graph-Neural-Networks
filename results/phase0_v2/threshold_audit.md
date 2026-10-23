@@ -1,6 +1,6 @@
 # Phase 0 v2 packed-filter audit
 
-- v1 manifest: `/home/lali/cfg-gnn/data/versions/v1/manifest.csv`
+- v1 manifest: `./data/versions/v1/manifest.csv`
 - v1 manifest SHA-256: `fcd27780a1964b04faf68c4f8d637fcca6a232b183d155152beec3b28a903d7e`
 - Candidate rule: `text_entropy >= T` and `num_imports <= 20`
 - CAPA packer detections are an audit signal only; they are not used by the filter.

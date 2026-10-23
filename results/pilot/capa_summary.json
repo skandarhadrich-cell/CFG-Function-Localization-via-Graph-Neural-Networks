@@ -1,8 +1,8 @@
 {
   "timestamp_utc": "2026-10-20T13:53:24+00:00",
-  "manifest": "/home/lali/cfg-gnn/data/manifest.csv",
-  "splits": "/home/lali/cfg-gnn/data/splits",
-  "out_dir": "/home/lali/cfg-gnn/data/labels/capa_raw",
+  "manifest": "./data/manifest.csv",
+  "splits": "./data/splits",
+  "out_dir": "./data/labels/capa_raw",
   "workers": 4,
   "timeout_seconds": 240,
   "selected": 200,
@@ -11,8 +11,8 @@
     "injection": 84,
     "keylogger": 32
   },
-  "capa_path": "/home/lali/tools/capa/capa",
-  "rules_path": "/home/lali/tools/capa-rules",
+  "capa_path": "~/tools/capa/capa",
+  "rules_path": "~/tools/capa-rules",
   "capa_version": "capa 9.1.0",
   "rules_commit": "805f9eaccfb6a4e1ddffc809d71d1e2b5ccc15e5",
   "rules_dirty": false,
