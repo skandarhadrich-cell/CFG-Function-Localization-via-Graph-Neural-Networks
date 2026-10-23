@@ -3,9 +3,12 @@
 
 Examples
 --------
+    Arrodes sample.exe
+    Arrodes sample.exe --graph graph.npz
+    Arrodes sample.exe --no-stage2
+
+    ./venv/bin/python -m src.infer.run sample.exe
     ./venv/bin/python -m src.infer.run --binary sample.exe
-    ./venv/bin/python -m src.infer.run --binary sample.exe --graph graph.npz
-    ./venv/bin/python -m src.infer.run --binary sample.exe --no-stage2
 
 Outputs are always written to workspace/<sha256>/report.json and
 workspace/<sha256>/report.pdf. The PDF is opened automatically.
@@ -37,11 +40,14 @@ def sample_output_paths(workspace: Path, sha256: str) -> tuple[Path, Path]:
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
+        prog="Arrodes",
         description="Score one x86 PE for anti_debug, keylogger, injection "
                     "and localise blocks inside flagged functions."
     )
-    parser.add_argument("--binary", type=Path, required=True,
+    parser.add_argument("sample", nargs="?", type=Path,
                         help="path to the x86 PE file")
+    parser.add_argument("--binary", type=Path,
+                        help="path to the x86 PE file (alias for the positional sample)")
     parser.add_argument("--graph", type=Path,
                         help="optional pre-extracted graph .npz; skips angr")
     parser.add_argument("--stage1", type=Path, default=DEFAULT_STAGE1,
@@ -70,7 +76,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="do not print the text summary")
     parser.add_argument("--debug", action="store_true",
                         help="show a traceback on unexpected errors")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if args.sample is not None and args.binary is not None:
+        parser.error(
+            "provide the sample path either positionally or with --binary, not both"
+        )
+    if args.sample is None and args.binary is None:
+        parser.error("a sample path is required")
+    return args
 
 
 def _run_graph(binary: Path, graph_path: Path, args, models, sha: str,
@@ -117,7 +130,7 @@ def _run_graph(binary: Path, graph_path: Path, args, models, sha: str,
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
-    binary = args.binary.expanduser()
+    binary = (args.binary or args.sample).expanduser()
     try:
         if not binary.exists() or not binary.is_file():
             raise InferenceError(f"binary not found: {binary}")

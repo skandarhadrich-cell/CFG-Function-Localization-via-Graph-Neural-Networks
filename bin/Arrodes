@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Arrodes — single-sample CFG-GNN inference.
+#
+# Usage:
+#   Arrodes "path/to/sample.exe"
+#   Arrodes "path/to/sample.exe" --graph graph.npz
+#   Arrodes "path/to/sample.exe" --workspace /tmp/opencode/workspace
+#
+# Outputs are written to <workspace>/<sha256>/report.json and report.pdf.
+# The PDF is opened automatically.
+
+set -euo pipefail
+
+script_path="$(readlink -f -- "${BASH_SOURCE[0]}")"
+script_dir="$(cd -- "$(dirname -- "$script_path")" && pwd)"
+repo_root="$(cd -- "$script_dir/.." && pwd)"
+
+python_bin="$repo_root/venv/bin/python"
+if [[ ! -x "$python_bin" ]]; then
+    python_bin="${PYTHON_BIN:-python3}"
+fi
+
+# Keep the repository importable regardless of the caller's current directory.
+export PYTHONPATH="$repo_root${PYTHONPATH:+:$PYTHONPATH}"
+
+# Default to the repository workspace so the command works from anywhere.
+has_workspace=false
+for arg in "$@"; do
+    case "$arg" in
+        --workspace|--workspace=*)
+            has_workspace=true
+            ;;
+    esac
+done
+
+args=("$@")
+if [[ "$has_workspace" == false ]]; then
+    args+=(--workspace "$repo_root/workspace")
+fi
+
+exec "$python_bin" -m src.infer.run "${args[@]}"

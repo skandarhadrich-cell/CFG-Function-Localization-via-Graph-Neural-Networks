@@ -181,16 +181,17 @@ The frozen checkpoints can be applied to one x86 PE with the same feature and
 model code used above:
 
 ```bash
-./venv/bin/python -m src.infer.run \
-  --binary data/raw/antidebug/<sample_id>.exe
+./scripts/install_arrodes.sh
+Arrodes "data/raw/antidebug/<sample_id>.exe"
 ```
 
 Outputs are written to `workspace/<sha256>/report.json` and
-`workspace/<sha256>/report.pdf`; the PDF opens automatically. `--graph
-<graph.npz>` skips angr for an already-extracted graph; `--no-stage2` returns
-function scores only. Non-x86 inputs and extraction failures exit with code 2
-instead of being mapped to a negative. The JSON schema and failure modes are
-documented in [`docs/inference.md`](inference.md).
+`workspace/<sha256>/report.pdf`; the PDF opens automatically. `Arrodes` is the
+installed alias for `python -m src.infer.run`; `--graph <graph.npz>` skips angr
+for an already-extracted graph, and `--no-stage2` returns function scores only.
+Non-x86 inputs and extraction failures exit with code 2 instead of being mapped
+to a negative. The JSON schema and failure modes are documented in
+[`docs/inference.md`](inference.md).
 
 ## 10. Reproducibility rules
 

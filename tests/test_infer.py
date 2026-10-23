@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -11,7 +12,7 @@ import torch
 
 from src.infer.pdf import build_sample_html, find_chromium, render_sample_pdf
 from src.infer.report import build_report, render_text
-from src.infer.run import sample_output_paths
+from src.infer.run import _parse_args, sample_output_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 CORPUS = ROOT / "results" / "corpus_v2_three_targets"
@@ -114,6 +115,26 @@ def _sample_report():
         warnings=["test warning"], all_functions=False,
         max_blocks_per_function=10,
     )
+
+
+def test_cli_accepts_positional_sample():
+    args = _parse_args(["sample.exe", "--no-stage2"])
+    assert args.sample == Path("sample.exe")
+    assert args.binary is None
+    assert args.no_stage2 is True
+
+
+def test_arrodes_wrapper_help():
+    wrapper = ROOT / "bin" / "Arrodes"
+    assert wrapper.is_file()
+    result = subprocess.run(
+        [str(wrapper), "--help"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0
+    assert "sample" in result.stdout
 
 
 def test_workspace_output_paths_are_hash_scoped(tmp_path):

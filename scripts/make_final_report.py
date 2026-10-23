@@ -495,19 +495,20 @@ Stage 1 false positives and missed functions.</p>
 <section class="page">
 <h2>4. Single-binary inference</h2>
 <p>The implementation adds <code>src/infer/run.py</code> with a CLI, a reusable
-pipeline, and a JSON report builder. It validates the PE, optionally extracts
-the CFG with the existing worker, rebuilds the exact features, loads the frozen
-checkpoints, runs both stages, and writes an atomic JSON report plus a
-sample-specific PDF report under <code>workspace/&lt;sha256&gt;/</code>. The PDF is
-always generated and opened.</p>
+pipeline, and a JSON report builder. The installed command is
+<code>Arrodes</code>; <code>Arrodes "sample.exe"</code> is the primary interface.
+It validates the PE, optionally extracts the CFG with the existing worker,
+rebuilds the exact features, loads the frozen checkpoints, runs both stages, and
+writes an atomic JSON report plus a sample-specific PDF report under
+<code>workspace/&lt;sha256&gt;/</code>. The PDF is always generated and opened.</p>
 
-<pre>./venv/bin/python -m src.infer.run --binary &lt;x86-pe&gt;
+<pre>./scripts/install_arrodes.sh
+Arrodes "&lt;x86-pe&gt;"
 # writes workspace/&lt;sha256&gt;/report.json
 # writes workspace/&lt;sha256&gt;/report.pdf (opens automatically)
 
 # optional: skip extraction for an existing graph
-./venv/bin/python -m src.infer.run \\
-  --binary &lt;x86-pe&gt; --graph &lt;graph.npz&gt;</pre>
+Arrodes "&lt;x86-pe&gt;" --graph "&lt;graph.npz&gt;"</pre>
 
 <h3>Demo run: held-out test sample</h3>
 <p class="small"><code>{e(sample['sha256'])}</code> · {sample['functions']} functions ·
@@ -633,16 +634,17 @@ contract is in <code>docs/inference.md</code>. The committed report generator is
 <section class="page">
 <h2>Appendix: implementation and artifacts</h2>
 <div class="three">
-  <div class="box"><div class="t">Inference code</div><div class="d"><code>src/infer/pipeline.py</code><br><code>src/infer/report.py</code><br><code>src/infer/pdf.py</code><br><code>src/infer/run.py</code></div></div>
+  <div class="box"><div class="t">Inference code</div><div class="d"><code>bin/Arrodes</code><br><code>src/infer/pipeline.py</code><br><code>src/infer/report.py</code><br><code>src/infer/pdf.py</code><br><code>src/infer/run.py</code></div></div>
   <div class="box"><div class="t">Tests and docs</div><div class="d"><code>tests/test_infer.py</code><br><code>docs/inference.md</code><br>{total_tests} tests passing</div></div>
   <div class="box"><div class="t">Artifacts</div><div class="d"><code>results/train/stage1/</code><br><code>results/train/stage2/</code><br><code>results/infer/</code></div></div>
 </div>
 
 <h3>Committed vs local-only</h3>
-<p>Source, tests, documentation, metrics, reports, and inference JSON are
-committed. Raw malware samples, CAPA JSON, graphs, corpus arrays, and model
-checkpoints are git-ignored. The report contains sample metadata and addresses,
-not sample bytes.</p>
+<p>Source, tests, documentation, metrics, reports, and the demo inference JSON are
+committed. Raw malware samples, CAPA JSON, graphs, corpus arrays, model
+checkpoints, and per-sample <code>workspace/&lt;sha256&gt;/</code> outputs are
+git-ignored. The report contains sample metadata and addresses, not sample
+bytes.</p>
 
 <h3>Checkpoint thresholds</h3>
 <table>

@@ -1,11 +1,21 @@
 # Single-binary inference
 
-`src/infer/run.py` runs the frozen three-target models on one x86 PE and writes
-a machine-readable JSON report plus a per-sample PDF report. It is a consumer of
-the training contract, not a second feature implementation: the same
-`graph_arrays()` / import-resolution code builds the 187-dimensional block
-features, and the same `FunctionGCN` / `FunctionGCNWithNodeHead` classes run the
-forward pass.
+The command-line tool is **Arrodes**. `src/infer/run.py` runs the frozen
+three-target models on one x86 PE and writes a machine-readable JSON report plus
+a per-sample PDF report. It is a consumer of the training contract, not a second
+feature implementation: the same `graph_arrays()` / import-resolution code
+builds the 187-dimensional block features, and the same `FunctionGCN` /
+`FunctionGCNWithNodeHead` classes run the forward pass.
+
+Install the command once:
+
+```bash
+./scripts/install_arrodes.sh
+```
+
+This links `bin/Arrodes` into `~/.local/bin/Arrodes`. If that directory is not
+on `PATH`, pass another directory, for example
+`./scripts/install_arrodes.sh /usr/local/bin`.
 
 ## Scope
 
@@ -29,10 +39,11 @@ failure (exit code 2), not a zero score.
 Full extraction and scoring:
 
 ```bash
-./venv/bin/python -m src.infer.run \
-  --binary data/raw/antidebug/<sample_id>.exe
+Arrodes "data/raw/antidebug/<sample_id>.exe"
 ```
 
+The equivalent module invocation is
+`./venv/bin/python -m src.infer.run "data/raw/antidebug/<sample_id>.exe"`.
 This writes:
 
 ```text
@@ -44,28 +55,28 @@ The PDF opens automatically. Score an already-extracted graph (still reads the
 PE for import resolution):
 
 ```bash
-./venv/bin/python -m src.infer.run \
-  --binary data/raw/antidebug/<sample_id>.exe \
+Arrodes "data/raw/antidebug/<sample_id>.exe" \
   --graph data/graphs_v2/cfg/<sample_id>.npz
 ```
 
 Function scores only (the PDF still opens and shows the function-level result):
 
 ```bash
-./venv/bin/python -m src.infer.run \
-  --binary sample.exe --no-stage2
+Arrodes "sample.exe" --no-stage2
 ```
 
 Useful flags:
 
 | flag | meaning |
 |---|---|
+| `sample` | positional sample path, e.g. `Arrodes "sample.exe"` |
+| `--binary PATH` | alternative to the positional sample path |
 | `--stage1 PATH` | Stage 1 checkpoint, default `results/train/stage1/best.pt` |
 | `--stage2 PATH` | Stage 2 checkpoint, default `results/train/stage2/best.pt` |
 | `--no-stage2` | do not load Stage 2; no block localisation |
 | `--graph PATH` | skip angr; use an existing `.npz` graph |
 | `--keep-graph PATH` | copy the extracted graph for debugging |
-| `--workspace PATH` | output root, default `workspace` |
+| `--workspace PATH` | output root; `Arrodes` defaults to the repository `workspace/`, the module defaults to `./workspace` |
 | `--timeout SEC` | angr timeout, default 1800 |
 | `--rss-limit-gb N` | extraction RSS watchdog, default 3.0 GiB |
 | `--threads N` | PyTorch CPU threads |
@@ -224,7 +235,7 @@ verdict. The saved artifact for the demo sample is
 
 ```bash
 ./venv/bin/python -m pytest tests/test_infer.py -q
-./venv/bin/python -m src.infer.run --binary <x86.exe>
+Arrodes "<x86.exe>"
 ```
 
 The final project report is generated from the committed metrics and inference

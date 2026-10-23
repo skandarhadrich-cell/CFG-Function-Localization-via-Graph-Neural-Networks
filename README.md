@@ -262,11 +262,20 @@ tables and caveats are in `results/train/stage2/report.md`.
 ### Single-binary inference
 
 The frozen checkpoints can score one x86 PE and localise blocks inside the
-functions selected by Stage 1:
+functions selected by Stage 1. The command is named **Arrodes**:
 
 ```bash
-./venv/bin/python -m src.infer.run \
-  --binary data/raw/antidebug/<sample_id>.exe
+./scripts/install_arrodes.sh   # once; installs ~/.local/bin/Arrodes
+Arrodes "data/raw/antidebug/<sample_id>.exe"
+```
+
+`Arrodes "path"` is equivalent to `python -m src.infer.run "path"` (or
+`--binary "path"`). The wrapper defaults the workspace to this repository's
+`workspace/` directory, so it works from any current directory. Extra flags are
+forwarded:
+
+```bash
+Arrodes "sample.exe" --graph graph.npz --no-stage2
 ```
 
 The CLI extracts the CFG with the same timeout/RSS-protected angr worker used
