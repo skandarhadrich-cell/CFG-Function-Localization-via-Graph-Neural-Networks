@@ -10,7 +10,6 @@ and warnings from one `cfg-gnn.infer.v1` JSON report.
 from __future__ import annotations
 
 import html
-import os
 import shutil
 import subprocess
 import tempfile
@@ -371,7 +370,7 @@ def render_sample_pdf(
         if cleanup is not None:
             cleanup.cleanup()
 
-    if open_pdf and (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
+    if open_pdf:
         opener = shutil.which("xdg-open")
         if opener:
             subprocess.Popen(

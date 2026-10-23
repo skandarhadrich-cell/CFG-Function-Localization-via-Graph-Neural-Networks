@@ -3,9 +3,12 @@
 
 Examples
 --------
-    ./venv/bin/python -m src.infer.run --binary sample.exe --out report.json
+    ./venv/bin/python -m src.infer.run --binary sample.exe
     ./venv/bin/python -m src.infer.run --binary sample.exe --graph graph.npz
     ./venv/bin/python -m src.infer.run --binary sample.exe --no-stage2
+
+Outputs are always written to workspace/<sha256>/report.json and
+workspace/<sha256>/report.pdf. The PDF is opened automatically.
 """
 
 from __future__ import annotations
@@ -26,6 +29,12 @@ from src.infer.report import build_report, render_text
 from src.extract.cfg_store import load_cfg_summary
 
 
+def sample_output_paths(workspace: Path, sha256: str) -> tuple[Path, Path]:
+    """Return the canonical JSON and PDF paths for one sample."""
+    sample_dir = Path(workspace).expanduser() / sha256
+    return sample_dir / "report.json", sample_dir / "report.pdf"
+
+
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Score one x86 PE for anti_debug, keylogger, injection "
@@ -41,16 +50,8 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="Stage 2 checkpoint (default: results/train/stage2/best.pt)")
     parser.add_argument("--no-stage2", action="store_true",
                         help="function-level scores only")
-    parser.add_argument("--out", type=Path, default=Path("results/infer/report.json"),
-                        help="JSON output path")
-    parser.add_argument("--pdf", type=Path,
-                        help="PDF output path (default: same stem as --out)")
-    parser.add_argument("--no-pdf", action="store_true",
-                        help="do not generate the per-sample PDF")
-    parser.add_argument("--html", type=Path,
-                        help="optional path to keep the rendered HTML source")
-    parser.add_argument("--open", action="store_true",
-                        help="open the generated PDF in the desktop viewer")
+    parser.add_argument("--workspace", type=Path, default=Path("workspace"),
+                        help="output root; each sample goes in workspace/<sha256>/")
     parser.add_argument("--timeout", type=float, default=1800.0,
                         help="angr extraction timeout in seconds")
     parser.add_argument("--rss-limit-gb", type=float, default=3.0,
@@ -69,14 +70,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="do not print the text summary")
     parser.add_argument("--debug", action="store_true",
                         help="show a traceback on unexpected errors")
-    args = parser.parse_args(argv)
-    if args.no_pdf and args.pdf is not None:
-        parser.error("--pdf and --no-pdf are mutually exclusive")
-    if args.no_pdf and args.open:
-        parser.error("--open requires PDF output")
-    if args.no_pdf and args.html is not None:
-        parser.error("--html requires PDF output")
-    return args
+    return parser.parse_args(argv)
 
 
 def _run_graph(binary: Path, graph_path: Path, args, models, sha: str,
@@ -124,19 +118,6 @@ def _run_graph(binary: Path, graph_path: Path, args, models, sha: str,
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     binary = args.binary.expanduser()
-    pdf_path = None
-    if not args.no_pdf:
-        pdf_path = args.pdf.expanduser() if args.pdf else args.out.with_suffix(".pdf")
-        if pdf_path.resolve() == args.out.resolve():
-            print("error: --pdf must not be the same path as --out", file=sys.stderr)
-            return 2
-    if args.html is not None:
-        html_path = args.html.expanduser()
-        if html_path.resolve() == args.out.resolve() or (
-            pdf_path is not None and html_path.resolve() == pdf_path.resolve()
-        ):
-            print("error: --html must differ from --out and --pdf", file=sys.stderr)
-            return 2
     try:
         if not binary.exists() or not binary.is_file():
             raise InferenceError(f"binary not found: {binary}")
@@ -191,32 +172,27 @@ def main(argv: list[str] | None = None) -> int:
                     binary, ex["graph_path"], args, models, sha, warnings, extraction
                 )
 
-        args.out.parent.mkdir(parents=True, exist_ok=True)
-        tmp = args.out.with_name(args.out.name + ".tmp")
+        out_json, out_pdf = sample_output_paths(args.workspace, sha)
+        out_json.parent.mkdir(parents=True, exist_ok=True)
+        tmp = out_json.with_name(out_json.name + ".tmp")
         tmp.write_text(json.dumps(report, indent=2) + "\n")
-        tmp.replace(args.out)
+        tmp.replace(out_json)
         if not args.quiet:
             print(render_text(report), end="")
-            print(f"\nwrote {args.out}")
+            print(f"\nwrote {out_json}")
 
-        if pdf_path is not None:
-            try:
-                render_sample_pdf(
-                    report,
-                    pdf_path,
-                    html_path=args.html,
-                    open_pdf=args.open,
-                )
-            except Exception as exc:  # noqa: BLE001
-                print(
-                    f"error: JSON written to {args.out}, but PDF generation failed: {exc}",
-                    file=sys.stderr,
-                )
-                if args.debug:
-                    raise
-                return 2
-            if not args.quiet:
-                print(f"wrote {pdf_path}")
+        try:
+            render_sample_pdf(report, out_pdf, open_pdf=True)
+        except Exception as exc:  # noqa: BLE001
+            print(
+                f"error: JSON written to {out_json}, but PDF generation failed: {exc}",
+                file=sys.stderr,
+            )
+            if args.debug:
+                raise
+            return 2
+        if not args.quiet:
+            print(f"wrote {out_pdf}")
         return 0
     except InferenceError as exc:
         print(f"error: {exc}", file=sys.stderr)

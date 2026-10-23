@@ -266,20 +266,22 @@ functions selected by Stage 1:
 
 ```bash
 ./venv/bin/python -m src.infer.run \
-  --binary data/raw/antidebug/<sample_id>.exe \
-  --out results/infer/<sample_id>.json
+  --binary data/raw/antidebug/<sample_id>.exe
 ```
 
 The CLI extracts the CFG with the same timeout/RSS-protected angr worker used
 by the corpus builder, rebuilds the exact 187 block features, loads
-`results/train/stage1/best.pt` and `results/train/stage2/best.pt`, and writes a
-JSON report plus a sample-specific PDF. With `--out results/infer/sample.json`
-the PDF is written to `results/infer/sample.pdf`. Use `--pdf PATH` to choose a
-different PDF path, `--no-pdf` to skip it, `--html PATH` to keep the HTML source,
-and `--open` to launch the PDF. `--graph <file.npz>` skips extraction for a
-graph that already exists. `--no-stage2` produces function scores only. A
-non-x86 input or a failed extraction exits with code 2 and an explicit error; it
-is never treated as a negative. The output contract is documented in
+`results/train/stage1/best.pt` and `results/train/stage2/best.pt`, and writes
+both outputs into `workspace/<sha256>/`:
+
+- `report.json` — machine-readable function/block results;
+- `report.pdf` — per-sample report, opened automatically.
+
+The PDF is always generated; there is no JSON-only mode. `--graph <file.npz>`
+skips extraction for a graph that already exists. `--no-stage2` produces
+function scores only. `--workspace PATH` changes the workspace root. A non-x86
+input or a failed extraction exits with code 2 and an explicit error; it is
+never treated as a negative. The output contract is documented in
 [`docs/inference.md`](docs/inference.md).
 
 ## 7. Evaluation

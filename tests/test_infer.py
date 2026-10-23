@@ -11,6 +11,7 @@ import torch
 
 from src.infer.pdf import build_sample_html, find_chromium, render_sample_pdf
 from src.infer.report import build_report, render_text
+from src.infer.run import sample_output_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 CORPUS = ROOT / "results" / "corpus_v2_three_targets"
@@ -113,6 +114,12 @@ def _sample_report():
         warnings=["test warning"], all_functions=False,
         max_blocks_per_function=10,
     )
+
+
+def test_workspace_output_paths_are_hash_scoped(tmp_path):
+    json_path, pdf_path = sample_output_paths(tmp_path, "abc123")
+    assert json_path == tmp_path / "abc123" / "report.json"
+    assert pdf_path == tmp_path / "abc123" / "report.pdf"
 
 
 def test_sample_pdf_html_contains_targets_and_blocks():

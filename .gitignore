@@ -68,3 +68,7 @@ results/full/retry_summary.json
 .DS_Store
 .idea/
 .vscode/
+
+# ── Per-sample inference workspace ───────────────────────────
+workspace/*
+!workspace/.gitkeep
